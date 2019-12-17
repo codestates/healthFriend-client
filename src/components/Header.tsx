@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 import { css, jsx } from '@emotion/core';
 
 const navHeader = css`
-  background-color: #4c8ac0;
+  background-color: #1e272e;
   display: table;
   table-layout: fixed;
   width: 100%;
@@ -21,11 +21,11 @@ const navLinkItem = css`
   text-decoration: none;
   font-size: 1.1rem;
   &:hover {
-    background-color: #175992;
+    background-color: #485460;
+    color: white;
   }
   &:active {
     background-color: #7d97ad;
-    color: #4c8ac0;
   }
 `;
 
