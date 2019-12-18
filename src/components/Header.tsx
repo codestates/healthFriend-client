@@ -53,6 +53,9 @@ export default function Header() {
       <NavLink to="/mypage" className="item" css={navLinkItem}>
         마이페이지
       </NavLink>
+      <NavLink to="/login" className="item" css={navLinkItem}>
+        로그인
+      </NavLink>
     </div>
   );
 }
