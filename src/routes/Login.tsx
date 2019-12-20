@@ -11,6 +11,8 @@ function Login() {
     isSignedIn: false,
   });
 
+  // console.log('config', config)
+
   const uiConfig = {
     signInFlow: 'popup',
     signInOptions: [
@@ -36,7 +38,16 @@ function Login() {
   }, []);
 
   if (state.isSignedIn) {
-    console.log('firebase.auth().currentUser', firebase.auth().currentUser);
+    // console.log('firebase.auth().currentUser', firebase.auth().currentUser?.refreshToken);
+    firebase
+      .auth()
+      .currentUser!.getIdToken(/* forceRefresh */ true)
+      .then(function(idToken) {
+        // console.log('idToken', idToken);
+      })
+      .catch(function(error) {
+        // console.log(error);
+      });
   }
   return (
     <div>
