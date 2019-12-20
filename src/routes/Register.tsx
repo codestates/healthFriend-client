@@ -1,31 +1,26 @@
 // eslint-disable-next-line
-import React from 'react';
-import { Row, Col, Radio, Button } from 'antd';
+import React, { useState } from 'react';
+import { Row, Col, Button } from 'antd';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import ProgressBar from '../components/ProgressBar';
 import RegisterImage from '../static/registerImage.jpg';
 import message from '../config/message';
+import RegisterInput from '../components/RegisterInput';
 
 const wrapper = css`
   padding: 20px;
 `;
 
-const radioStyle = {
-  display: 'block',
-  height: '30px',
-  lineHeight: '30px',
-};
-
 const renderingImage = css`
   width: 100%;
-  height: 80%;
+  height: 300px;
   opacity: 80%;
   filter: grayscale(40%);
 `;
 
 const lowerContentWrapper = css`
-  padding: 10px;
+  padding: 20px;
 `;
 
 const progressBar = css`
@@ -34,6 +29,8 @@ const progressBar = css`
 `;
 
 function Register() {
+  const [order, setOrder] = useState<number>(1);
+
   return (
     <div css={wrapper}>
       <Row gutter={24} type="flex" justify="space-between">
@@ -42,28 +39,21 @@ function Register() {
         </Col>
         <Col xs={24} md={16} css={lowerContentWrapper}>
           <div css={progressBar}>
-            <ProgressBar />
+            <ProgressBar order={order} />
           </div>
 
-          <h2>헬스 친구를 찾는 이유는?</h2>
-          <Radio.Group>
-            <Radio style={radioStyle} value={1}>
-              중량 강화
-            </Radio>
-            <Radio style={radioStyle} value={2}>
-              재밌게 운동하고 싶어서
-            </Radio>
-            <Radio style={radioStyle} value={3}>
-              친구 찾기
-            </Radio>
-            <Radio style={radioStyle} value={4}>
-              의지 부족을 이겨내고 싶어서
-            </Radio>
-          </Radio.Group>
+          <RegisterInput order={order} />
+
           <div>
-            <Button type="primary">이전</Button>
+            {order === 1 ? null : (
+              <Button type="primary" onClick={() => setOrder(order - 1)}>
+                이전
+              </Button>
+            )}
             &nbsp;
-            <Button type="primary">다음</Button>
+            <Button type="primary" onClick={() => setOrder(order + 1)}>
+              다음
+            </Button>
           </div>
         </Col>
         <Col xs={24} md={8} css={lowerContentWrapper}>
