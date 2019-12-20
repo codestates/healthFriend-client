@@ -1,11 +1,12 @@
 // eslint-disable-next-line
-import React, { useState } from 'react';
-import { Row, Col, Button } from 'antd';
+import React, { useState, Fragment } from 'react';
+import { Row, Col, Button, } from 'antd';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import ProgressBar from '../components/ProgressBar';
 import RegisterImage from '../static/registerImage.jpg';
-import message from '../config/message';
+import explanation from '../config/message';
+import fakeData from '../config/fakeData';
 import RegisterInput from '../components/RegisterInput';
 
 const wrapper = css`
@@ -28,8 +29,13 @@ const progressBar = css`
   margin-bottom: 20px;
 `;
 
-function Register() {
+type RegisterProps = {
+  history: any;
+}
+
+function Register({ history }: RegisterProps) {
   const [order, setOrder] = useState<number>(1);
+
 
   return (
     <div css={wrapper}>
@@ -38,31 +44,38 @@ function Register() {
           <img src={RegisterImage} css={renderingImage} alt="" />
         </Col>
         <Col xs={24} md={16} css={lowerContentWrapper}>
-          <div css={progressBar}>
-            <ProgressBar order={order} />
-          </div>
-
-          <RegisterInput order={order} />
-
+          {order === fakeData.inputRegister.length + 1? <div>
+            축하합니다. 정보 입력이 완료되었습니다. 
+            <button onClick={() => history.push('/')}>홈으로</button>
+          </div>: (
           <div>
-            {order === 1 ? null : (
-              <Button type="primary" onClick={() => setOrder(order - 1)}>
-                이전
+            <div css={progressBar}>
+              <ProgressBar order={order} />
+            </div>
+
+            <RegisterInput order={order} />
+
+            <div>
+              {order === 1 ? null : (
+                <Button type="primary" onClick={() => setOrder(order - 1)}>
+                  이전
+                </Button>
+              )}
+              &nbsp;
+              <Button type="primary" onClick={() => setOrder(order + 1)}>
+                {order === fakeData.inputRegister.length ? '완료' : '다음'}
               </Button>
-            )}
-            &nbsp;
-            <Button type="primary" onClick={() => setOrder(order + 1)}>
-              다음
-            </Button>
+            </div>
           </div>
+          )}
         </Col>
         <Col xs={24} md={8} css={lowerContentWrapper}>
           <h3>헬스친구란</h3>
-          <p>{message.introduction}</p>
+          <p>{explanation.introduction}</p>
           <br />
 
           <h3>친구를 찾는 방법</h3>
-          <p>{message.howToFind}</p>
+          <p>{explanation.howToFind}</p>
         </Col>
 
         {/* </div> */}

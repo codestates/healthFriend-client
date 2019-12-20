@@ -1,46 +1,46 @@
 // eslint-disable-next-line
 import React from 'react';
-import { Radio } from 'antd';
+import { Checkbox, Input } from 'antd';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import message from '../config/message';
+import fakeData from '../config/fakeData';
+import PlaceSelect from './PlaceSelect'
 
-const radioDesign = css`
+
+const checkboxDesign = css`
   border: 0.5px solid gray;
   display: block;
   height: 30px;
   line-height: 30px;
 `;
 
+const { TextArea } = Input;
+
 type RegisterInputProps = {
   order: number;
 };
 
 export default function RegisterInput({ order }: RegisterInputProps) {
-  const currentInput = message.inputRegister.filter(
-    (elm) => elm.order === order,
+  const currentInput = fakeData.inputRegister.filter(
+    (elm) => elm.number === order,
   );
-  const { question, answer } = currentInput[0];
+  const { question, answer, subject } = currentInput[0];
+
+  let questionCheckboxes = answer.map((ele, idx) => (
+    <Checkbox name={`${question.slice(5)}${idx + 1}`} key={idx + 1} css={checkboxDesign} >
+      {ele}
+    </Checkbox>
+  ));
 
   return (
     <div>
       <h2>{question}</h2>
-
-      <Radio.Group>
-        <Radio value={1} css={radioDesign}>
-          중량 강화
-        </Radio>
-        <Radio value={2} css={radioDesign}>
-          재밌게 운동하고 싶어서
-        </Radio>
-        <Radio value={3} css={radioDesign}>
-          친구 찾기
-        </Radio>
-        <Radio value={4} css={radioDesign}>
-          의지 부족을 이겨내고 싶어서
-        </Radio>
-      </Radio.Group>
+      {questionCheckboxes}
+      {answer.length === 0 && subject === 'place' ? <PlaceSelect/> : null}
+      {answer.length === 0 && subject === 'introduce' ? (
+        <TextArea rows={4} />
+      ) : null}
     </div>
   );
 }
