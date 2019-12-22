@@ -9,15 +9,12 @@ import explanation from '../config/message';
 import fakeData from '../config/fakeData';
 import RegisterInput from '../components/RegisterInput';
 
-const wrapper = css`
-  padding: 20px;
-`;
-
 const renderingImage = css`
   width: 100%;
   height: 300px;
-  opacity: 80%;
-  filter: grayscale(40%);
+  opacity: 100%;
+  filter: grayscale(20%);
+  object-fit: cover;
 `;
 
 const lowerContentWrapper = css`
@@ -35,52 +32,67 @@ type RegisterProps = {
 
 function Register({ history }: RegisterProps) {
   const [order, setOrder] = useState<number>(1);
-
+  
+  const currentInput = fakeData.inputRegister.filter(
+    (elm) => elm.number === order,
+  );
+  const { question, answer, subject } = currentInput[0];
+  const [checkArr, setCheckArr] = useState(answer.map(() => false));
 
   return (
-    <div css={wrapper}>
-      <Row gutter={24} type="flex" justify="space-between">
-        <Col xs={24} md={24}>
-          <img src={RegisterImage} css={renderingImage} alt="" />
-        </Col>
-        <Col xs={24} md={16} css={lowerContentWrapper}>
-          {order === fakeData.inputRegister.length + 1? <div>
+    <Row type="flex" justify="center">
+      <Col xs={24} md={24}>
+        <img src={RegisterImage} css={renderingImage} alt="" />
+      </Col>
+      <Col xs={24} md={12} css={lowerContentWrapper}>
+        {order === fakeData.inputRegister.length + 1 ? (
+          <div>
             축하합니다. 정보 입력이 완료되었습니다. 
             <button onClick={() => history.push('/')}>홈으로</button>
-          </div>: (
+          </div>
+        ) : (
           <div>
             <div css={progressBar}>
               <ProgressBar order={order} />
             </div>
 
-            <RegisterInput order={order} />
+            <RegisterInput
+              order={order}
+              checkArr={checkArr}
+              setCheckArr={setCheckArr}
+            />
 
             <div>
               {order === 1 ? null : (
-                <Button type="primary" onClick={() => setOrder(order - 1)}>
+                <Button type="primary" onClick={() => {
+                  setOrder(order - 1);
+                  setCheckArr(answer.map(() => false));
+                }}>
                   이전
                 </Button>
               )}
               &nbsp;
-              <Button type="primary" onClick={() => setOrder(order + 1)}>
+              <Button type="primary" onClick={() => {
+                setOrder(order + 1);
+                setCheckArr(answer.map(() => false));
+              }}>
                 {order === fakeData.inputRegister.length ? '완료' : '다음'}
               </Button>
             </div>
           </div>
-          )}
-        </Col>
-        <Col xs={24} md={8} css={lowerContentWrapper}>
-          <h3>헬스친구란</h3>
-          <p>{explanation.introduction}</p>
-          <br />
+        )}
+      </Col>
+      <Col xs={24} md={6} css={lowerContentWrapper}>
+        <h3>헬스친구란</h3>
+        <p>{explanation.introduction}</p>
+        <br />
 
-          <h3>친구를 찾는 방법</h3>
-          <p>{explanation.howToFind}</p>
-        </Col>
+        <h3>친구를 찾는 방법</h3>
+        <p>{explanation.howToFind}</p>
+      </Col>
 
-        {/* </div> */}
-      </Row>
-    </div>
+      {/* </div> */}
+    </Row>
   );
 }
 
