@@ -14,7 +14,7 @@ const selectCss = css`
   width: 300px;
 `;
 
-function Dropdown() {
+function SearchSelect() {
   const [values, setValues] = useState({
     selectedOption: null,
   });
@@ -38,4 +38,4 @@ function Dropdown() {
   );
 }
 
-export default Dropdown;
+export default SearchSelect;

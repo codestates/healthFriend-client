@@ -1,8 +1,9 @@
 // eslint-disable-next-line
 import React, { useState, Fragment } from 'react';
-import { Row, Col, Button, } from 'antd';
+import { Row, Col, Button } from 'antd';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
+
 import ProgressBar from '../components/ProgressBar';
 import RegisterImage from '../static/registerImage.jpg';
 import explanation from '../config/message';
@@ -28,15 +29,15 @@ const progressBar = css`
 
 type RegisterProps = {
   history: any;
-}
+};
 
 function Register({ history }: RegisterProps) {
   const [order, setOrder] = useState<number>(1);
-  
+
   const currentInput = fakeData.inputRegister.filter(
     (elm) => elm.number === order,
   );
-  const { question, answer, subject } = currentInput[0];
+  const { answer } = currentInput[0];
   const [checkArr, setCheckArr] = useState(answer.map(() => false));
 
   return (
@@ -47,8 +48,10 @@ function Register({ history }: RegisterProps) {
       <Col xs={24} md={12} css={lowerContentWrapper}>
         {order === fakeData.inputRegister.length + 1 ? (
           <div>
-            축하합니다. 정보 입력이 완료되었습니다. 
-            <button onClick={() => history.push('/')}>홈으로</button>
+            축하합니다. 정보 입력이 완료되었습니다.
+            <button type="button" onClick={() => history.push('/')}>
+              홈으로
+            </button>
           </div>
         ) : (
           <div>
@@ -64,18 +67,24 @@ function Register({ history }: RegisterProps) {
 
             <div>
               {order === 1 ? null : (
-                <Button type="primary" onClick={() => {
-                  setOrder(order - 1);
-                  setCheckArr(answer.map(() => false));
-                }}>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setOrder(order - 1);
+                    setCheckArr(answer.map(() => false));
+                  }}
+                >
                   이전
                 </Button>
               )}
               &nbsp;
-              <Button type="primary" onClick={() => {
-                setOrder(order + 1);
-                setCheckArr(answer.map(() => false));
-              }}>
+              <Button
+                type="primary"
+                onClick={() => {
+                  setOrder(order + 1);
+                  setCheckArr(answer.map(() => false));
+                }}
+              >
                 {order === fakeData.inputRegister.length ? '완료' : '다음'}
               </Button>
             </div>
@@ -90,8 +99,6 @@ function Register({ history }: RegisterProps) {
         <h3>친구를 찾는 방법</h3>
         <p>{explanation.howToFind}</p>
       </Col>
-
-      {/* </div> */}
     </Row>
   );
 }

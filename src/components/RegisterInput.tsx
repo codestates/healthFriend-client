@@ -5,14 +5,14 @@ import { Checkbox, Input } from 'antd';
 import { css, jsx } from '@emotion/core';
 
 import fakeData from '../config/fakeData';
-import PlaceSelect from './PlaceSelect'
-
+import PlaceSelect from './PlaceSelect';
 
 const wrapper = css`
   margin-bottom: 20px;
 `;
 
-const checkboxDiv = css`
+const checkboxGroup = css`
+  width: 100%;
   border: 1px solid #ededed;
   border-radius: 5px;
 `;
@@ -34,29 +34,31 @@ const { TextArea } = Input;
 type RegisterInputProps = {
   order: number;
   checkArr: Array<boolean>;
-  setCheckArr: Function;
+  // setCheckArr: Function;
+  setCheckArr: (...args: any[]) => void;
+  // 왜 뒤에가 void고 앞에는 boolean[]가 안되는지 모르겠음.
 };
 
-export default function RegisterInput({ order, checkArr, setCheckArr }: RegisterInputProps) {
+export default function RegisterInput({
+  order,
+  checkArr,
+  setCheckArr,
+}: RegisterInputProps) {
   const currentInput = fakeData.inputRegister.filter(
     (elm) => elm.number === order,
   );
   const { question, answer, subject } = currentInput[0];
 
-  // 원석: question.slice(5)는 왜 있는건지 궁금합니다.
-  let questionCheckboxes = answer.map((ele, idx) => (
+  const questionCheckboxes = answer.map((ele, idx) => (
     <Checkbox
-      name={`${question.slice(5)}${idx + 1}`}
-      key={idx + 1}
+      value={ele}
+      key={ele}
       css={checkboxDesign}
       checked={checkArr[idx]}
-      onChange={() => setCheckArr(answer.map((ele, i) => {
-        if (i === idx) {
-          return true;
-        }
-        return false;
-      }
-    ))}>
+      onChange={(e) => {
+        setCheckArr(answer.map((_, i) => answer[i] === e.target.value));
+      }}
+    >
       {ele}
     </Checkbox>
   ));
@@ -64,12 +66,12 @@ export default function RegisterInput({ order, checkArr, setCheckArr }: Register
   return (
     <div css={wrapper}>
       <h2>{question}</h2>
-      {(subject !== 'place' && subject !== 'introduce') && (
-        <div css={checkboxDiv}>
+      {subject !== 'place' && subject !== 'introduce' && (
+        <Checkbox.Group css={checkboxGroup}>
           {questionCheckboxes}
-        </div>
+        </Checkbox.Group>
       )}
-      {answer.length === 0 && subject === 'place' ? <PlaceSelect/> : null}
+      {answer.length === 0 && subject === 'place' ? <PlaceSelect /> : null}
       {answer.length === 0 && subject === 'introduce' ? (
         <TextArea rows={4} />
       ) : null}

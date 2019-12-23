@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import { Progress } from 'antd';
+
 import fakeData from '../config/fakeData';
 
 type ProgressBarProps = {
