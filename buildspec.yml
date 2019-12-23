@@ -6,6 +6,7 @@ phases:
       nodejs: 10 # 런타임 nodejs10으로 설정
     commands:
       - npm i npm@latest -g # npm 버전 업데이트
+      - npm install -g typescript
   pre_build:
     commands:
       - npm install # 빌드에 필요한 패키지 설치
