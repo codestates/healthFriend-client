@@ -51,6 +51,8 @@ function Login() {
   }
   return (
     <div>
+      서버 구글 로그인
+      <a href="http://localhost:4000/auth/google">서버 구글 로그인</a>
       {state.isSignedIn ? (
         <div>
           <div>

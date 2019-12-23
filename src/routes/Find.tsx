@@ -4,7 +4,7 @@ import React from 'react';
 import { Row, Col, Card } from 'antd';
 import { css, jsx } from '@emotion/core';
 
-import DropDown from '../components/Dropdown';
+import SearchSelect from '../components/SearchSelect';
 
 const card = css`
   margin: 10px;
@@ -49,10 +49,9 @@ function Find() {
           </div>
         </Col>
         <Col xs={24} md={24}>
-          <DropDown />
+          <SearchSelect />
         </Col>
 
-        {/* <div css={wrapper}> */}
         <Col xs={24} md={8}>
           <Card
             title="권용규"
@@ -87,7 +86,6 @@ function Find() {
             <p>언더아머 입고오지 마세요</p>
           </Card>
         </Col>
-        {/* </div> */}
       </Row>
     </div>
   );

@@ -18,10 +18,9 @@ const GuOptions = [
 const DongOptions = [
   { value: '역삼동', label: '역삼동' },
   { value: '삼성동', label: '삼성동' },
-  { value: '압구정동', label: '압구정동'},
-  { value: '청담동', label: '청담동'},
+  { value: '압구정동', label: '압구정동' },
+  { value: '청담동', label: '청담동' },
 ];
-
 
 function PlaceSelect() {
   const [values, setValues] = useState({
@@ -29,22 +28,24 @@ function PlaceSelect() {
     Dong: null,
   });
 
-  const handleChange = (selectedOption) => {
-    setValues({ Gu: selectedOption, Dong: values.Dong });
+  const handleChangeGu = (selectedOption) => {
+    // setValues({ Gu: selectedOption, Dong: values.Dong });
+    setValues({ ...values, Gu: selectedOption });
     console.log(`Option selected:`, selectedOption);
   };
 
   const handleChangeDong = (selectedOption) => {
-    setValues({ Gu: values.Gu, Dong: selectedOption });
+    setValues({ ...values, Dong: selectedOption });
+    // setValues({ Gu: values.Gu, Dong: selectedOption });
     console.log(`Option selected:`, selectedOption);
-  }
+  };
 
   return (
     <Row gutter={24}>
       <Col xs={10}>
         <Select
           value={values.Gu}
-          onChange={handleChange}
+          onChange={handleChangeGu}
           options={GuOptions}
           hideSelectedOptions={false}
           placeholder="구"
