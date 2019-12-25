@@ -1,76 +1,38 @@
 import React /* { useState, useEffect } */ from 'react';
 import { Button } from 'antd';
-// import firebase from 'firebase';
-// import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import gql from 'graphql-tag';
+import { useQuery } from '@apollo/react-hooks';
 
-// import config from '../config/firebaseConfig';
-
-// firebase.initializeApp(config);
+const GET_USERINFO = gql`
+  {
+    me {
+      id
+      email
+      nickname
+    }
+  }
+`;
 
 function Login() {
-  // const [state, setState] = useState({
-  //   isSignedIn: false,
-  // });
+  const { loading, error, data } = useQuery(GET_USERINFO, {
+    notifyOnNetworkStatusChange: true,
+  });
 
-  // const uiConfig = {
-  //   signInFlow: 'popup',
-  //   signInOptions: [
-  //     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-  //     firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-  //     firebase.auth.GithubAuthProvider.PROVIDER_ID,
-  //   ],
-  //   callbacks: {
-  //     signInSuccessWithAuthResult: () => false,
-  //   },
-  // };
+  // if (loading) return <div>Loading...</div>;
+  // if (error) return <div>Error! {error.message}</div>;
 
-  // useEffect(() => {
-  //   const unregisterAuthObserver = firebase
-  //     .auth()
-  //     .onAuthStateChanged((user) => {
-  //       setState({ isSignedIn: !!user });
-  //     });
+  console.log('i am data', loading, error, data);
 
-  //   return () => {
-  //     unregisterAuthObserver();
-  //   };
-  // }, []);
-
-  // if (state.isSignedIn) {
-  //   // console.log('firebase.auth().currentUser', firebase.auth().currentUser?.refreshToken);
-  //   firebase
-  //     .auth()
-  //     .currentUser!.getIdToken(/* forceRefresh */ true)
-  //     .then(function(idToken) {
-  //       // console.log('idToken', idToken);
-  //     })
-  //     .catch(function(error) {
-  //       // console.log(error);
-  //     });
-  // }
-  return (
+  return data === undefined ? (
     <div>
       <Button type="primary">
-        <a href="http://localhost:4000/auth/google">서버 구글 로그인</a>
+        <a href="http://localhost:4000/auth/google">구글 로그인</a>
       </Button>
-      {/* {state.isSignedIn ? (
-        <div>
-          <div>
-            {' '}
-            You are signed in,
-            {firebase.auth().currentUser!.displayName}{' '}
-          </div>
-          <button type="button" onClick={() => firebase.auth().signOut()}>
-            {' '}
-            Sign out
-          </button>
-        </div>
-      ) : (
-        <StyledFirebaseAuth
-          uiConfig={uiConfig}
-          firebaseAuth={firebase.auth()}
-        />
-      )} */}
+    </div>
+  ) : (
+    <div>
+      <h2>hello, {data.me.nickname}</h2>
+      <Button type="primary">로그아웃</Button>
     </div>
   );
 }

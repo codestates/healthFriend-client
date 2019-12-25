@@ -3,6 +3,8 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
+import gql from 'graphql-tag';
+import { useQuery } from '@apollo/react-hooks';
 
 const navHeader = css`
   background-color: #1e272e;
@@ -28,7 +30,20 @@ const navLinkItem = css`
   }
 `;
 
+const IS_LOGGED_IN = gql`
+  {
+    me {
+      email
+    }
+  }
+`;
+
 export default function Header() {
+  const { data } = useQuery(IS_LOGGED_IN, {
+    notifyOnNetworkStatusChange: true,
+  });
+  console.log('data', data);
+
   return (
     <div className="header" css={navHeader}>
       <NavLink
@@ -49,12 +64,15 @@ export default function Header() {
       <NavLink to="/chat" className="item" css={navLinkItem}>
         채팅
       </NavLink>
-      <NavLink to="/mypage" className="item" css={navLinkItem}>
-        마이페이지
-      </NavLink>
-      <NavLink to="/login" className="item" css={navLinkItem}>
-        로그인
-      </NavLink>
+      {data ? (
+        <NavLink to="/mypage" className="item" css={navLinkItem}>
+          마이페이지
+        </NavLink>
+      ) : (
+        <NavLink to="/login" className="item" css={navLinkItem}>
+          로그인
+        </NavLink>
+      )}
     </div>
   );
 }
