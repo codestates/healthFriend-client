@@ -6,7 +6,6 @@ import { css, jsx } from '@emotion/core';
 
 import renderImage from '../static/renderImage.jpg';
 
-
 const { Title } = Typography;
 
 const renderingImage = css`
@@ -47,18 +46,29 @@ const startButton = css`
   transform: translate(-50%, -50%);
 `;
 
-function Home() {
+type HomeProps = {
+  history: any;
+};
+
+function Home({ history }: HomeProps) {
   return (
     <Row type="flex" justify="center">
       <Col xs={24}>
         <img src={renderImage} alt="" css={renderingImage} />
         <div css={renderingMessage}>
           <Title level={1}>
-            10000명의 헬스친구들이<br />현재 당신을 기다리고 있어요
+            10000명의 헬스친구들이
+            <br />
+            현재 당신을 기다리고 있어요
           </Title>
         </div>
-        <Button type="primary" size="large" css={startButton}>
-          시작하기
+        <Button
+          type="primary"
+          size="large"
+          css={startButton}
+          onClick={() => history.push('/register')}
+        >
+          바로 등록후 시작하기
         </Button>
       </Col>
       <Col xs={20}>

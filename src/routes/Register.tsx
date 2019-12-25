@@ -1,6 +1,6 @@
 // eslint-disable-next-line
 import React, { useState, Fragment } from 'react';
-import { Row, Col, Button } from 'antd';
+import { Row, Col, Button, Result } from 'antd';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
@@ -34,11 +34,9 @@ type RegisterProps = {
 function Register({ history }: RegisterProps) {
   const [order, setOrder] = useState<number>(1);
 
-  const currentInput = fakeData.inputRegister.filter(
-    (elm) => elm.number === order,
+  const [totalCheckArr, setTotalCheckArr] = useState<[][]>(
+    fakeData.inputRegister.map(() => []),
   );
-  const { answer } = currentInput[0];
-  const [checkArr, setCheckArr] = useState(answer.map(() => false));
 
   return (
     <Row type="flex" justify="center">
@@ -47,12 +45,22 @@ function Register({ history }: RegisterProps) {
       </Col>
       <Col xs={24} md={12} css={lowerContentWrapper}>
         {order === fakeData.inputRegister.length + 1 ? (
-          <div>
-            축하합니다. 정보 입력이 완료되었습니다.
-            <button type="button" onClick={() => history.push('/')}>
-              홈으로
-            </button>
-          </div>
+          <Result
+            status="success"
+            title="축하합니다. 정보 입력이 완료되었습니다."
+            extra={[
+              <Button
+                type="primary"
+                key="home"
+                onClick={() => history.push('/')}
+              >
+                홈으로
+              </Button>,
+              <Button key="find" onClick={() => history.push('/find')}>
+                친구 찾기로
+              </Button>,
+            ]}
+          />
         ) : (
           <div>
             <div css={progressBar}>
@@ -61,8 +69,8 @@ function Register({ history }: RegisterProps) {
 
             <RegisterInput
               order={order}
-              checkArr={checkArr}
-              setCheckArr={setCheckArr}
+              totalCheckArr={totalCheckArr}
+              setTotalCheckArr={setTotalCheckArr}
             />
 
             <div>
@@ -71,7 +79,6 @@ function Register({ history }: RegisterProps) {
                   type="primary"
                   onClick={() => {
                     setOrder(order - 1);
-                    setCheckArr(answer.map(() => false));
                   }}
                 >
                   이전
@@ -82,7 +89,6 @@ function Register({ history }: RegisterProps) {
                 type="primary"
                 onClick={() => {
                   setOrder(order + 1);
-                  setCheckArr(answer.map(() => false));
                 }}
               >
                 {order === fakeData.inputRegister.length ? '완료' : '다음'}
