@@ -39,9 +39,8 @@ const IS_LOGGED_IN = gql`
 `;
 
 export default function Header() {
-  const { data } = useQuery(IS_LOGGED_IN, {
-    notifyOnNetworkStatusChange: true,
-  });
+  const { data } = useQuery(IS_LOGGED_IN, {});
+
   console.log('data', data);
 
   return (

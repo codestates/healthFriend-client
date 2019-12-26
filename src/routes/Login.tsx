@@ -9,24 +9,35 @@ const GET_USERINFO = gql`
       id
       email
       nickname
+      openImageCholice
+      levelOf3Dae
+      messageToFriend
     }
   }
 `;
 
 function Login() {
-  const { loading, error, data } = useQuery(GET_USERINFO, {
-    notifyOnNetworkStatusChange: true,
+  const { data } = useQuery(GET_USERINFO, {
+    // notifyOnNetworkStatusChange: true,
   });
 
   // if (loading) return <div>Loading...</div>;
   // if (error) return <div>Error! {error.message}</div>;
 
-  console.log('i am data', loading, error, data);
+  console.log('i am data', data);
 
   return data === undefined ? (
     <div>
       <Button type="primary">
-        <a href="http://localhost:4000/auth/google">구글 로그인</a>
+        <a
+          href={
+            process.env.NODE_ENV === 'development'
+              ? 'http://localhost:4000/auth/google'
+              : 'https://api.healthfriend.club/auth/google'
+          }
+        >
+          구글 로그인
+        </a>
       </Button>
     </div>
   ) : (
