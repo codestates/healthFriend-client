@@ -16,7 +16,10 @@ import NotFound from './routes/NotFound';
 import Header from './components/Header';
 
 const link = createHttpLink({
-  uri: 'http://localhost:4000/graphql',
+  uri:
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost:4000/graphql'
+      : 'https://api.healthfriend.club',
   credentials: 'include',
 });
 
@@ -26,8 +29,6 @@ const client = new ApolloClient({
 });
 
 function App() {
-  console.log('process.env.NODE_ENV', process.env.NODE_ENV);
-
   return (
     <ApolloProvider client={client}>
       <BrowserRouter>

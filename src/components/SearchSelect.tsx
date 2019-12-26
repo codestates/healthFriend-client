@@ -21,7 +21,6 @@ function SearchSelect() {
 
   const handleChange = (selectedOption) => {
     setValues({ selectedOption });
-    console.log(`Option selected:`, selectedOption);
   };
 
   return (
