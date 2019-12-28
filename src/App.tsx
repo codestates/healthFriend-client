@@ -1,9 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import ApolloClient from 'apollo-client';
 import { ApolloProvider } from '@apollo/react-hooks';
-import { createHttpLink } from 'apollo-link-http';
-import { InMemoryCache } from 'apollo-cache-inmemory';
 
 import Home from './routes/Home';
 import Register from './routes/Register';
@@ -12,21 +9,8 @@ import Chat from './routes/Chat';
 import Login from './routes/Login';
 import Mypage from './routes/MyPage';
 import NotFound from './routes/NotFound';
-
 import Header from './components/Header';
-
-const link = createHttpLink({
-  uri:
-    process.env.NODE_ENV === 'development'
-      ? 'http://localhost:4000/graphql'
-      : 'https://api.healthfriend.club',
-  credentials: 'include',
-});
-
-const client = new ApolloClient({
-  cache: new InMemoryCache(),
-  link,
-});
+import client from './apollo';
 
 function App() {
   return (

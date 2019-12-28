@@ -33,7 +33,7 @@ function Login() {
           href={
             process.env.NODE_ENV === 'development'
               ? 'http://localhost:4000/auth/google'
-              : 'https://api.healthfriend.club/auth/google'
+              : 'http://api.healthfriend.club/auth/google'
           }
         >
           구글 로그인
