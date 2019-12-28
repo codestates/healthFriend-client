@@ -4,7 +4,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 
 import Home from './routes/Home';
 import Register from './routes/Register';
-import Find from './routes/Find';
+import FindFriend from './routes/FindFriend';
 import Chat from './routes/Chat';
 import Login from './routes/Login';
 import Mypage from './routes/MyPage';
@@ -21,7 +21,7 @@ function App() {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/register" component={Register} />
-            <Route path="/find" component={Find} />
+            <Route path="/find" component={FindFriend} />
             <Route path="/chat" component={Chat} />
             <Route path="/login" component={Login} />
             <Route path="/mypage" component={Mypage} />
