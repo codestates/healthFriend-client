@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import { Row, Col, Button, Result } from 'antd';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';

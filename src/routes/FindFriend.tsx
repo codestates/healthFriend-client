@@ -1,4 +1,5 @@
 /** @jsx jsx */
+// import React from 'react';
 import { Row, Col } from 'antd';
 import { css, jsx } from '@emotion/core';
 import gql from 'graphql-tag';
@@ -7,6 +8,7 @@ import { useQuery } from '@apollo/react-hooks';
 import SelectCity from '../components/FindFriend/SelectCity';
 import SelectDefault from '../components/FindFriend/SelectDefault';
 import UserCard from '../components/FindFriend/UserCard';
+import { questionList } from '../config/FakeData';
 
 const filterCSS = css`
   margin-bottom: 20px;
@@ -26,6 +28,17 @@ const GET_USERS = gql`
 function FindFriend() {
   const { loading, error, data } = useQuery(GET_USERS);
 
+  const questions = ['day', '3dae', 'reason'].map((elm) => {
+    const [{ question, answer }] = questionList.inputRegister.filter(
+      ({ subject }) => subject === elm,
+    );
+    return (
+      <Col md={5} key={question}>
+        <SelectDefault dataSource={answer} placeholder={question} />
+      </Col>
+    );
+  });
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error! ${error.message}`</div>;
 
@@ -36,29 +49,7 @@ function FindFriend() {
           <Col md={9}>
             <SelectCity />
           </Col>
-          <Col md={5}>
-            <SelectDefault
-              dataSource={['월', '화', '수', '목', '금', '토', '일']}
-              placeholder="언제 운동이 가능한가요?"
-            />
-          </Col>
-          <Col md={5}>
-            <SelectDefault
-              dataSource={[100, 200, 300, 400, 500]}
-              placeholder="원하는 친구의 3대 중량은?"
-            />
-          </Col>
-          <Col md={5}>
-            <SelectDefault
-              dataSource={[
-                '증량이 목표',
-                '친구 만들기 위해',
-                '다이어트 하기 위해',
-                '언더아머 단속 전문',
-              ]}
-              placeholder="운동 목적은 무엇인가요?"
-            />
-          </Col>
+          {questions}
         </Row>
       </Col>
 
