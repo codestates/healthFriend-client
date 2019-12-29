@@ -1,16 +1,14 @@
 // eslint-disable-next-line
-import React, { useState } from 'react';
+import React from 'react';
 import { Row, Col, Button, Result } from 'antd';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 
 import ProgressBar from '../components/Register/ProgressBar';
 import RegisterImage from '../static/registerImage.jpg';
 import explanation from '../config/Message';
-import { questionList } from '../config/fakeData';
 import RegisterInput from '../components/Register/RegisterInput';
+import useRegister from '../hooks/Register';
 
 const renderingImage = css`
   width: 100%;
@@ -33,32 +31,18 @@ type RegisterProps = {
   history: any;
 };
 
-const POST_INFO = gql`
-  mutation PostInfo(
-    $nickname: String!
-    $openImageChoice: OpenImageChoice!
-    $levelOf3Dae: LevelOf3Dae!
-    $messageToFriend: String
-  ) {
-    me(
-      messageToFriend: $messageToFriend
-      nickname: $nickname
-      openImageChoice: $openImageChoice
-      levelOf3Dae: $levelOf3Dae
-    ) {
-      messageToFriend
-    }
-  }
-`;
-
 function Register({ history }: RegisterProps) {
-  const [order, setOrder] = useState<number>(1);
-
-  const [postInfo] = useMutation(POST_INFO);
-
-  const [totalCheckArr, setTotalCheckArr] = useState<[][]>(
-    questionList.inputRegister.map(() => []),
-  );
+  const {
+    setOrder,
+    setIntroduction,
+    setTotalCheckArr,
+    totalCheckArr,
+    questions,
+    order,
+    data,
+    submitVariable,
+    postInfo,
+  } = useRegister();
 
   return (
     <Row type="flex" justify="center">
@@ -66,7 +50,7 @@ function Register({ history }: RegisterProps) {
         <img src={RegisterImage} css={renderingImage} alt="" />
       </Col>
       <Col xs={24} md={12} css={lowerContentWrapper}>
-        {order === questionList.inputRegister.length + 1 ? (
+        {order === questions.length + 1 ? (
           <Result
             status="success"
             title="축하합니다. 정보 입력이 완료되었습니다."
@@ -93,6 +77,7 @@ function Register({ history }: RegisterProps) {
               order={order}
               totalCheckArr={totalCheckArr}
               setTotalCheckArr={setTotalCheckArr}
+              setIntroduction={setIntroduction}
             />
 
             <div>
@@ -110,20 +95,20 @@ function Register({ history }: RegisterProps) {
               <Button
                 type="primary"
                 onClick={() => {
-                  if (order === 6) {
+                  if (order === questions.length) {
                     postInfo({
                       variables: {
-                        nickname: 'steve',
-                        // messageToFriend: '안녕하세요 권용규입니다',
-                        levelOf3Dae: 'L1',
-                        openImageChoice: 'OPEN',
+                        ...submitVariable,
+                        nickname: data.me.nickname,
                       },
                     });
                   }
                   setOrder(order + 1);
+                  setIntroduction('');
                 }}
+                // disabled={!totalCheckArr[order - 1].some((elm) => elm === true)}
               >
-                {order === questionList.inputRegister.length ? '완료' : '다음'}
+                {order === questions.length ? '완료' : '다음'}
               </Button>
             </div>
           </div>

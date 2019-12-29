@@ -10,7 +10,7 @@ import Login from './routes/Login';
 import Mypage from './routes/MyPage';
 import NotFound from './routes/NotFound';
 import Header from './components/Header/Header';
-import client from './apollo';
+import client from './graphql/apollo';
 
 function App() {
   return (
