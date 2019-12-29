@@ -14,7 +14,7 @@ const questionList = {
     },
     {
       number: 3,
-      subject: '3dae',
+      subject: 'levelOf3Dae',
       question: '3대 중량이 어떻게 되세요?',
       answer: [
         '3대가 뭔가요?(생초보)',
@@ -23,17 +23,14 @@ const questionList = {
         '300~400 (고수)',
         '400이상 (괴물)',
       ],
+      value: ['L1', 'L2', 'L3', 'L4', 'L5'],
     },
     {
       number: 4,
-      subject: 'reason',
+      subject: 'motivation',
       question: '헬스 친구를 찾는 이유는?',
-      answer: [
-        '중량 강화',
-        '재밌게 운동하고 싶어서',
-        '친구 찾기',
-        '의지 부족을 이겨내고 싶어서',
-      ],
+      answer: ['중량 강화', '다이어트', '친구 찾기', '혼자 하니 심심해서'],
+      value: ['WEIGHT_INCREASE', 'WEIGHT_LOSS', 'FIND_FRIEND', 'LONELINESS'],
     },
     {
       number: 5,
@@ -43,7 +40,14 @@ const questionList = {
     },
     {
       number: 6,
-      subject: 'introduce',
+      subject: 'openImageChoice',
+      question: '사진 공개를 하시겠어요?',
+      answer: ['전체 공개', '친구 공개', '비공개'],
+      value: ['OPEN', 'FRIEND', 'CLOSE'],
+    },
+    {
+      number: 7,
+      subject: 'messageToFriend',
       question: '마지막으로 헬친들에게 인사를 남겨주세요!!',
       answer: [],
     },

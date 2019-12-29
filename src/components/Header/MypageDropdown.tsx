@@ -19,9 +19,6 @@ function MypageDropdown({ name, history }: MypageDropdownProps) {
         <Link to="/mypage">정보 변경</Link>
       </Menu.Item>
       <Menu.Item>
-        {/* cookie.remove('access-token'); 
-      history.push('/');
-      window.location.reload(); */}
         <Link
           to="/"
           onClick={() => {

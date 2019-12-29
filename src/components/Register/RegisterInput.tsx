@@ -23,12 +23,14 @@ type RegisterInputProps = {
   order: number;
   totalCheckArr: [][];
   setTotalCheckArr: (...args: any[]) => void;
+  setIntroduction: (args: string) => void;
 };
 
 export default function RegisterInput({
   order,
   totalCheckArr,
   setTotalCheckArr,
+  setIntroduction,
 }: RegisterInputProps) {
   const { questionCheckboxes, question, answer, subject } = useRegisterInput({
     order,
@@ -44,7 +46,9 @@ export default function RegisterInput({
       )}
       {answer.length === 0 && subject === 'place' ? <PlaceSelect /> : null}
       {answer.length === 0 && subject === 'introduce' ? (
-        <TextArea rows={4} />
+        <TextArea
+          rows={4} /* onChange={(e) => setIntroduction(e.target.value)} */
+        />
       ) : null}
     </div>
   );

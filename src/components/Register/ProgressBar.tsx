@@ -1,7 +1,5 @@
 // eslint-disable-next-line
-import React, { useState } from 'react';
-/** @jsx jsx */
-import { jsx } from '@emotion/core';
+import React from 'react';
 import { Progress } from 'antd';
 
 import { questionList } from '../../config/fakeData';

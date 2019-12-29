@@ -50,7 +50,7 @@ export default function useRegisterInput({
   const onCheck = (e) => {
     // 여기도 e에 : MouseEvent 같은거 붙여줘야 함.
     let array;
-    if (['3dae', 'gender'].indexOf(subject) !== -1) {
+    if (['levelOf3Dae', 'gender'].indexOf(subject) !== -1) {
       array = answer.map((_, i) => answer[i] === e.target.value);
     } else {
       array = answer.map((_, i) =>

@@ -3,9 +3,11 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import gql from 'graphql-tag';
+
 import { useQuery } from '@apollo/react-hooks';
+
 import MypageDropdown from './MypageDropdown';
+import { GET_USERINFO } from '../../graphql/queries';
 
 const navHeader = css`
   background-color: #1e272e;
@@ -31,27 +33,16 @@ const navLinkItem = css`
   }
 `;
 
-const IS_LOGGED_IN = gql`
-  {
-    me {
-      email
-      nickname
-    }
-  }
-`;
-
 // api로 call 안 하고, cache에서 찾아서 data 받는건?
 // 로그인 과정에서 api call을 하면 cache에 이후 자동으로 저장되는건지도 확인
 
 export default function Header() {
-  const { data, error } = useQuery(IS_LOGGED_IN, {});
+  const { data /* error */ } = useQuery(GET_USERINFO);
 
   // const client = useApolloClient();
   // const todos = client.readQuery({
   //   query: IS_LOGGED_IN,
   // });
-
-  console.log('data', error, data);
 
   return (
     <div className="header" css={navHeader}>

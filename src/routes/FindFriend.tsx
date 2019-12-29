@@ -28,7 +28,7 @@ const GET_USERS = gql`
 function FindFriend() {
   const { loading, error, data } = useQuery(GET_USERS);
 
-  const questions = ['day', '3dae', 'reason'].map((elm) => {
+  const questions = ['day', 'levelOf3Dae', 'motivation'].map((elm) => {
     const [{ question, answer }] = questionList.inputRegister.filter(
       ({ subject }) => subject === elm,
     );
