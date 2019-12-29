@@ -4,7 +4,7 @@ import { Checkbox, Input } from 'antd';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import fakeData from '../config/fakeData';
+import { questionList } from '../../config/FakeData';
 import PlaceSelect from './PlaceSelect';
 
 const wrapper = css`
@@ -43,7 +43,7 @@ export default function RegisterInput({
   totalCheckArr,
   setTotalCheckArr,
 }: RegisterInputProps) {
-  const currentInput = fakeData.inputRegister.filter(
+  const currentInput = questionList.inputRegister.filter(
     (elm) => elm.number === order,
   );
   const { question, answer, subject } = currentInput[0];
