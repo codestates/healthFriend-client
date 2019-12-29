@@ -76,9 +76,6 @@ export default function Header() {
       {data ? (
         <MypageDropdown name={data.me.nickname} />
       ) : (
-        // <NavLink to="/mypage" className="item" css={navLinkItem}>
-        //   마이페이지
-        // </NavLink>
         <NavLink to="/login" className="item" css={navLinkItem}>
           로그인
         </NavLink>

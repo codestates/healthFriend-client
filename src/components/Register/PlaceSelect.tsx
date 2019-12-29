@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core';
 import Select from 'react-select';
-import { Row, Col, Button, message } from 'antd';
+import { Row, Col, Button } from 'antd';
 
 const btnAdd = css`
   margin-top: 10px;
@@ -51,13 +51,7 @@ function OneDropdown({ id, placeList, setPlaceList }: OneDropdownProps) {
 
   const handleDelete = (e) => {
     // e.target과 e.currentTarget이 가리키는게 같은데 id는 currentTarget만 인식함.
-    if (placeList.length === 1) {
-      message.error('최소 1개는 입력해야 합니다');
-    } else {
-      setPlaceList(
-        placeList.filter((elm) => elm !== Number(e.currentTarget.id)),
-      );
-    }
+    setPlaceList(placeList.filter((elm) => elm !== Number(e.currentTarget.id)));
   };
 
   return (
@@ -82,7 +76,12 @@ function OneDropdown({ id, placeList, setPlaceList }: OneDropdownProps) {
           placeholder="동"
         />
       </Col>
-      <Button css={btnDelete} id={id} onClick={handleDelete}>
+      <Button
+        css={btnDelete}
+        id={id}
+        onClick={handleDelete}
+        disabled={placeList.length === 1}
+      >
         삭제
       </Button>
     </Row>

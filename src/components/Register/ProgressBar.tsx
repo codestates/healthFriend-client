@@ -4,14 +4,16 @@ import React, { useState } from 'react';
 import { jsx } from '@emotion/core';
 import { Progress } from 'antd';
 
-import fakeData from '../config/fakeData';
+import { questionList } from '../../config/FakeData';
 
 type ProgressBarProps = {
   order: number;
 };
 
 export default function ProgressBar({ order }: ProgressBarProps) {
-  const percentPerQuestion = Math.round(100 / fakeData.inputRegister.length);
+  const percentPerQuestion = Math.round(
+    100 / questionList.inputRegister.length,
+  );
   return (
     <div>
       <Progress percent={order * percentPerQuestion} status="active" />

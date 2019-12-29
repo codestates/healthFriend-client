@@ -38,12 +38,9 @@ function MypageDropdown({ name, history }: MypageDropdownProps) {
 
   return (
     <Dropdown overlay={menu}>
-      {/* <a className="ant-dropdown-link" href="#"> */}
       <Link to="#">
         {name}친구님 <Icon type="down" />
       </Link>
-
-      {/* </a> */}
     </Dropdown>
   );
 }

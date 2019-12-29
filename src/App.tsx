@@ -9,7 +9,7 @@ import Chat from './routes/Chat';
 import Login from './routes/Login';
 import Mypage from './routes/MyPage';
 import NotFound from './routes/NotFound';
-import Header from './components/Header';
+import Header from './components/Header/Header';
 import client from './apollo';
 
 function App() {

@@ -3,12 +3,14 @@ import React, { useState, Fragment } from 'react';
 import { Row, Col, Button, Result } from 'antd';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
+import { useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 
-import ProgressBar from '../components/ProgressBar';
+import ProgressBar from '../components/Register/ProgressBar';
 import RegisterImage from '../static/registerImage.jpg';
-import explanation from '../config/message';
-import fakeData from '../config/fakeData';
-import RegisterInput from '../components/RegisterInput';
+import explanation from '../config/Message';
+import { questionList } from '../config/FakeData';
+import RegisterInput from '../components/Register/RegisterInput';
 
 const renderingImage = css`
   width: 100%;
@@ -31,11 +33,31 @@ type RegisterProps = {
   history: any;
 };
 
+const POST_INFO = gql`
+  mutation PostInfo(
+    $nickname: String!
+    $openImageChoice: OpenImageChoice!
+    $levelOf3Dae: LevelOf3Dae!
+    $messageToFriend: String
+  ) {
+    me(
+      messageToFriend: $messageToFriend
+      nickname: $nickname
+      openImageChoice: $openImageChoice
+      levelOf3Dae: $levelOf3Dae
+    ) {
+      messageToFriend
+    }
+  }
+`;
+
 function Register({ history }: RegisterProps) {
   const [order, setOrder] = useState<number>(1);
 
+  const [postInfo] = useMutation(POST_INFO);
+
   const [totalCheckArr, setTotalCheckArr] = useState<[][]>(
-    fakeData.inputRegister.map(() => []),
+    questionList.inputRegister.map(() => []),
   );
 
   return (
@@ -44,7 +66,7 @@ function Register({ history }: RegisterProps) {
         <img src={RegisterImage} css={renderingImage} alt="" />
       </Col>
       <Col xs={24} md={12} css={lowerContentWrapper}>
-        {order === fakeData.inputRegister.length + 1 ? (
+        {order === questionList.inputRegister.length + 1 ? (
           <Result
             status="success"
             title="축하합니다. 정보 입력이 완료되었습니다."
@@ -88,10 +110,20 @@ function Register({ history }: RegisterProps) {
               <Button
                 type="primary"
                 onClick={() => {
+                  if (order === 6) {
+                    postInfo({
+                      variables: {
+                        nickname: 'steve',
+                        // messageToFriend: '안녕하세요 권용규입니다',
+                        levelOf3Dae: 'L1',
+                        openImageChoice: 'OPEN',
+                      },
+                    });
+                  }
                   setOrder(order + 1);
                 }}
               >
-                {order === fakeData.inputRegister.length ? '완료' : '다음'}
+                {order === questionList.inputRegister.length ? '완료' : '다음'}
               </Button>
             </div>
           </div>

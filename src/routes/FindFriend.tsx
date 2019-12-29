@@ -1,14 +1,12 @@
 /** @jsx jsx */
-import { useState, useEffect } from 'react';
 import { Row, Col } from 'antd';
 import { css, jsx } from '@emotion/core';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 
-import SelectCity from '../components/SelectCity';
-import SelectDefault from '../components/SelectDefault';
-import UserCard from '../components/UserCard';
-import { dataSourceOfFind } from './Data';
+import SelectCity from '../components/FindFriend/SelectCity';
+import SelectDefault from '../components/FindFriend/SelectDefault';
+import UserCard from '../components/FindFriend/UserCard';
 
 const filterCSS = css`
   margin-bottom: 20px;
@@ -45,14 +43,19 @@ function FindFriend() {
             />
           </Col>
           <Col md={5}>
-          <SelectDefault
+            <SelectDefault
               dataSource={[100, 200, 300, 400, 500]}
               placeholder="원하는 친구의 3대 중량은?"
             />
           </Col>
           <Col md={5}>
-          <SelectDefault
-              dataSource={['증량이 목표', '친구 만들기 위해', '다이어트 하기 위해', '언더아머 단속 전문']}
+            <SelectDefault
+              dataSource={[
+                '증량이 목표',
+                '친구 만들기 위해',
+                '다이어트 하기 위해',
+                '언더아머 단속 전문',
+              ]}
               placeholder="운동 목적은 무엇인가요?"
             />
           </Col>
@@ -61,11 +64,12 @@ function FindFriend() {
 
       <Col xs={20} md={20}>
         <Row gutter={24} type="flex" justify="space-between">
-          {data.users.map(data => (
+          {data.users.map((oneData) => (
             <UserCard
-              nickname={data.nickname}
-              levelOf3Dae={data.levelOf3Dae}
-              messageToFriend={data.messageToFriend}
+              key={oneData.nickname}
+              nickname={oneData.nickname}
+              levelOf3Dae={oneData.levelOf3Dae}
+              messageToFriend={oneData.messageToFriend}
             />
           ))}
         </Row>

@@ -6,12 +6,17 @@ import { Select } from 'antd';
 
 const { Option } = Select;
 
-function SelectDefault({ dataSource, placeholder }) {
-  const [value, setValue] = useState([]);
+type SelectDefaultProps = {
+  dataSource: any[];
+  placeholder: string;
+};
 
-  const onChange = (value) => {
+function SelectDefault({ dataSource, placeholder }: SelectDefaultProps) {
+  const [value, setValue] = useState<any[]>([]);
+
+  const onChange = (val) => {
     console.log('onChange ', value);
-    setValue(value);
+    setValue(val);
   };
 
   return (
@@ -23,7 +28,7 @@ function SelectDefault({ dataSource, placeholder }) {
       onChange={onChange}
       placeholder={placeholder}
     >
-      {dataSource.map(data => (
+      {dataSource.map((data) => (
         <Option key={data}>{data}</Option>
       ))}
     </Select>
