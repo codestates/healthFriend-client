@@ -15,7 +15,6 @@ function SelectDefault({ dataSource, placeholder }: SelectDefaultProps) {
   const [value, setValue] = useState<any[]>([]);
 
   const onChange = (val) => {
-    console.log('onChange ', value);
     setValue(val);
   };
 
