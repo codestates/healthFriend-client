@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { jsx } from '@emotion/core';
 import { Progress } from 'antd';
 
-import { questionList } from '../../config/FakeData';
+import { questionList } from '../../config/fakeData';
 
 type ProgressBarProps = {
   order: number;

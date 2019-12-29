@@ -9,7 +9,7 @@ import gql from 'graphql-tag';
 import ProgressBar from '../components/Register/ProgressBar';
 import RegisterImage from '../static/registerImage.jpg';
 import explanation from '../config/Message';
-import { questionList } from '../config/FakeData';
+import { questionList } from '../config/fakeData';
 import RegisterInput from '../components/Register/RegisterInput';
 
 const renderingImage = css`

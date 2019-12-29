@@ -8,7 +8,7 @@ import { useQuery } from '@apollo/react-hooks';
 import SelectCity from '../components/FindFriend/SelectCity';
 import SelectDefault from '../components/FindFriend/SelectDefault';
 import UserCard from '../components/FindFriend/UserCard';
-import { questionList } from '../config/FakeData';
+import { questionList } from '../config/fakeData';
 
 const filterCSS = css`
   margin-bottom: 20px;

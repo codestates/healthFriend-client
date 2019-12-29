@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import { TreeSelect } from 'antd';
-import { placeForFindFriends } from '../../config/FakeData';
+import { placeForFindFriends } from '../../config/fakeData';
 
 const { SHOW_PARENT } = TreeSelect;
 
@@ -11,7 +11,6 @@ function SelectCity() {
   const [value, setValue] = useState([]);
 
   const onChange = (val) => {
-    console.log('onChange ', value);
     setValue(val);
   };
 
