@@ -24,6 +24,7 @@ export default function useRegister() {
     messageToFriend: '',
   };
 
+  // 체크박스에서 선택된 것을 boolean 배열 -> 번호 배열 -> 값 배열로 변경하여 받음.
   const getSelected = (subj: string): undefined | any[] | string => {
     const subjBooleans = totalCheckArr[subjects.indexOf(subj)];
     const subjNumbers: number[] = [];
@@ -40,6 +41,7 @@ export default function useRegister() {
     }
   };
 
+  // 값 배열로 받은 것을 질문에 맞춰 단일 string이나 배열 형태로 return
   Object.keys(submitVariable).forEach((elm) => {
     if (elm === 'messageToFriend') {
       submitVariable[elm] = introduction;
@@ -54,6 +56,7 @@ export default function useRegister() {
 
   return {
     setOrder,
+    introduction,
     setIntroduction,
     setTotalCheckArr,
     totalCheckArr,
