@@ -1,15 +1,24 @@
+// eslint-disable-next-line
 import React from 'react';
-import { Button } from 'antd';
-import cookie from 'js-cookie';
+import { Row, Col, Button } from 'antd';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
-type MyPageProps = {
-  history: any;
-};
+import RegisterInput from '../components/Register/RegisterInput';
+import { questionList } from '../config/fakeData';
+import useRegister from '../hooks/Register';
 
-function MyPage({ history }: MyPageProps) {
+const wrapper = css`
+  margin: 20px;
+`;
+
+function MyPage() {
+  const { setIntroduction, setTotalCheckArr, totalCheckArr } = useRegister();
+
+  console.log(totalCheckArr);
+
   return (
     <div>
-      MyPage
       <Button type="primary">
         <a
           href={
@@ -23,16 +32,23 @@ function MyPage({ history }: MyPageProps) {
           graphql
         </a>
       </Button>
-      <Button
-        type="primary"
-        onClick={() => {
-          cookie.remove('access-token');
-          history.push('/');
-          window.location.reload();
-        }}
-      >
-        로그아웃
-      </Button>
+      <Row type="flex" justify="center">
+        <Col xs={24}>
+          <div css={wrapper}>
+            {questionList.inputRegister.map((oneQ, idx) => (
+              <RegisterInput
+                key={oneQ.question}
+                order={idx + 1}
+                totalCheckArr={totalCheckArr}
+                setTotalCheckArr={setTotalCheckArr}
+                setIntroduction={setIntroduction}
+              />
+            ))}
+            <Button type="primary">저장</Button>{' '}
+            <Button type="primary">취소하고 홈으로</Button>
+          </div>
+        </Col>
+      </Row>
     </div>
   );
 }

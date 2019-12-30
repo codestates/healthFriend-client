@@ -51,6 +51,8 @@ type HomeProps = {
 };
 
 function Home({ history }: HomeProps) {
+  console.log('process.env.NODE_ENV', process.env.NODE_ENV);
+
   return (
     <Row type="flex" justify="center">
       <Col xs={24}>
