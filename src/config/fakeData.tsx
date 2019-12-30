@@ -27,7 +27,7 @@ const questionList = {
     },
     {
       number: 4,
-      subject: 'motivation',
+      subject: 'motivations',
       question: '헬스 친구를 찾는 이유는?',
       answer: ['중량 강화', '다이어트', '친구 찾기', '혼자 하니 심심해서'],
       value: ['WEIGHT_INCREASE', 'WEIGHT_LOSS', 'FIND_FRIEND', 'LONELINESS'],
@@ -48,7 +48,7 @@ const questionList = {
     {
       number: 7,
       subject: 'messageToFriend',
-      question: '마지막으로 헬친들에게 인사를 남겨주세요!!',
+      question: '헬친들에게 인사를 남겨주세요!!',
       answer: [],
     },
   ],

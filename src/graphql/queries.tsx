@@ -5,6 +5,9 @@ export const GET_USERINFO = gql`
     me {
       email
       nickname
+      openImageChoice
+      levelOf3Dae
+      messageToFriend
     }
   }
 `;
