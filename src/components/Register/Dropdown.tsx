@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { jsx, css } from '@emotion/core';
 import Select from 'react-select';
 import { Row, Col, Button } from 'antd';
-import useDropdown from '../../hooks/OnePlaceDropdown';
+import useDropdown from '../../hooks/useDropdown';
 
 const btnDelete = css`
   height: 38px;

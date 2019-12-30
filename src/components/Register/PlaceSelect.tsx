@@ -1,7 +1,7 @@
 // eslint-disable-next-line
 import React from 'react';
-import OnePlaceDropdown from './OnePlaceDropdown';
-import usePlaceSelect from '../../hooks/PlaceSelect';
+import OnePlaceDropdown from './Dropdown';
+import usePlaceSelect from '../../hooks/usePlaceSelect';
 
 function PlaceSelect() {
   const { DropdownButton, setPlaceList, placeList } = usePlaceSelect();

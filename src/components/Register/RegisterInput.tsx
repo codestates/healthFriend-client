@@ -5,7 +5,7 @@ import { Input } from 'antd';
 import { css, jsx } from '@emotion/core';
 
 import PlaceSelect from './PlaceSelect';
-import useRegisterInput from '../../hooks/RegisterInput';
+import useRegisterInput from '../../hooks/useRegisterInput';
 
 const wrapper = css`
   margin-bottom: 20px;

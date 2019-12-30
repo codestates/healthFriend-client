@@ -6,7 +6,7 @@ import { css, jsx } from '@emotion/core';
 
 import RegisterInput from '../components/Register/RegisterInput';
 import { questionList } from '../config/fakeData';
-import useRegister from '../hooks/Register';
+import useRegister from '../hooks/useRegister';
 
 const wrapper = css`
   margin: 20px;
@@ -28,7 +28,28 @@ function MyPage({ history }: MyPageProps) {
 
   const [complete, setComplete] = useState<boolean>(false);
 
-  console.log(submitVariable);
+  if (data) {
+    // const { nickname, levelOf3Dae, openImageChoice, messageToFriend } = data.me;
+    const subjects = questionList.inputRegister.map((elm) => elm.subject);
+    const getIndex = (subj) => {
+      const subjIndex = subjects.indexOf(subj);
+      const values = questionList.inputRegister![subjIndex].value!;
+      let selectedArray = [];
+      selectedArray = selectedArray.concat(data.me[subj]);
+      console.log('values', values);
+      console.log('selectedArray', selectedArray);
+      // const selectedBooleans = values.map((elm) => {
+      //   if (selectedArray.indexOf(elm) === -1) {
+      //     return false;
+      //   }
+      //   return true;
+      // });
+      // return selectedBooleans;
+    };
+    console.log(getIndex('levelOf3Dae'));
+  }
+
+  // 선택하다 취소하고, 넘어가도 useEffect 같은 걸로 원래대로 되돌려 놔야 할듯.
 
   return (
     <div>
@@ -77,13 +98,16 @@ function MyPage({ history }: MyPageProps) {
             ) : (
               <React.Fragment>
                 {questionList.inputRegister.map((oneQ, idx) => (
-                  <RegisterInput
-                    key={oneQ.question}
-                    order={idx + 1}
-                    totalCheckArr={totalCheckArr}
-                    setTotalCheckArr={setTotalCheckArr}
-                    setIntroduction={setIntroduction}
-                  />
+                  <React.Fragment key={oneQ.question}>
+                    <RegisterInput
+                      key={oneQ.question}
+                      order={idx + 1}
+                      totalCheckArr={totalCheckArr}
+                      setTotalCheckArr={setTotalCheckArr}
+                      setIntroduction={setIntroduction}
+                    />
+                    <br />
+                  </React.Fragment>
                 ))}
                 <Button
                   type="primary"
@@ -99,7 +123,14 @@ function MyPage({ history }: MyPageProps) {
                 >
                   저장
                 </Button>{' '}
-                <Button type="primary">취소하고 홈으로</Button>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    history.push('/');
+                  }}
+                >
+                  취소하고 홈으로
+                </Button>
               </React.Fragment>
             )}
           </div>

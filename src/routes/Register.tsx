@@ -8,7 +8,7 @@ import ProgressBar from '../components/Register/ProgressBar';
 import RegisterImage from '../static/registerImage.jpg';
 import explanation from '../config/Message';
 import RegisterInput from '../components/Register/RegisterInput';
-import useRegister from '../hooks/Register';
+import useRegister from '../hooks/useRegister';
 
 const renderingImage = css`
   width: 100%;
