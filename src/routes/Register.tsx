@@ -44,6 +44,8 @@ function Register({ history }: RegisterProps) {
     postInfo,
   } = useRegister();
 
+  // console.log('submitVariable', submitVariable);
+
   return (
     <Row type="flex" justify="center">
       <Col xs={24} md={24}>

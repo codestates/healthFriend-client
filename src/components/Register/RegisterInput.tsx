@@ -41,14 +41,12 @@ export default function RegisterInput({
   return (
     <div css={wrapper}>
       <h2>{question}</h2>
-      {subject !== 'place' && subject !== 'introduce' && (
+      {subject !== 'place' && subject !== 'messageToFriend' && (
         <div css={checkboxDiv}>{questionCheckboxes}</div>
       )}
       {answer.length === 0 && subject === 'place' ? <PlaceSelect /> : null}
-      {answer.length === 0 && subject === 'introduce' ? (
-        <TextArea
-          rows={4} /* onChange={(e) => setIntroduction(e.target.value)} */
-        />
+      {answer.length === 0 && subject === 'messageToFriend' ? (
+        <TextArea rows={4} onChange={(e) => setIntroduction(e.target.value)} />
       ) : null}
     </div>
   );

@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
 import { questionList } from '../config/fakeData';
@@ -18,32 +18,37 @@ export default function useRegister() {
     questions.map(() => []),
   );
 
-  const getSelected = (subj: string): undefined | string | any[] => {
-    const array = totalCheckArr[subjects.indexOf(subj)];
-    const arr: number[] = [];
-    if (array) {
-      array.forEach((elm, idx) => {
-        if (elm) {
-          arr.push(idx);
-        }
-      });
-      return arr.map((elm) => questions[subjects.indexOf(subj)].value![elm]);
-    }
-  };
-
   const submitVariable = {
     levelOf3Dae: '',
     openImageChoice: '',
     messageToFriend: '',
   };
 
+  const getSelected = (subj: string): undefined | any[] | string => {
+    const subjBooleans = totalCheckArr[subjects.indexOf(subj)];
+    const subjNumbers: number[] = [];
+    if (subjBooleans.length !== 0) {
+      subjBooleans.forEach((elm, idx) => {
+        if (elm) {
+          subjNumbers.push(idx);
+        }
+      });
+      const selectedSubjNames = subjNumbers.map(
+        (elm) => questions[subjects.indexOf(subj)].value![elm],
+      );
+      return selectedSubjNames;
+    }
+  };
+
   Object.keys(submitVariable).forEach((elm) => {
-    if (['levelOf3Dae', 'openImageChoice'].indexOf(elm) === -1) {
-      submitVariable[elm] = getSelected(elm);
-    } else if (elm === 'messageToFriend') {
+    if (elm === 'messageToFriend') {
       submitVariable[elm] = introduction;
-    } else {
-      submitVariable[elm] = getSelected(elm)![0];
+    } else if (getSelected(elm)) {
+      if (['levelOf3Dae', 'openImageChoice'].indexOf(elm) !== -1) {
+        submitVariable[elm] = getSelected(elm)![0];
+      } else {
+        submitVariable[elm] = getSelected(elm);
+      }
     }
   });
 
