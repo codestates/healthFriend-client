@@ -12,6 +12,17 @@ export const GET_USERINFO = gql`
   }
 `;
 
+export const GET_USERS = gql`
+  {
+    users {
+      id
+      nickname
+      levelOf3Dae
+      messageToFriend
+    }
+  }
+`;
+
 export const MUTATE_INFO = gql`
   mutation PostInfo(
     $nickname: String!

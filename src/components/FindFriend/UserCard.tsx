@@ -1,6 +1,6 @@
+/** @jsx jsx */
 // eslint-disable-next-line
 import React from 'react';
-/** @jsx jsx */
 import { Col, Card } from 'antd';
 import { jsx, css } from '@emotion/core';
 

@@ -1,10 +1,16 @@
+/** @jsx jsx */
 // eslint-disable-next-line
 import React from 'react';
-import { Row, Col, Card, Button, Typography } from 'antd';
-/** @jsx jsx */
+import { Row, Col, Card, Typography } from 'antd';
 import { css, jsx } from '@emotion/core';
+import { useQuery } from '@apollo/react-hooks';
 
 import renderImage from '../static/renderImage.jpg';
+import { GET_USERINFO } from '../graphql/queries';
+
+import ButtonToFind from '../components/Home/ButtonToFind';
+import ButtonToRegister from '../components/Home/ButtonToRegister';
+import ButtonToSignup from '../components/Home/ButtonToSignup';
 
 const { Title } = Typography;
 
@@ -37,20 +43,25 @@ const card = css`
   margin: 10px;
 `;
 
-// 버튼 사이즈 조절
-const startButton = css`
-  background: #2c3e50;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`;
-
+// 여기 type 더 명확하게
 type HomeProps = {
   history: any;
+  error: any;
+  data: any;
 };
 
+function ButtonHome({ history, error, data }: HomeProps) {
+  if (error !== undefined) {
+    return <ButtonToSignup />;
+  }
+  if (data && data.me.levelOf3Dae) {
+    return <ButtonToFind history={history} />;
+  }
+  return <ButtonToRegister history={history} />;
+}
+
 function Home({ history }: HomeProps) {
+  const { data, error } = useQuery(GET_USERINFO);
   return (
     <Row type="flex" justify="center">
       <Col xs={24}>
@@ -62,14 +73,8 @@ function Home({ history }: HomeProps) {
             현재 당신을 기다리고 있어요
           </Title>
         </div>
-        <Button
-          type="primary"
-          size="large"
-          css={startButton}
-          onClick={() => history.push('/register')}
-        >
-          바로 등록후 시작하기
-        </Button>
+        <ButtonHome history={history} error={error} data={data} />
+        {/* 이 윗 부분을 더 축약해서 쓰는 법 없나?  */}
       </Col>
       <Col xs={20}>
         <Row gutter={24} type="flex" justify="space-between">

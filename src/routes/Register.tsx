@@ -1,7 +1,7 @@
+/** @jsx jsx */
 // eslint-disable-next-line
 import React from 'react';
 import { Row, Col, Button, Result } from 'antd';
-/** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
 import ProgressBar from '../components/Register/ProgressBar';

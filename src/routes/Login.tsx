@@ -1,50 +1,37 @@
-import React /* { useState, useEffect } */ from 'react';
+import React from 'react';
 import { Button } from 'antd';
-import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
+import { Redirect } from 'react-router-dom';
+import { GET_USERINFO } from '../graphql/queries';
+import Loading from '../components/Shared/Loading';
 
-const GET_USERINFO = gql`
-  {
-    me {
-      id
-      email
-      nickname
-      openImageCholice
-      levelOf3Dae
-      messageToFriend
-    }
-  }
-`;
+function GoogleLoginButton() {
+  return (
+    <Button type="primary">
+      <a
+        href={
+          process.env.NODE_ENV === 'development'
+            ? 'http://localhost:4000/auth/google'
+            : 'https://api.healthfriend.club/auth/google'
+        }
+      >
+        구글 로그인
+      </a>
+    </Button>
+  );
+}
 
 function Login() {
-  const { data } = useQuery(GET_USERINFO, {
-    // notifyOnNetworkStatusChange: true,
-  });
+  const { data, loading } = useQuery(GET_USERINFO);
 
-  // if (loading) return <div>Loading...</div>;
-  // if (error) return <div>Error! {error.message}</div>;
-
-  console.log('i am data', data);
+  if (loading) return <Loading />;
 
   return data === undefined ? (
     <div>
-      <Button type="primary">
-        <a
-          href={
-            process.env.NODE_ENV === 'development'
-              ? 'http://localhost:4000/auth/google'
-              : 'https://api.healthfriend.club/auth/google'
-          }
-        >
-          구글 로그인
-        </a>
-      </Button>
+      <GoogleLoginButton />
     </div>
   ) : (
-    <div>
-      <h2>hello, {data.me.nickname}</h2>
-      <Button type="primary">로그아웃</Button>
-    </div>
+    <Redirect to="/" />
   );
 }
 

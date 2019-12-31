@@ -1,9 +1,8 @@
+/** @jsx jsx */
 // eslint-disable-next-line
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-/** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-
 import { useQuery } from '@apollo/react-hooks';
 
 import MypageDropdown from './MypageDropdown';
@@ -55,15 +54,20 @@ export default function Header() {
       >
         헬친
       </NavLink>
-      <NavLink to="/register" className="item" css={navLinkItem}>
-        등록
-      </NavLink>
-      <NavLink to="/find" className="item" css={navLinkItem}>
-        친구찾기
-      </NavLink>
-      <NavLink to="/chat" className="item" css={navLinkItem}>
-        채팅
-      </NavLink>
+      {data ? (
+        <React.Fragment>
+          <NavLink to="/register" className="item" css={navLinkItem}>
+            등록
+          </NavLink>
+          <NavLink to="/find" className="item" css={navLinkItem}>
+            친구찾기
+          </NavLink>
+          <NavLink to="/chat" className="item" css={navLinkItem}>
+            채팅
+          </NavLink>
+        </React.Fragment>
+      ) : null}
+
       {data ? (
         <MypageDropdown name={data.me.nickname} />
       ) : (

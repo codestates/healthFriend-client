@@ -1,7 +1,7 @@
+/** @jsx jsx */
 // eslint-disable-next-line
 import React from 'react';
 import { Input } from 'antd';
-/** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
 import PlaceSelect from './PlaceSelect';
