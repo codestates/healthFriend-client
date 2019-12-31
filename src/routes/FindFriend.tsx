@@ -2,27 +2,16 @@
 // import React from 'react';
 import { Row, Col } from 'antd';
 import { css, jsx } from '@emotion/core';
-import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 
 import SelectCity from '../components/FindFriend/SelectCity';
 import SelectDefault from '../components/FindFriend/SelectDefault';
 import UserCard from '../components/FindFriend/UserCard';
 import { questionList } from '../config/fakeData';
+import { GET_USERS } from '../graphql/queries';
 
 const filterCSS = css`
   margin-bottom: 20px;
-`;
-
-const GET_USERS = gql`
-  {
-    users {
-      id
-      nickname
-      levelOf3Dae
-      messageToFriend
-    }
-  }
 `;
 
 function FindFriend() {

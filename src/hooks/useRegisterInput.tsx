@@ -1,7 +1,7 @@
+/** @jsx jsx */
 // eslint-disable-next-line
 import React, { useEffect } from 'react';
 import { Checkbox } from 'antd';
-/** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
 import { questionList } from '../config/fakeData';
