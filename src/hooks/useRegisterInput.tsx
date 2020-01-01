@@ -1,6 +1,5 @@
 /** @jsx jsx */
-// eslint-disable-next-line
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Checkbox } from 'antd';
 import { css, jsx } from '@emotion/core';
 
@@ -33,24 +32,43 @@ export default function useRegisterInput({
   const currentInput = questionList.inputRegister.filter(
     (elm) => elm.number === order,
   );
-  const { question, answer, subject } = currentInput[0];
+  const {
+    question,
+    answer,
+    subject,
+    isAvailable,
+    isCheckbox,
+  } = currentInput[0];
   const oneCheckArr = totalCheckArr[order - 1];
   // 왜 let oneCheckArr를 밖에 선언하고 oneCheckArr = totalCheckArr[order - 1];를 useEffect 안에서 했을때 문제가 발생했던 것인지.
 
+  // totalCheckArr을 일단 빈배열 상태면 다 false로 채우기
   useEffect(() => {
-    if (answer.length !== 0 && oneCheckArr.length === 0) {
+    if (isCheckbox && isAvailable && oneCheckArr.length === 0) {
       setTotalCheckArr(
         totalCheckArr.map((elm, idx) =>
           idx + 1 === order ? Array(answer.length).fill(false) : elm,
         ),
       );
     }
-  }, [answer.length, oneCheckArr, order, setTotalCheckArr, totalCheckArr]);
+  }, [
+    answer.length,
+    oneCheckArr,
+    order,
+    setTotalCheckArr,
+    totalCheckArr,
+    isAvailable,
+    isCheckbox,
+  ]);
 
   const onCheck = (e) => {
     // 여기도 e에 : MouseEvent 같은거 붙여줘야 함.
-    let array;
-    if (['levelOf3Dae', 'gender', 'openImageChoice'].indexOf(subject) !== -1) {
+    let array: any[];
+    const singleChecks = questionList.inputRegister
+      .filter((elm) => !elm.isMultiple && elm.isCheckbox)
+      .map((ele) => ele.subject);
+
+    if (singleChecks.indexOf(subject) !== -1) {
       array = answer.map((_, i) => answer[i] === e.target.value);
     } else {
       array = answer.map((_, i) =>

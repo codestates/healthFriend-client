@@ -1,5 +1,4 @@
-// eslint-disable-next-line
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 type useDropdownProps = {
   placeList: any[];
@@ -11,7 +10,7 @@ export default function useDropdown({
   setPlaceList,
 }: useDropdownProps) {
   const [values, setValues] = useState({
-    // useState안에 tpye 체크해주는 것
+    // useState안에 tpye 체크해주는 것. object로 하니 에러 뜸.
     Gu: null,
     Dong: null,
   });

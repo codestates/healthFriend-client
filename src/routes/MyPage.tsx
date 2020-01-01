@@ -1,12 +1,11 @@
 /** @jsx jsx */
-// eslint-disable-next-line
-import React, { useState } from 'react';
+import React from 'react';
 import { Row, Col, Button, Result } from 'antd';
 import { css, jsx } from '@emotion/core';
 
 import RegisterInput from '../components/Register/RegisterInput';
 import { questionList } from '../config/fakeData';
-import useRegister from '../hooks/useRegister';
+import useMypage from '../hooks/useMypage';
 
 const wrapper = css`
   margin: 20px;
@@ -16,6 +15,7 @@ type MyPageProps = {
   history: any;
 };
 
+// 불필요하게 render가 여러번 되는 문제
 function MyPage({ history }: MyPageProps) {
   const {
     setIntroduction,
@@ -24,32 +24,9 @@ function MyPage({ history }: MyPageProps) {
     submitVariable,
     postInfo,
     data,
-  } = useRegister();
-
-  const [complete, setComplete] = useState<boolean>(false);
-
-  if (data) {
-    // const { nickname, levelOf3Dae, openImageChoice, messageToFriend } = data.me;
-    const subjects = questionList.inputRegister.map((elm) => elm.subject);
-    const getIndex = (subj) => {
-      const subjIndex = subjects.indexOf(subj);
-      const values = questionList.inputRegister![subjIndex].value!;
-      let selectedArray = [];
-      selectedArray = selectedArray.concat(data.me[subj]);
-      console.log('values', values);
-      console.log('selectedArray', selectedArray);
-      // const selectedBooleans = values.map((elm) => {
-      //   if (selectedArray.indexOf(elm) === -1) {
-      //     return false;
-      //   }
-      //   return true;
-      // });
-      // return selectedBooleans;
-    };
-    console.log(getIndex('levelOf3Dae'));
-  }
-
-  // 선택하다 취소하고, 넘어가도 useEffect 같은 걸로 원래대로 되돌려 놔야 할듯.
+    complete,
+    setComplete,
+  } = useMypage();
 
   return (
     <div>
@@ -100,11 +77,11 @@ function MyPage({ history }: MyPageProps) {
                 {questionList.inputRegister.map((oneQ, idx) => (
                   <React.Fragment key={oneQ.question}>
                     <RegisterInput
-                      key={oneQ.question}
                       order={idx + 1}
                       totalCheckArr={totalCheckArr}
                       setTotalCheckArr={setTotalCheckArr}
                       setIntroduction={setIntroduction}
+                      introduction={data.me.messageToFriend}
                     />
                     <br />
                   </React.Fragment>

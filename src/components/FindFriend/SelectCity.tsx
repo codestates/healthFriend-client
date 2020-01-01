@@ -1,6 +1,5 @@
 /** @jsx jsx */
-// eslint-disable-next-line
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { jsx } from '@emotion/core';
 import { TreeSelect } from 'antd';
 import { placeForFindFriends } from '../../config/fakeData';
