@@ -10,6 +10,8 @@ export default function useMypage() {
     submitVariable,
     postInfo,
     data,
+    error,
+    loading,
   } = useRegister();
 
   const [complete, setComplete] = useState<boolean>(false);
@@ -46,6 +48,8 @@ export default function useMypage() {
     submitVariable,
     postInfo,
     data,
+    error,
+    loading,
     complete,
     setComplete,
   };

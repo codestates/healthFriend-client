@@ -6,6 +6,8 @@ import { css, jsx } from '@emotion/core';
 import RegisterInput from '../components/Register/RegisterInput';
 import { questionList } from '../config/fakeData';
 import useMypage from '../hooks/useMypage';
+import Loading from '../components/Shared/Loading';
+import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 
 const wrapper = css`
   margin: 20px;
@@ -24,9 +26,14 @@ function MyPage({ history }: MyPageProps) {
     submitVariable,
     postInfo,
     data,
+    error,
+    loading,
     complete,
     setComplete,
   } = useMypage();
+
+  if (loading) return <Loading />;
+  if (!data) return <ErrorLoginFirst />;
 
   return (
     <div>

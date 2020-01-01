@@ -1,6 +1,4 @@
 /** @jsx jsx */
-// eslint-disable-next-line
-import React from 'react';
 import { Row, Col, Button, Result } from 'antd';
 import { css, jsx } from '@emotion/core';
 
@@ -9,6 +7,8 @@ import RegisterImage from '../static/registerImage.jpg';
 import explanation from '../config/Message';
 import RegisterInput from '../components/Register/RegisterInput';
 import useRegister from '../hooks/useRegister';
+import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
+import Loading from '../components/Shared/Loading';
 
 const renderingImage = css`
   width: 100%;
@@ -41,9 +41,18 @@ function Register({ history }: RegisterProps) {
     questions,
     order,
     data,
+    error,
+    loading,
     submitVariable,
     postInfo,
   } = useRegister();
+
+  if (error) {
+    return <ErrorLoginFirst />;
+  }
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <Row type="flex" justify="center">
