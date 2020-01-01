@@ -40,3 +40,6 @@ export const MUTATE_INFO = gql`
     }
   }
 `;
+
+// export const SET_MOTIVATION = gql``;
+// export const SET_EXERCISE_ABLE_DAYS = gql``;

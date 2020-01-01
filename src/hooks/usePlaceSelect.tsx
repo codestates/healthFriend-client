@@ -12,7 +12,7 @@ const btnAdd = css`
 export default function usePlaceSelect() {
   const [placeList, setPlaceList] = useState<any[]>([1]);
 
-  const handleAdd = () =>
+  const handleAdd = (): void =>
     setPlaceList(placeList.concat(placeList[placeList.length - 1] + 1));
 
   const DropdownButton = () => (
