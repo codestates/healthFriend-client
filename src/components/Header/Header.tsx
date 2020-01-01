@@ -35,7 +35,12 @@ const navLinkItem = css`
 // 로그인 과정에서 api call을 하면 cache에 이후 자동으로 저장되는건지도 확인
 
 export default function Header() {
-  const { data } = useQuery(GET_USERINFO);
+  const { data, error } = useQuery(GET_USERINFO);
+
+  console.log('data', data);
+  if (error) {
+    console.log('error', error.message);
+  }
 
   // const client = useApolloClient();
   // const todos = client.readQuery({
