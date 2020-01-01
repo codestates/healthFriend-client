@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 import React, { useState } from 'react';
 import { Select } from 'antd';
 

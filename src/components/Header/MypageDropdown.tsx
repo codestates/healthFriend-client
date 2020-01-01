@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { Menu, Dropdown, Icon } from 'antd';

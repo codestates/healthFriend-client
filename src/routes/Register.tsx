@@ -34,6 +34,7 @@ type RegisterProps = {
 function Register({ history }: RegisterProps) {
   const {
     setOrder,
+    introduction,
     setIntroduction,
     setTotalCheckArr,
     totalCheckArr,
@@ -77,6 +78,7 @@ function Register({ history }: RegisterProps) {
               order={order}
               totalCheckArr={totalCheckArr}
               setTotalCheckArr={setTotalCheckArr}
+              introduction={introduction}
               setIntroduction={setIntroduction}
             />
 

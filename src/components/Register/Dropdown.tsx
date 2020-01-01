@@ -1,6 +1,4 @@
 /** @jsx jsx */
-// eslint-disable-next-line
-import React, { useState } from 'react';
 import { jsx, css } from '@emotion/core';
 import Select from 'react-select';
 import { Row, Col, Button } from 'antd';

@@ -1,6 +1,4 @@
 /** @jsx jsx */
-// eslint-disable-next-line
-import React from 'react';
 import { Input } from 'antd';
 import { css, jsx } from '@emotion/core';
 
@@ -22,6 +20,7 @@ const { TextArea } = Input;
 type RegisterInputProps = {
   order: number;
   totalCheckArr: [][];
+  introduction: string;
   setTotalCheckArr: (...args: any[]) => void;
   setIntroduction: (args: string) => void;
 };
@@ -29,6 +28,7 @@ type RegisterInputProps = {
 export default function RegisterInput({
   order,
   totalCheckArr,
+  introduction,
   setTotalCheckArr,
   setIntroduction,
 }: RegisterInputProps) {
@@ -44,9 +44,13 @@ export default function RegisterInput({
       {subject !== 'place' && subject !== 'messageToFriend' && (
         <div css={checkboxDiv}>{questionCheckboxes}</div>
       )}
-      {answer.length === 0 && subject === 'place' ? <PlaceSelect /> : null}
-      {answer.length === 0 && subject === 'messageToFriend' ? (
-        <TextArea rows={4} onChange={(e) => setIntroduction(e.target.value)} />
+      {answer.length === 1 && subject === 'place' ? <PlaceSelect /> : null}
+      {answer.length === 1 && subject === 'messageToFriend' ? (
+        <TextArea
+          rows={4}
+          defaultValue={introduction}
+          onChange={(e) => setIntroduction(e.target.value)}
+        />
       ) : null}
     </div>
   );

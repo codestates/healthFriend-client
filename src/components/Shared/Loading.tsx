@@ -1,6 +1,4 @@
 /** @jsx jsx */
-// eslint-disable-next-line
-import React from 'react';
 import { Spin, Icon, Row, Col } from 'antd';
 import { jsx, css } from '@emotion/core';
 
