@@ -32,11 +32,7 @@ function FindFriend() {
   if (loading) return <Loading />;
   if (error)
     // 여기도 서버에서 나오는 에러 종류에 따라서 Login 먼저 하세요를 보여줄지, 혹은 다른 에러 메세지를 보여줄지
-    return (
-      <div>
-        Error! ${error.message}`<ErrorLoginFirst />
-      </div>
-    );
+    return <ErrorLoginFirst error={error} />;
 
   return (
     <Row type="flex" justify="center" style={{ marginTop: 20 }}>

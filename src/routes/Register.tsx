@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { Row, Col, Button, Result } from 'antd';
 import { css, jsx } from '@emotion/core';
+import { Redirect } from 'react-router-dom';
 
 import ProgressBar from '../components/Register/ProgressBar';
 import RegisterImage from '../static/registerImage.jpg';
@@ -48,10 +49,13 @@ function Register({ history }: RegisterProps) {
   } = useRegister();
 
   if (error) {
-    return <ErrorLoginFirst />;
+    return <ErrorLoginFirst error={error} />;
   }
   if (loading) {
     return <Loading />;
+  }
+  if (data.me.levelOf3Dae && data.me.messageToFriend) {
+    return <Redirect to="/" />;
   }
 
   return (

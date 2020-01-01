@@ -33,7 +33,7 @@ function MyPage({ history }: MyPageProps) {
   } = useMypage();
 
   if (loading) return <Loading />;
-  if (!data) return <ErrorLoginFirst />;
+  if (!data) return <ErrorLoginFirst error={error} />;
 
   return (
     <div>
