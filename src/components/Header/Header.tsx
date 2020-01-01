@@ -55,11 +55,11 @@ export default function Header() {
       </NavLink>
       {data ? (
         <React.Fragment>
-          {data.me.levelOf3Dae && data.me.messageToFriend ? null : (
-            <NavLink to="/register" className="item" css={navLinkItem}>
-              등록
-            </NavLink>
-          )}
+          {/* {data.me.levelOf3Dae && data.me.messageToFriend ? null : ( */}
+          <NavLink to="/register" className="item" css={navLinkItem}>
+            등록
+          </NavLink>
+          {/* )} */}
           <NavLink to="/find" className="item" css={navLinkItem}>
             친구찾기
           </NavLink>

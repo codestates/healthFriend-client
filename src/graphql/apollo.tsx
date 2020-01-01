@@ -8,7 +8,7 @@ const link = createHttpLink({
   uri:
     process.env.NODE_ENV === 'development'
       ? 'http://localhost:4000/graphql'
-      : 'https://api.healthfriend.club',
+      : 'https://api.healthfriend.club/graphql',
   credentials: 'include',
 });
 
