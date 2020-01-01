@@ -1,5 +1,4 @@
 /** @jsx jsx */
-// import React from 'react';
 import { Row, Col } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useQuery } from '@apollo/react-hooks';
@@ -9,6 +8,8 @@ import SelectDefault from '../components/FindFriend/SelectDefault';
 import UserCard from '../components/FindFriend/UserCard';
 import { questionList } from '../config/fakeData';
 import { GET_USERS } from '../graphql/queries';
+import Loading from '../components/Shared/Loading';
+import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 
 const filterCSS = css`
   margin-bottom: 20px;
@@ -28,8 +29,14 @@ function FindFriend() {
     );
   });
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error! ${error.message}`</div>;
+  if (loading) return <Loading />;
+  if (error)
+    // 여기도 서버에서 나오는 에러 종류에 따라서 Login 먼저 하세요를 보여줄지, 혹은 다른 에러 메세지를 보여줄지
+    return (
+      <div>
+        Error! ${error.message}`<ErrorLoginFirst />
+      </div>
+    );
 
   return (
     <Row type="flex" justify="center" style={{ marginTop: 20 }}>

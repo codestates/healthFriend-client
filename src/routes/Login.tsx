@@ -23,9 +23,9 @@ function GoogleLoginButton() {
 
 function Login() {
   const { data, loading } = useQuery(GET_USERINFO);
-
   if (loading) return <Loading />;
 
+  // 이미 로그인한 사람이 임의로 주소 쳐서 들어올것 대비
   return data === undefined ? (
     <div>
       <GoogleLoginButton />

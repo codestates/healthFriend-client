@@ -23,6 +23,7 @@ export default function useRegister() {
 
   const { data, error, loading } = useQuery(GET_USERINFO);
   const [postInfo] = useMutation(MUTATE_INFO);
+  // mutation시 error도 콜백으로 만들어줘야 함. onError, onComplete 등이 있는듯.
 
   // 체크박스에서 선택된 것을 boolean 배열 -> 번호 배열 -> 값 배열로 변경하여 받음.
   const getSelected = (subj: string): undefined | any[] | string => {
@@ -53,6 +54,8 @@ export default function useRegister() {
     questions,
     order,
     data,
+    error,
+    loading,
     submitVariable,
     postInfo,
   };
