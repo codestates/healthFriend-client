@@ -26,7 +26,7 @@ export default function useRegister() {
     questions.map(() => []),
   );
 
-  const { data, error, loading, refetch } = useQuery(GET_USERINFO);
+  const { data, error, loading } = useQuery(GET_USERINFO);
   const [postInfo] = useMutation(MUTATE_INFO);
   const [setMotivation] = useMutation(SET_MOTIVATION);
   const [setExerciseAbleDays] = useMutation(SET_EXERCISE_ABLE_DAYS);
@@ -66,7 +66,6 @@ export default function useRegister() {
     data,
     error,
     loading,
-    refetch,
     submitVariable,
     submitMotivation,
     submitExerciseDays,
