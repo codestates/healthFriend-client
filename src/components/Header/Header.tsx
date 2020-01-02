@@ -55,7 +55,7 @@ export default function Header() {
         className="item"
         activeClassName="active"
         css={navLinkItem}
-        onClick={() => refetch()}
+        onClick={() => (data ? refetch() : null)}
       >
         헬친
       </NavLink>
@@ -66,7 +66,7 @@ export default function Header() {
             to="/register"
             className="item"
             css={navLinkItem}
-            onClick={() => refetch()}
+            onClick={() => (data ? refetch() : null)}
           >
             등록
           </NavLink>
@@ -75,7 +75,7 @@ export default function Header() {
             to="/find"
             className="item"
             css={navLinkItem}
-            onClick={() => refetch()}
+            onClick={() => (data ? refetch() : null)}
           >
             친구찾기
           </NavLink>
@@ -83,7 +83,7 @@ export default function Header() {
             to="/chat"
             className="item"
             css={navLinkItem}
-            onClick={() => refetch()}
+            onClick={() => (data ? refetch() : null)}
           >
             채팅
           </NavLink>

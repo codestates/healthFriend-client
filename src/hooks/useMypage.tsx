@@ -16,10 +16,7 @@ export default function useMypage() {
     data,
     error,
     loading,
-    refetch,
   } = useRegister();
-
-  refetch();
 
   const [complete, setComplete] = useState<boolean>(false);
 
@@ -69,7 +66,6 @@ export default function useMypage() {
     data,
     error,
     loading,
-    refetch,
     complete,
     setComplete,
   };

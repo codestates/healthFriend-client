@@ -13,7 +13,7 @@ type MypageDropdownProps = {
 };
 
 function MypageDropdown({ name, history }: MypageDropdownProps) {
-  const { refetch } = useQuery(GET_USERINFO);
+  const { data, refetch } = useQuery(GET_USERINFO);
 
   const menu = (
     <Menu>
@@ -38,7 +38,7 @@ function MypageDropdown({ name, history }: MypageDropdownProps) {
 
   return (
     <Dropdown overlay={menu}>
-      <Link to="#" onMouseEnter={() => refetch()}>
+      <Link to="#" onMouseEnter={() => (data ? refetch() : null)}>
         {name}친구님 <Icon type="down" />
       </Link>
     </Dropdown>
