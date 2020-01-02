@@ -35,7 +35,7 @@ const navLinkItem = css`
 // 로그인 과정에서 api call을 하면 cache에 이후 자동으로 저장되는건지도 확인
 
 export default function Header() {
-  const { data, error } = useQuery(GET_USERINFO);
+  const { data, error, refetch } = useQuery(GET_USERINFO);
 
   console.log('data', data);
   if (error) {
@@ -55,20 +55,36 @@ export default function Header() {
         className="item"
         activeClassName="active"
         css={navLinkItem}
+        onClick={() => refetch()}
       >
         헬친
       </NavLink>
       {data ? (
         <React.Fragment>
           {/* {data.me.levelOf3Dae && data.me.messageToFriend ? null : ( */}
-          <NavLink to="/register" className="item" css={navLinkItem}>
+          <NavLink
+            to="/register"
+            className="item"
+            css={navLinkItem}
+            onClick={() => refetch()}
+          >
             등록
           </NavLink>
           {/* )} */}
-          <NavLink to="/find" className="item" css={navLinkItem}>
+          <NavLink
+            to="/find"
+            className="item"
+            css={navLinkItem}
+            onClick={() => refetch()}
+          >
             친구찾기
           </NavLink>
-          <NavLink to="/chat" className="item" css={navLinkItem}>
+          <NavLink
+            to="/chat"
+            className="item"
+            css={navLinkItem}
+            onClick={() => refetch()}
+          >
             채팅
           </NavLink>
         </React.Fragment>

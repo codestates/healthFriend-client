@@ -18,7 +18,7 @@ const filterCSS = css`
 function FindFriend() {
   const { loading, error, data } = useQuery(GET_USERS);
 
-  const questions = ['day', 'levelOf3Dae'].map((elm) => {
+  const questions = ['weekdays', 'levelOf3Dae'].map((elm) => {
     const [{ question, answer }] = questionList.inputRegister.filter(
       ({ subject }) => subject === elm,
     );

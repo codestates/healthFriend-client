@@ -45,7 +45,11 @@ function Register({ history }: RegisterProps) {
     error,
     loading,
     submitVariable,
+    submitMotivation,
+    submitExerciseDays,
     postInfo,
+    setMotivation,
+    setExerciseAbleDays,
   } = useRegister();
 
   if (error) {
@@ -116,6 +120,12 @@ function Register({ history }: RegisterProps) {
                         ...submitVariable,
                         nickname: data.me.nickname,
                       },
+                    });
+                    setMotivation({
+                      variables: submitMotivation,
+                    });
+                    setExerciseAbleDays({
+                      variables: submitExerciseDays,
                     });
                   }
                   setOrder(order + 1);

@@ -8,11 +8,18 @@ export default function useMypage() {
     setTotalCheckArr,
     totalCheckArr,
     submitVariable,
+    submitMotivation,
+    submitExerciseDays,
     postInfo,
+    setMotivation,
+    setExerciseAbleDays,
     data,
     error,
     loading,
+    refetch,
   } = useRegister();
+
+  refetch();
 
   const [complete, setComplete] = useState<boolean>(false);
 
@@ -23,8 +30,14 @@ export default function useMypage() {
   // 해당 받아온 data의 값을 입력할 때와 같은 boolean array로 변경
   const getSelectedBooleans = (subj: string): boolean[] => {
     const oneQ = questionList.inputRegister![subjects.indexOf(subj)];
-    if (oneQ.isAvailable && oneQ.isCheckbox) {
-      const selectedArray = [data.me[subj]];
+    let selectedArray;
+    if (oneQ.isMeQueryAvailable && oneQ.isCheckbox) {
+      if (!oneQ.isMultiple) {
+        selectedArray = [data.me[subj]];
+      } else {
+        selectedArray = data.me[subj].map((elm) => elm[subj.slice(0, -1)]);
+      }
+
       return oneQ.value.map((elm) => {
         if (selectedArray.indexOf(elm) === -1) {
           return false;
@@ -48,10 +61,15 @@ export default function useMypage() {
     setTotalCheckArr,
     totalCheckArr,
     submitVariable,
+    submitMotivation,
+    submitExerciseDays,
     postInfo,
+    setMotivation,
+    setExerciseAbleDays,
     data,
     error,
     loading,
+    refetch,
     complete,
     setComplete,
   };

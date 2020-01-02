@@ -2,6 +2,8 @@ import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { Menu, Dropdown, Icon } from 'antd';
 import cookie from 'js-cookie';
+import { useQuery } from '@apollo/react-hooks';
+import { GET_USERINFO } from '../../graphql/queries';
 
 type MypageDropdownProps = {
   name: string;
@@ -11,6 +13,8 @@ type MypageDropdownProps = {
 };
 
 function MypageDropdown({ name, history }: MypageDropdownProps) {
+  const { refetch } = useQuery(GET_USERINFO);
+
   const menu = (
     <Menu>
       <Menu.Item>안녕하세요 친구님</Menu.Item>
@@ -34,7 +38,7 @@ function MypageDropdown({ name, history }: MypageDropdownProps) {
 
   return (
     <Dropdown overlay={menu}>
-      <Link to="#">
+      <Link to="#" onMouseEnter={() => refetch()}>
         {name}친구님 <Icon type="down" />
       </Link>
     </Dropdown>
