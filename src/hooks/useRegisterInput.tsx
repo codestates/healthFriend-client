@@ -36,7 +36,7 @@ export default function useRegisterInput({
     question,
     answer,
     subject,
-    isAvailable,
+    isMeMutateAvailable,
     isCheckbox,
   } = currentInput[0];
   const oneCheckArr = totalCheckArr[order - 1];
@@ -44,7 +44,7 @@ export default function useRegisterInput({
 
   // totalCheckArr을 일단 빈배열 상태면 다 false로 채우기
   useEffect(() => {
-    if (isCheckbox && isAvailable && oneCheckArr.length === 0) {
+    if (isCheckbox && isMeMutateAvailable && oneCheckArr.length === 0) {
       setTotalCheckArr(
         totalCheckArr.map((elm, idx) =>
           idx + 1 === order ? Array(answer.length).fill(false) : elm,
@@ -57,7 +57,7 @@ export default function useRegisterInput({
     order,
     setTotalCheckArr,
     totalCheckArr,
-    isAvailable,
+    isMeMutateAvailable,
     isCheckbox,
   ]);
 

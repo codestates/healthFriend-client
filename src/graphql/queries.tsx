@@ -8,6 +8,14 @@ export const GET_USERINFO = gql`
       openImageChoice
       levelOf3Dae
       messageToFriend
+      motivations {
+        id
+        motivation
+      }
+      weekdays {
+        id
+        weekday
+      }
     }
   }
 `;
@@ -41,5 +49,18 @@ export const MUTATE_INFO = gql`
   }
 `;
 
-// export const SET_MOTIVATION = gql``;
-// export const SET_EXERCISE_ABLE_DAYS = gql``;
+export const SET_MOTIVATION = gql`
+  mutation SetMotivation($input: [MotivationEnum]) {
+    setMotivation(input: $input) {
+      motivation
+    }
+  }
+`;
+
+export const SET_EXERCISE_ABLE_DAYS = gql`
+  mutation SetExerciseAbleDay($input: [WeekdayEnum]) {
+    setExerciseAbleDay(input: $input) {
+      weekday
+    }
+  }
+`;

@@ -24,7 +24,11 @@ function MyPage({ history }: MyPageProps) {
     setTotalCheckArr,
     totalCheckArr,
     submitVariable,
+    submitMotivation,
+    submitExerciseDays,
     postInfo,
+    setMotivation,
+    setExerciseAbleDays,
     data,
     error,
     loading,
@@ -101,6 +105,12 @@ function MyPage({ history }: MyPageProps) {
                         ...submitVariable,
                         nickname: data.me.nickname,
                       },
+                    });
+                    setMotivation({
+                      variables: submitMotivation,
+                    });
+                    setExerciseAbleDays({
+                      variables: submitExerciseDays,
                     });
                     setComplete(true);
                   }}
