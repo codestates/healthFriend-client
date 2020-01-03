@@ -6,7 +6,7 @@ import { placeForFindFriends } from '../../config/fakeData';
 
 const { SHOW_PARENT } = TreeSelect;
 
-function SelectCity() {
+function SelectPlace() {
   const [value, setValue] = useState([]);
 
   const onChange = (val) => {
@@ -27,4 +27,4 @@ function SelectCity() {
   );
 }
 
-export default SelectCity;
+export default SelectPlace;

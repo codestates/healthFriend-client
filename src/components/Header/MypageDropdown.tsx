@@ -3,6 +3,7 @@ import { withRouter, Link } from 'react-router-dom';
 import { Menu, Dropdown, Icon } from 'antd';
 import cookie from 'js-cookie';
 import { useQuery } from '@apollo/react-hooks';
+
 import { GET_USERINFO } from '../../graphql/queries';
 
 type MypageDropdownProps = {
@@ -13,7 +14,9 @@ type MypageDropdownProps = {
 };
 
 function MypageDropdown({ name, history }: MypageDropdownProps) {
-  const { data, refetch } = useQuery(GET_USERINFO);
+  const { data, refetch } = useQuery(GET_USERINFO, {
+    fetchPolicy: 'network-only',
+  });
 
   const menu = (
     <Menu>
@@ -24,10 +27,18 @@ function MypageDropdown({ name, history }: MypageDropdownProps) {
       <Menu.Item>
         <Link
           to="/"
-          onClick={() => {
-            history.push('/');
-            cookie.remove('access-token');
-            window.location.reload();
+          onClick={async () => {
+            await cookie.remove('access-token', {
+              // 공식문서에는 path 를 필수적으로 적으란 식으로 되어있는데 서버에서 심어서 그런지 적으면 안 됨.
+              // path: '/login',
+              // domain:
+              //   process.env.NODE_ENV === 'development'
+              //     ? 'http://localhost:4000/'
+              //     : 'https://api.healthfriend.club/',
+            });
+            await history.push('/');
+            await window.location.reload();
+            // 여기도 reload 보다는 subscription으로 바꾸는게 좋을듯.
           }}
         >
           로그아웃
@@ -38,7 +49,12 @@ function MypageDropdown({ name, history }: MypageDropdownProps) {
 
   return (
     <Dropdown overlay={menu}>
-      <Link to="#" onMouseEnter={() => (data ? refetch() : null)}>
+      <Link
+        to="#"
+        onMouseEnter={() =>
+          cookie.get('access-token') && data ? refetch() : null
+        }
+      >
         {name}친구님 <Icon type="down" />
       </Link>
     </Dropdown>

@@ -32,7 +32,7 @@ export default function RegisterInput({
   setTotalCheckArr,
   setIntroduction,
 }: RegisterInputProps) {
-  const { questionCheckboxes, question, answer, subject } = useRegisterInput({
+  const { questionCheckboxes, question, subject } = useRegisterInput({
     order,
     totalCheckArr,
     setTotalCheckArr,
@@ -41,11 +41,11 @@ export default function RegisterInput({
   return (
     <div css={wrapper}>
       <h2>{question}</h2>
-      {subject !== 'place' && subject !== 'messageToFriend' && (
+      {['place', 'messageToFriend'].indexOf(subject) === -1 && (
         <div css={checkboxDiv}>{questionCheckboxes}</div>
       )}
-      {answer.length === 1 && subject === 'place' ? <PlaceSelect /> : null}
-      {answer.length === 1 && subject === 'messageToFriend' ? (
+      {subject === 'place' ? <PlaceSelect /> : null}
+      {subject === 'messageToFriend' ? (
         <TextArea
           rows={4}
           defaultValue={introduction}

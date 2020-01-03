@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from 'antd';
 import { useQuery } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
+
 import { GET_USERINFO } from '../graphql/queries';
 import Loading from '../components/Shared/Loading';
 
@@ -22,7 +23,10 @@ function GoogleLoginButton() {
 }
 
 function Login() {
-  const { data, loading } = useQuery(GET_USERINFO);
+  const { data, loading } = useQuery(GET_USERINFO, {
+    fetchPolicy: 'network-only',
+  });
+  // useQuery도 비동기일 텐데 아래 loading, data 등에서 어떻게 다 걸리나?
   if (loading) return <Loading />;
 
   // 이미 로그인한 사람이 임의로 주소 쳐서 들어올것 대비
