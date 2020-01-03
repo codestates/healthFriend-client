@@ -35,12 +35,9 @@ const navLinkItem = css`
 // 로그인 과정에서 api call을 하면 cache에 이후 자동으로 저장되는건지도 확인
 
 export default function Header() {
-  const { data, error, refetch } = useQuery(GET_USERINFO);
-
-  console.log('data', data);
-  if (error) {
-    console.log('error', error.message);
-  }
+  const { data } = useQuery(GET_USERINFO, {
+    fetchPolicy: 'network-only',
+  });
 
   // const client = useApolloClient();
   // const todos = client.readQuery({
@@ -55,36 +52,20 @@ export default function Header() {
         className="item"
         activeClassName="active"
         css={navLinkItem}
-        onClick={() => (data ? refetch() : null)}
       >
         헬친
       </NavLink>
       {data ? (
         <React.Fragment>
           {/* {data.me.levelOf3Dae && data.me.messageToFriend ? null : ( */}
-          <NavLink
-            to="/register"
-            className="item"
-            css={navLinkItem}
-            onClick={() => (data ? refetch() : null)}
-          >
+          <NavLink to="/register" className="item" css={navLinkItem}>
             등록
           </NavLink>
           {/* )} */}
-          <NavLink
-            to="/find"
-            className="item"
-            css={navLinkItem}
-            onClick={() => (data ? refetch() : null)}
-          >
+          <NavLink to="/find" className="item" css={navLinkItem}>
             친구찾기
           </NavLink>
-          <NavLink
-            to="/chat"
-            className="item"
-            css={navLinkItem}
-            onClick={() => (data ? refetch() : null)}
-          >
+          <NavLink to="/chat" className="item" css={navLinkItem}>
             채팅
           </NavLink>
         </React.Fragment>

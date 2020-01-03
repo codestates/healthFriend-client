@@ -19,6 +19,7 @@ const questionList = {
       isMeMutateAvailable: false,
       isAvailable: true,
       isCheckbox: true,
+      isFilterList: true,
     },
     {
       number: 2,
@@ -31,6 +32,7 @@ const questionList = {
       isMeMutateAvailable: false,
       isAvailable: false,
       isCheckbox: true,
+      isFilterList: true,
     },
     {
       number: 3,
@@ -49,6 +51,7 @@ const questionList = {
       isMeMutateAvailable: true,
       isAvailable: true,
       isCheckbox: true,
+      isFilterList: true,
     },
     {
       number: 4,
@@ -61,6 +64,7 @@ const questionList = {
       isMeMutateAvailable: false,
       isAvailable: true,
       isCheckbox: true,
+      isFilterList: false,
     },
     {
       number: 5,
@@ -73,6 +77,7 @@ const questionList = {
       isMeMutateAvailable: false,
       isAvailable: false,
       isCheckbox: true,
+      isFilterList: false,
     },
     {
       number: 6,
@@ -85,6 +90,7 @@ const questionList = {
       isMeMutateAvailable: true,
       isAvailable: true,
       isCheckbox: true,
+      isFilterList: false,
     },
     {
       number: 7,
@@ -97,6 +103,7 @@ const questionList = {
       isMeMutateAvailable: true,
       isAvailable: true,
       isCheckbox: false,
+      isFilterList: false,
     },
   ],
 };

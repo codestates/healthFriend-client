@@ -5,7 +5,9 @@ import Loading from '../components/Shared/Loading';
 import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 
 function Chat() {
-  const { loading, error, data } = useQuery(GET_USERS);
+  const { loading, error, data } = useQuery(GET_USERS, {
+    fetchPolicy: 'network-only',
+  });
 
   if (loading) return <Loading />;
   if (error)

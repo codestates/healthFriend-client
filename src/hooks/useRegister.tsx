@@ -26,7 +26,9 @@ export default function useRegister() {
     questions.map(() => []),
   );
 
-  const { data, error, loading } = useQuery(GET_USERINFO);
+  const { data, error, loading } = useQuery(GET_USERINFO, {
+    fetchPolicy: 'network-only', // token 만료돼서 지워진 경우 error로 뿌리기 위해
+  });
   const [postInfo] = useMutation(MUTATE_INFO);
   const [setMotivation] = useMutation(SET_MOTIVATION);
   const [setExerciseAbleDays] = useMutation(SET_EXERCISE_ABLE_DAYS);

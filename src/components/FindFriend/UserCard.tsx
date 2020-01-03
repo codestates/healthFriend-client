@@ -6,13 +6,13 @@ const margin = css`
   margin-bottom: 20px;
 `;
 
-type dataSourceProps = {
+type UserCardProps = {
   nickname: string;
   levelOf3Dae: string;
   messageToFriend: string;
 };
 
-function UserCard({ nickname, levelOf3Dae, messageToFriend }: dataSourceProps) {
+function UserCard({ nickname, levelOf3Dae, messageToFriend }: UserCardProps) {
   return (
     <Col xs={20} md={8} css={margin}>
       <Card title={nickname} bordered>

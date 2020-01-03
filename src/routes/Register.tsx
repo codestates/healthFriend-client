@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { Row, Col, Button, Result } from 'antd';
 import { css, jsx } from '@emotion/core';
-// import { Redirect } from 'react-router-dom';
 
 import ProgressBar from '../components/Register/ProgressBar';
 import RegisterImage from '../static/registerImage.jpg';
