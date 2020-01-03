@@ -13,7 +13,7 @@ function ErrorLoginFirst({ error }: ErrorLoginFirstProps) {
 
   return (
     <div>
-      {error.message}
+      {error && error.message ? error.message : null}
       <br />
       <br /> 로그인 먼저 하세요
       <Login />
