@@ -2,6 +2,7 @@
 import { Row, Col, Button, Result } from 'antd';
 import { css, jsx } from '@emotion/core';
 
+import cookie from 'js-cookie';
 import ProgressBar from '../components/Register/ProgressBar';
 import RegisterImage from '../static/registerImage.jpg';
 import explanation from '../config/Message';
@@ -51,7 +52,7 @@ function Register({ history }: RegisterProps) {
     setExerciseAbleDays,
   } = useRegister();
 
-  if (error) {
+  if (!data || !cookie.get('access-token')) {
     return <ErrorLoginFirst error={error} />;
   }
   if (loading) {

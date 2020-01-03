@@ -27,8 +27,10 @@ export default function useRegister() {
   );
 
   const { data, error, loading } = useQuery(GET_USERINFO, {
-    fetchPolicy: 'network-only', // token 만료돼서 지워진 경우 error로 뿌리기 위해
+    // fetchPolicy: 'network-only', // 쓰게 되면 비동기라 useMypage에서 이어질때 데이터 못 받아오고, 이미 useEffect 딱 한번 실행되고 끝남.
   });
+  console.log('data in useRegister', data);
+
   const [postInfo] = useMutation(MUTATE_INFO);
   const [setMotivation] = useMutation(SET_MOTIVATION);
   const [setExerciseAbleDays] = useMutation(SET_EXERCISE_ABLE_DAYS);

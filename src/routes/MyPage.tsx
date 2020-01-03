@@ -2,6 +2,7 @@
 import React from 'react';
 import { Row, Col, Button, Result } from 'antd';
 import { css, jsx } from '@emotion/core';
+import cookie from 'js-cookie';
 
 import RegisterInput from '../components/Register/RegisterInput';
 import { questionList } from '../config/fakeData';
@@ -37,7 +38,8 @@ function MyPage({ history }: MyPageProps) {
   } = useMypage();
 
   if (loading) return <Loading />;
-  if (!data) return <ErrorLoginFirst error={error} />;
+  if (!data || !cookie.get('access-token'))
+    return <ErrorLoginFirst error={error} />;
 
   return (
     <div>
