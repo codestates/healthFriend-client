@@ -87,7 +87,8 @@ function Home({ history }: HomeProps) {
                     key={oneData.nickname}
                     nickname={oneData.nickname}
                     levelOf3Dae={oneData.levelOf3Dae}
-                    messageToFriend={oneData.messageToFriend}
+                    weekdays={oneData.weekdays}
+                    ableDistricts={oneData.ableDistricts}
                   />
                 ))}
               </Row>

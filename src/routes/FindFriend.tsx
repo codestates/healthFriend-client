@@ -1,13 +1,14 @@
 /** @jsx jsx */
-import { Row, Col } from 'antd';
+import { useState } from 'react';
+import { Row, Col, Button } from 'antd';
 import { css, jsx } from '@emotion/core';
-import { useQuery } from '@apollo/react-hooks';
+import { useLazyQuery } from '@apollo/react-hooks';
 
 import SelectPlace from '../components/FindFriend/SelectPlace';
 import SelectDefault from '../components/FindFriend/SelectDefault';
 import UserCard from '../components/FindFriend/UserCard';
 import { questionList } from '../config/fakeData';
-import { GET_USERS } from '../graphql/queries';
+import { GET_FILTERED_USERS } from '../graphql/queries';
 import Loading from '../components/Shared/Loading';
 import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 
@@ -16,9 +17,23 @@ const filterCSS = css`
 `;
 
 function FindFriend() {
-  const { loading, error, data } = useQuery(GET_USERS, {
-    fetchPolicy: 'network-only',
+  const [filter, setFilter] = useState<any>({
+    openImageChoice: [],
+    levelOf3Dae: [],
+    motivations: [],
+    weekdays: [],
   });
+  const [places, setPlaces] = useState<string[]>([]);
+
+  const [getFilteredUsers, { loading, data, error }] = useLazyQuery(
+    GET_FILTERED_USERS,
+    {
+      fetchPolicy: 'network-only',
+    },
+  );
+
+  console.log('filter', filter);
+  console.log('places', places);
 
   if (loading) return <Loading />;
   if (error)
@@ -34,34 +49,59 @@ function FindFriend() {
       (elm) => elm.subject === filterQ,
     );
     return subject === 'place' ? (
-      <Col md={5} key={question}>
-        <SelectPlace setPlaces={() => console.log(1)} selectedPlaces={[]} />
+      <Col md={6} key={question}>
+        <SelectPlace setPlaces={setPlaces} selectedPlaces={[]} />
       </Col>
     ) : (
-      <Col md={5} key={question}>
-        <SelectDefault dataSource={answer} placeholder={question} />
+      <Col md={4} key={question}>
+        <SelectDefault
+          subject={subject}
+          options={answer}
+          placeholder={question}
+          filter={filter}
+          setFilter={setFilter}
+        />
       </Col>
     );
   });
 
+  console.log('data', data);
+
   return (
     <Row type="flex" justify="center" style={{ marginTop: 20 }}>
-      <Col xs={20} md={20} css={filterCSS}>
+      <Col xs={22} md={22} css={filterCSS}>
         <Row gutter={24} type="flex" justify="space-between">
           {questions}
         </Row>
       </Col>
+      <Col xs={22} md={22}>
+        <Button
+          type="primary"
+          onClick={() => {
+            getFilteredUsers({ variables: { openImageChoice: 'OPEN' } });
+            // 여기만 바꾸면 친구 찾기 부분 완성
+          }}
+        >
+          친구 찾기!!
+        </Button>
+      </Col>
+      <br />
+      <br />
+      <br />
 
       <Col xs={20} md={20}>
         <Row gutter={24} type="flex" justify="space-between">
-          {data.users.map((oneData) => (
-            <UserCard
-              key={oneData.nickname}
-              nickname={oneData.nickname}
-              levelOf3Dae={oneData.levelOf3Dae}
-              messageToFriend={oneData.messageToFriend}
-            />
-          ))}
+          {data
+            ? data.filterUsers.map((oneData) => (
+                <UserCard
+                  key={oneData.nickname}
+                  nickname={oneData.nickname}
+                  levelOf3Dae={oneData.levelOf3Dae}
+                  weekdays={oneData.weekdays}
+                  ableDistricts={oneData.ableDistricts}
+                />
+              ))
+            : null}
         </Row>
       </Col>
     </Row>
