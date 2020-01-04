@@ -7,6 +7,7 @@ import {
   MUTATE_INFO,
   SET_MOTIVATION,
   SET_EXERCISE_ABLE_DAYS,
+  SET_ABLE_DISTRICT,
 } from '../graphql/queries';
 
 export default function useRegister() {
@@ -22,18 +23,20 @@ export default function useRegister() {
 
   const [order, setOrder] = useState<number>(1);
   const [introduction, setIntroduction] = useState<string>('');
+  const [places, setPlaces] = useState<string[]>([]);
   const [totalCheckArr, setTotalCheckArr] = useState<any[]>(
     questions.map(() => []),
   );
 
   const { data, error, loading } = useQuery(GET_USERINFO, {
-    // fetchPolicy: 'network-only', // 쓰게 되면 비동기라 useMypage에서 이어질때 데이터 못 받아오고, 이미 useEffect 딱 한번 실행되고 끝남.
+    fetchPolicy: 'network-only',
+    // 쓰게 되면 비동기라 useMypage에서 이어질때 데이터 못 받아오고, 이미 useEffect 딱 한번 실행되고 끝남.
   });
-  console.log('data in useRegister', data);
 
   const [postInfo] = useMutation(MUTATE_INFO);
   const [setMotivation] = useMutation(SET_MOTIVATION);
   const [setExerciseAbleDays] = useMutation(SET_EXERCISE_ABLE_DAYS);
+  const [setAbleDistrict] = useMutation(SET_ABLE_DISTRICT);
   // mutation시 error도 콜백으로 만들어줘야 함. onError, onComplete 등이 있는듯.
 
   // 체크박스에서 선택된 것을 boolean 배열 -> 번호 배열 -> 값 배열로 변경하여 받음.
@@ -63,6 +66,8 @@ export default function useRegister() {
     setOrder,
     introduction,
     setIntroduction,
+    places,
+    setPlaces,
     setTotalCheckArr,
     totalCheckArr,
     questions,
@@ -76,5 +81,6 @@ export default function useRegister() {
     postInfo,
     setMotivation,
     setExerciseAbleDays,
+    setAbleDistrict,
   };
 }

@@ -27,8 +27,8 @@ function MypageDropdown({ name, history }: MypageDropdownProps) {
       <Menu.Item>
         <Link
           to="/"
-          onClick={async () => {
-            await cookie.remove('access-token', {
+          onClick={() => {
+            cookie.remove('access-token', {
               // 공식문서에는 path 를 필수적으로 적으란 식으로 되어있는데 서버에서 심어서 그런지 적으면 안 됨.
               // path: '/login',
               // domain:
@@ -36,8 +36,8 @@ function MypageDropdown({ name, history }: MypageDropdownProps) {
               //     ? 'http://localhost:4000/'
               //     : 'https://api.healthfriend.club/',
             });
-            await history.push('/');
-            await window.location.reload();
+            history.push('/');
+            // window.location.reload();
             // 여기도 reload 보다는 subscription으로 바꾸는게 좋을듯.
           }}
         >

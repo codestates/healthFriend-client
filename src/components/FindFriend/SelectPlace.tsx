@@ -1,24 +1,96 @@
 /** @jsx jsx */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { jsx } from '@emotion/core';
 import { TreeSelect } from 'antd';
-import { placeForFindFriends } from '../../config/fakeData';
+import { useQuery } from '@apollo/react-hooks';
+
+// import { placeForFindFriends } from '../../config/fakeData';
+import { GET_PLACES } from '../../graphql/queries';
+import Loading from '../Shared/Loading';
 
 const { SHOW_PARENT } = TreeSelect;
 
-function SelectPlace() {
-  const [value, setValue] = useState([]);
+type SelectPlaceProps = {
+  setPlaces: (args: string[]) => void;
+  selectedPlaces: any[];
+};
 
-  const onChange = (val) => {
-    setValue(val);
-  };
+function SelectPlace({ setPlaces, selectedPlaces }: SelectPlaceProps) {
+  const guList: string[] = [];
+  const placeForTree: any[] = [];
+
+  const [value, setValue] = useState<any[]>([]);
+
+  const finalList: string[] = [];
+
+  useEffect(() => {
+    if (value.length > 0) {
+      value.forEach((selected) => {
+        if (guList.indexOf(selected) === -1) {
+          finalList.push(selected);
+        } else {
+          placeForTree
+            .filter((oneGu) => oneGu.value === selected)[0]
+            .children.map((oneDong) => oneDong.value)
+            .forEach((dongValue) => {
+              if (finalList.indexOf(dongValue) === -1) {
+                finalList.push(dongValue);
+              }
+            });
+        }
+      });
+    }
+    setPlaces(finalList);
+    // eslint-disable-next-line
+  }, [value]);
+
+  useEffect(() => {
+    if (selectedPlaces) {
+      setValue(selectedPlaces);
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  const { data, loading } = useQuery(GET_PLACES);
+
+  if (loading) return <Loading />;
+
+  if (data) {
+    data.allDistricts.forEach((onePlace) => {
+      const { idOfDong, nameOfDong, idOfGu, nameOfGu } = onePlace;
+      if (guList.indexOf(nameOfGu) === -1) {
+        guList.push(nameOfGu);
+        placeForTree.push({
+          title: nameOfGu,
+          value: nameOfGu,
+          key: idOfGu,
+          children: [
+            {
+              title: nameOfDong,
+              value: idOfDong,
+              key: idOfDong,
+            },
+          ],
+        });
+      } else {
+        const targetObj: any = placeForTree.filter(
+          (oneGu) => oneGu.title === nameOfGu,
+        )[0];
+        targetObj.children.push({
+          title: nameOfDong,
+          value: idOfDong,
+          key: idOfDong,
+        });
+      }
+    });
+  }
 
   return (
     <TreeSelect
       size="large"
-      treeData={placeForFindFriends}
+      treeData={placeForTree}
       value={value}
-      onChange={onChange}
+      onChange={setValue}
       treeCheckable
       showCheckedStrategy={SHOW_PARENT}
       searchPlaceholder="원하는 지역이 어디신가요?"

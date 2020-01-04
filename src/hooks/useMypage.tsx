@@ -5,6 +5,7 @@ import { questionList } from '../config/fakeData';
 export default function useMypage() {
   const {
     setIntroduction,
+    setPlaces,
     setTotalCheckArr,
     totalCheckArr,
     submitVariable,
@@ -13,6 +14,8 @@ export default function useMypage() {
     postInfo,
     setMotivation,
     setExerciseAbleDays,
+    setAbleDistrict,
+    places,
     data,
     error,
     loading,
@@ -35,8 +38,6 @@ export default function useMypage() {
         selectedArray = data.me[subj].map((elm) => elm[subj.slice(0, -1)]);
       }
 
-      console.log('selectedArray', selectedArray);
-
       return oneQ.value.map((elm) => {
         if (selectedArray.indexOf(elm) === -1) {
           return false;
@@ -49,15 +50,15 @@ export default function useMypage() {
 
   // eslint-hook 있을땐 빈배열 넣을 수 없어서 주석처리 해버림.
   useEffect(() => {
-    console.log('data', data);
     if (data) {
       setTotalCheckArr(subjects.map((subj) => getSelectedBooleans(subj)));
     }
     // eslint-disable-next-line
-  }, []);
+  }, [data]);
 
   return {
     setIntroduction,
+    setPlaces,
     setTotalCheckArr,
     totalCheckArr,
     submitVariable,
@@ -66,6 +67,8 @@ export default function useMypage() {
     postInfo,
     setMotivation,
     setExerciseAbleDays,
+    setAbleDistrict,
+    places,
     data,
     error,
     loading,

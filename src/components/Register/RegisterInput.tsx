@@ -2,8 +2,9 @@
 import { Input } from 'antd';
 import { css, jsx } from '@emotion/core';
 
-import PlaceSelect from './PlaceSelect';
+// import PlaceSelect from './PlaceSelect';
 import useRegisterInput from '../../hooks/useRegisterInput';
+import SelectPlace from '../FindFriend/SelectPlace';
 
 const wrapper = css`
   margin-bottom: 20px;
@@ -23,6 +24,8 @@ type RegisterInputProps = {
   introduction: string;
   setTotalCheckArr: (...args: any[]) => void;
   setIntroduction: (args: string) => void;
+  setPlaces: (args: string[]) => void;
+  selectedPlaces: any[];
 };
 
 export default function RegisterInput({
@@ -31,6 +34,8 @@ export default function RegisterInput({
   introduction,
   setTotalCheckArr,
   setIntroduction,
+  setPlaces,
+  selectedPlaces,
 }: RegisterInputProps) {
   const { questionCheckboxes, question, subject } = useRegisterInput({
     order,
@@ -44,7 +49,9 @@ export default function RegisterInput({
       {['place', 'messageToFriend'].indexOf(subject) === -1 && (
         <div css={checkboxDiv}>{questionCheckboxes}</div>
       )}
-      {subject === 'place' ? <PlaceSelect /> : null}
+      {subject === 'place' ? (
+        <SelectPlace setPlaces={setPlaces} selectedPlaces={selectedPlaces} />
+      ) : null}
       {subject === 'messageToFriend' ? (
         <TextArea
           rows={4}

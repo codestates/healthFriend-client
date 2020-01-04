@@ -22,6 +22,7 @@ type MyPageProps = {
 function MyPage({ history }: MyPageProps) {
   const {
     setIntroduction,
+    setPlaces,
     setTotalCheckArr,
     totalCheckArr,
     submitVariable,
@@ -30,6 +31,8 @@ function MyPage({ history }: MyPageProps) {
     postInfo,
     setMotivation,
     setExerciseAbleDays,
+    setAbleDistrict,
+    places,
     data,
     error,
     loading,
@@ -95,6 +98,10 @@ function MyPage({ history }: MyPageProps) {
                       setTotalCheckArr={setTotalCheckArr}
                       setIntroduction={setIntroduction}
                       introduction={data.me.messageToFriend}
+                      setPlaces={setPlaces}
+                      selectedPlaces={data.me.ableDistricts.map(
+                        (oneData) => oneData.district.idOfDong,
+                      )}
                     />
                     <br />
                   </React.Fragment>
@@ -114,6 +121,9 @@ function MyPage({ history }: MyPageProps) {
                     setExerciseAbleDays({
                       variables: submitExerciseDays,
                     });
+                    setAbleDistrict({
+                      variables: { dongIds: places },
+                    });
                     setComplete(true);
                   }}
                 >
@@ -123,6 +133,7 @@ function MyPage({ history }: MyPageProps) {
                   type="primary"
                   onClick={() => {
                     history.push('/');
+                    window.scrollTo(0, 0);
                   }}
                 >
                   취소하고 홈으로

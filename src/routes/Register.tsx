@@ -2,7 +2,7 @@
 import { Row, Col, Button, Result } from 'antd';
 import { css, jsx } from '@emotion/core';
 
-import cookie from 'js-cookie';
+// import cookie from 'js-cookie';
 import ProgressBar from '../components/Register/ProgressBar';
 import RegisterImage from '../static/registerImage.jpg';
 import explanation from '../config/Message';
@@ -37,6 +37,8 @@ function Register({ history }: RegisterProps) {
     setOrder,
     introduction,
     setIntroduction,
+    places,
+    setPlaces,
     setTotalCheckArr,
     totalCheckArr,
     questions,
@@ -50,9 +52,10 @@ function Register({ history }: RegisterProps) {
     postInfo,
     setMotivation,
     setExerciseAbleDays,
+    setAbleDistrict,
   } = useRegister();
 
-  if (!data || !cookie.get('access-token')) {
+  if (!data /* || !cookie.get('access-token') */) {
     return <ErrorLoginFirst error={error} />;
   }
   if (loading) {
@@ -97,6 +100,8 @@ function Register({ history }: RegisterProps) {
               setTotalCheckArr={setTotalCheckArr}
               introduction={introduction}
               setIntroduction={setIntroduction}
+              setPlaces={setPlaces}
+              selectedPlaces={[]}
             />
 
             <div>
@@ -126,6 +131,9 @@ function Register({ history }: RegisterProps) {
                     });
                     setExerciseAbleDays({
                       variables: submitExerciseDays,
+                    });
+                    setAbleDistrict({
+                      variables: { dongIds: places },
                     });
                   }
                   setOrder(order + 1);

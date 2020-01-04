@@ -16,6 +16,14 @@ export const GET_USERINFO = gql`
         id
         weekday
       }
+      ableDistricts {
+        district {
+          idOfGu
+          nameOfGu
+          idOfDong
+          nameOfDong
+        }
+      }
     }
   }
 `;
@@ -31,11 +39,22 @@ export const GET_USERS = gql`
   }
 `;
 
+export const GET_PLACES = gql`
+  {
+    allDistricts {
+      idOfDong
+      nameOfDong
+      idOfGu
+      nameOfGu
+    }
+  }
+`;
+
 export const MUTATE_INFO = gql`
   mutation PostInfo(
     $nickname: String!
-    $openImageChoice: OpenImageChoice!
-    $levelOf3Dae: LevelOf3Dae!
+    $openImageChoice: OpenImageChoiceEnum!
+    $levelOf3Dae: LevelOf3DaeEnum!
     $messageToFriend: String
   ) {
     me(
@@ -61,6 +80,18 @@ export const SET_EXERCISE_ABLE_DAYS = gql`
   mutation SetExerciseAbleDay($input: [WeekdayEnum]) {
     setExerciseAbleDay(input: $input) {
       weekday
+    }
+  }
+`;
+
+export const SET_ABLE_DISTRICT = gql`
+  mutation SetAbleDistrict($dongIds: [String]) {
+    setAbleDistrict(dongIds: $dongIds) {
+      id
+      district {
+        nameOfGu
+        nameOfDong
+      }
     }
   }
 `;
