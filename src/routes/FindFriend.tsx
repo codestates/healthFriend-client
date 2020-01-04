@@ -34,8 +34,8 @@ function FindFriend() {
       (elm) => elm.subject === filterQ,
     );
     return subject === 'place' ? (
-      <Col md={9} key={question}>
-        <SelectPlace />
+      <Col md={5} key={question}>
+        <SelectPlace setPlaces={() => console.log(1)} selectedPlaces={[]} />
       </Col>
     ) : (
       <Col md={5} key={question}>

@@ -1,6 +1,6 @@
 import React from 'react';
-import OnePlaceDropdown from './Dropdown';
-import usePlaceSelect from '../../hooks/usePlaceSelect';
+import OnePlaceDropdown from './Dropdown-d';
+import usePlaceSelect from '../../hooks/usePlaceSelect-d';
 
 function PlaceSelect() {
   const { DropdownButton, setPlaceList, placeList } = usePlaceSelect();
