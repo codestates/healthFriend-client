@@ -1,31 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Select } from 'antd';
+import { questionList } from '../../config/fakeData';
 
 const { Option } = Select;
 
 type SelectDefaultProps = {
-  dataSource: any[];
+  subject: string;
+  options: any[];
   placeholder: string;
+  filter: any;
+  setFilter: (args: any) => void;
 };
 
-function SelectDefault({ dataSource, placeholder }: SelectDefaultProps) {
+function SelectDefault({
+  subject,
+  options,
+  placeholder,
+  filter,
+  setFilter,
+}: SelectDefaultProps) {
   const [value, setValue] = useState<any[]>([]);
 
-  const onChange = (val) => {
-    setValue(val);
+  const getMatchedValue = (data: string): any => {
+    const questionIndex: number = questionList.inputRegister
+      .map((oneQ) => oneQ.subject)
+      .indexOf(subject);
+    const optionIndex: number = questionList.inputRegister[
+      questionIndex
+    ].answer.indexOf(data);
+    return questionList.inputRegister[questionIndex].value[optionIndex];
   };
+
+  useEffect(() => {
+    setFilter({
+      ...filter,
+      [subject]: value,
+    });
+    // eslint-disable-next-line
+  }, [value]);
+
+  console.log('value', value);
 
   return (
     <Select
       size="large"
       mode="multiple"
-      defaultValue={value}
+      value={value}
       style={{ width: '100%' }}
-      onChange={onChange}
+      onChange={setValue}
       placeholder={placeholder}
     >
-      {dataSource.map((data) => (
-        <Option key={data}>{data}</Option>
+      {options.map((data) => (
+        <Option key={getMatchedValue(data)}>{data}</Option>
       ))}
     </Select>
   );

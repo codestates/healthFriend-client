@@ -55,12 +55,14 @@ function Register({ history }: RegisterProps) {
     setAbleDistrict,
   } = useRegister();
 
-  if (!data /* || !cookie.get('access-token') */) {
-    return <ErrorLoginFirst error={error} />;
-  }
   if (loading) {
     return <Loading />;
   }
+
+  if (!data /* || !cookie.get('access-token') */) {
+    return <ErrorLoginFirst error={error} />;
+  }
+
   // if (data.me.levelOf3Dae && data.me.messageToFriend) {
   //   return <Redirect to="/" />;
   // }

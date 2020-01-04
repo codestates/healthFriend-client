@@ -32,9 +32,27 @@ export const GET_USERS = gql`
   {
     users {
       id
+      email
       nickname
+      openImageChoice
       levelOf3Dae
       messageToFriend
+      motivations {
+        id
+        motivation
+      }
+      weekdays {
+        id
+        weekday
+      }
+      ableDistricts {
+        district {
+          idOfGu
+          nameOfGu
+          idOfDong
+          nameOfDong
+        }
+      }
     }
   }
 `;
@@ -49,6 +67,48 @@ export const GET_PLACES = gql`
     }
   }
 `;
+
+export const GET_FILTERED_USERS = gql`
+  query FilterUsers(
+    $openImageChoice: OpenImageChoiceEnum
+    $levelOf3Dae: LevelOf3DaeEnum
+    $motivations: [MotivationEnum]
+    $weekdays: [WeekdayEnum]
+    $districts: [String]
+  ) {
+    filterUsers(
+      openImageChoice: $openImageChoice
+      levelOf3Dae: $levelOf3Dae
+      motivations: $motivations
+      weekdays: $weekdays
+      districts: $districts
+    ) {
+      id
+      email
+      nickname
+      openImageChoice
+      levelOf3Dae
+      messageToFriend
+      motivations {
+        id
+        motivation
+      }
+      weekdays {
+        id
+        weekday
+      }
+      ableDistricts {
+        district {
+          idOfGu
+          nameOfGu
+          idOfDong
+          nameOfDong
+        }
+      }
+    }
+  }
+`;
+// 위의 부분 fragment로 변경
 
 export const MUTATE_INFO = gql`
   mutation PostInfo(
