@@ -80,12 +80,13 @@ function Home({ history }: HomeProps) {
       {cookie.get('access-token') && dataUsers ? (
         <Col xs={20}>
           <Row type="flex" justify="center" style={{ marginTop: 20 }}>
-            <Col xs={20} md={20}>
-              <Row gutter={24} type="flex" justify="space-between">
+            <Col xs={24}>
+              <Row gutter={24}>
                 {dataUsers.users.map((oneData) => (
                   <UserCard
                     key={oneData.email}
                     nickname={oneData.nickname}
+                    gender={oneData.gender}
                     openImageChoice={oneData.openImageChoice}
                     messageToFriend={oneData.messageToFriend}
                     motivations={oneData.motivations}

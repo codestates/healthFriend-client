@@ -16,6 +16,10 @@ const filterCSS = css`
   margin-bottom: 20px;
 `;
 
+const marginFilterdCards = css`
+  margin-top: 40px;
+`;
+
 function FindFriend() {
   const [filter, setFilter] = useState<any>({
     openImageChoice: [],
@@ -69,25 +73,27 @@ function FindFriend() {
       // 여기도 서버에서 나오는 에러 종류에
       // 따라서 Login 먼저 하세요를 보여줄지, 혹은 다른 에러 메세지를 보여줄지
     }
+
+    console.log(data);
+
     return (
-      <Col xs={20} md={20}>
-        <Row gutter={24} type="flex" justify="space-between">
-          {data
-            ? data.filterUsers.map((oneData) => (
-                <UserCard
-                  key={oneData.email}
-                  nickname={oneData.nickname}
-                  openImageChoice={oneData.openImageChoice}
-                  messageToFriend={oneData.messageToFriend}
-                  motivations={oneData.motivations}
-                  levelOf3Dae={oneData.levelOf3Dae}
-                  weekdays={oneData.weekdays}
-                  ableDistricts={oneData.ableDistricts}
-                />
-              ))
-            : null}
-        </Row>
-      </Col>
+      <Row gutter={24} css={marginFilterdCards}>
+        {data
+          ? data.filterUsers.map((oneData) => (
+              <UserCard
+                key={oneData.email}
+                nickname={oneData.nickname}
+                gender={oneData.gender}
+                openImageChoice={oneData.openImageChoice}
+                messageToFriend={oneData.messageToFriend}
+                motivations={oneData.motivations}
+                levelOf3Dae={oneData.levelOf3Dae}
+                weekdays={oneData.weekdays}
+                ableDistricts={oneData.ableDistricts}
+              />
+            ))
+          : null}
+      </Row>
     );
   }
 
@@ -108,10 +114,9 @@ function FindFriend() {
           친구 찾기!!
         </Button>
       </Col>
-      <br />
-      <br />
-      <br />
-      <FilteredCards />
+      <Col xs={20}>
+        <FilteredCards />
+      </Col>
     </Row>
   );
 }
