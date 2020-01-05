@@ -65,8 +65,6 @@ function FindFriend() {
     );
   });
 
-  console.log('data', data);
-
   return (
     <Row type="flex" justify="center" style={{ marginTop: 20 }}>
       <Col xs={22} md={22} css={filterCSS}>
@@ -77,8 +75,10 @@ function FindFriend() {
       <Col xs={22} md={22}>
         <Button
           type="primary"
-          onClick={() => {
-            getFilteredUsers({ variables: { openImageChoice: 'OPEN' } });
+          onClick={(e) => {
+            e.preventDefault();
+            getFilteredUsers({ variables: { ...filter, districts: places } });
+            // getFilteredUsers({ variables: { openImageChoice: ['OPEN'] } });
             // 여기만 바꾸면 친구 찾기 부분 완성
           }}
         >

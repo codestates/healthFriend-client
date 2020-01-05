@@ -39,8 +39,6 @@ function SelectDefault({
     // eslint-disable-next-line
   }, [value]);
 
-  console.log('value', value);
-
   return (
     <Select
       size="large"
