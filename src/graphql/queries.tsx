@@ -70,8 +70,8 @@ export const GET_PLACES = gql`
 
 export const GET_FILTERED_USERS = gql`
   query FilterUsers(
-    $openImageChoice: OpenImageChoiceEnum
-    $levelOf3Dae: LevelOf3DaeEnum
+    $openImageChoice: [OpenImageChoiceEnum]
+    $levelOf3Dae: [LevelOf3DaeEnum]
     $motivations: [MotivationEnum]
     $weekdays: [WeekdayEnum]
     $districts: [String]
