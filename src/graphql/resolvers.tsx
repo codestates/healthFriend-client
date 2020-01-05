@@ -1,10 +1,11 @@
-// import gql from 'graphql-tag';
+import gql from 'graphql-tag';
 
-export const typeDefs = `
-  type Query {
-    note: {
-      name: String
-    }
+export const typeDefs = gql`
+  extend type Query {
+    isLoggedIn: Boolean!
+  }
+  extend type Mutation {
+    changeLoginState(id: ID!): Boolean
   }
 `;
 
@@ -21,4 +22,3 @@ export const resolvers = {
   //   user: () => ({ __typename: 'User', name: 'Trainer' }),
   // },
 };
-// export const defaults = {};

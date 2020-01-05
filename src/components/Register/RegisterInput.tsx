@@ -2,7 +2,6 @@
 import { Input } from 'antd';
 import { css, jsx } from '@emotion/core';
 
-// import PlaceSelect from './PlaceSelect';
 import useRegisterInput from '../../hooks/useRegisterInput';
 import SelectPlace from '../FindFriend/SelectPlace';
 
@@ -46,10 +45,10 @@ export default function RegisterInput({
   return (
     <div css={wrapper}>
       <h2>{question}</h2>
-      {['place', 'messageToFriend'].indexOf(subject) === -1 && (
+      {['ableDistricts', 'messageToFriend'].indexOf(subject) === -1 && (
         <div css={checkboxDiv}>{questionCheckboxes}</div>
       )}
-      {subject === 'place' ? (
+      {subject === 'ableDistricts' ? (
         <SelectPlace setPlaces={setPlaces} selectedPlaces={selectedPlaces} />
       ) : null}
       {subject === 'messageToFriend' ? (

@@ -43,7 +43,7 @@ function FindFriend() {
     const [{ subject, question, answer }] = questionList.inputRegister.filter(
       (elm) => elm.subject === filterQ,
     );
-    return subject === 'place' ? (
+    return subject === 'ableDistricts' ? (
       <Col md={6} key={question}>
         <SelectPlace setPlaces={setPlaces} selectedPlaces={[]} />
       </Col>
