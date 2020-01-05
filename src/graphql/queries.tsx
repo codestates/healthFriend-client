@@ -86,6 +86,7 @@ export const GET_FILTERED_USERS = gql`
       id
       email
       nickname
+      gender
       openImageChoice
       levelOf3Dae
       messageToFriend
