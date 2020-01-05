@@ -84,7 +84,7 @@ function Home({ history }: HomeProps) {
               <Row gutter={24} type="flex" justify="space-between">
                 {dataUsers.users.map((oneData) => (
                   <UserCard
-                    key={oneData.nickname}
+                    key={oneData.email}
                     nickname={oneData.nickname}
                     openImageChoice={oneData.openImageChoice}
                     messageToFriend={oneData.messageToFriend}

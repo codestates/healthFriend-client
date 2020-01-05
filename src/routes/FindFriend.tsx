@@ -35,11 +35,6 @@ function FindFriend() {
   console.log('filter', filter);
   console.log('places', places);
 
-  if (loading) return <Loading />;
-  if (error)
-    // 여기도 서버에서 나오는 에러 종류에 따라서 Login 먼저 하세요를 보여줄지, 혹은 다른 에러 메세지를 보여줄지
-    return <ErrorLoginFirst error={error} />;
-
   const filterList = questionList.inputRegister
     .filter((elm) => elm.isFilterList)
     .map((ele) => ele.subject);
@@ -65,36 +60,22 @@ function FindFriend() {
     );
   });
 
-  return (
-    <Row type="flex" justify="center" style={{ marginTop: 20 }}>
-      <Col xs={22} md={22} css={filterCSS}>
-        <Row gutter={24} type="flex" justify="space-between">
-          {questions}
-        </Row>
-      </Col>
-      <Col xs={22} md={22}>
-        <Button
-          type="primary"
-          onClick={(e) => {
-            e.preventDefault();
-            getFilteredUsers({ variables: { ...filter, districts: places } });
-            // getFilteredUsers({ variables: { openImageChoice: ['OPEN'] } });
-            // 여기만 바꾸면 친구 찾기 부분 완성
-          }}
-        >
-          친구 찾기!!
-        </Button>
-      </Col>
-      <br />
-      <br />
-      <br />
-
+  function FilteredCards() {
+    if (loading) {
+      return <Loading />;
+    }
+    if (error) {
+      return <ErrorLoginFirst error={error} />;
+      // 여기도 서버에서 나오는 에러 종류에
+      // 따라서 Login 먼저 하세요를 보여줄지, 혹은 다른 에러 메세지를 보여줄지
+    }
+    return (
       <Col xs={20} md={20}>
         <Row gutter={24} type="flex" justify="space-between">
           {data
             ? data.filterUsers.map((oneData) => (
                 <UserCard
-                  key={oneData.nickname}
+                  key={oneData.email}
                   nickname={oneData.nickname}
                   openImageChoice={oneData.openImageChoice}
                   messageToFriend={oneData.messageToFriend}
@@ -107,6 +88,30 @@ function FindFriend() {
             : null}
         </Row>
       </Col>
+    );
+  }
+
+  return (
+    <Row type="flex" justify="center" style={{ marginTop: 20 }}>
+      <Col xs={22} md={22} css={filterCSS}>
+        <Row gutter={24} type="flex" justify="space-between">
+          {questions}
+        </Row>
+      </Col>
+      <Col xs={22} md={22}>
+        <Button
+          type="primary"
+          onClick={() => {
+            getFilteredUsers({ variables: { ...filter, districts: places } });
+          }}
+        >
+          친구 찾기!!
+        </Button>
+      </Col>
+      <br />
+      <br />
+      <br />
+      <FilteredCards />
     </Row>
   );
 }
