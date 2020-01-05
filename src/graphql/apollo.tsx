@@ -24,17 +24,19 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
+const cache = new InMemoryCache();
+
 const client = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache,
   link: ApolloLink.from([errorLink, httpLink]),
   typeDefs,
   resolvers,
 });
 
-// cache.writeData({
-//   data: {
-//     isLoggedIn: false,
-//   },
-// });
+cache.writeData({
+  data: {
+    isLoggedIn: false,
+  },
+});
 
 export default client;

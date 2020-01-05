@@ -5,7 +5,7 @@ import { css, jsx } from '@emotion/core';
 import { useQuery } from '@apollo/react-hooks';
 
 import MypageDropdown from './MypageDropdown';
-import { GET_USERINFO } from '../../graphql/queries';
+import { GET_USERINFO, IS_LOGGED_IN } from '../../graphql/queries';
 
 const navHeader = css`
   background-color: #1e272e;
@@ -35,6 +35,10 @@ const navLinkItem = css`
 // 로그인 과정에서 api call을 하면 cache에 이후 자동으로 저장되는건지도 확인
 
 export default function Header() {
+  const { data: loginData } = useQuery(IS_LOGGED_IN);
+
+  console.log('local query', loginData);
+
   const { data } = useQuery(GET_USERINFO, {
     fetchPolicy: 'network-only',
   });
@@ -55,7 +59,7 @@ export default function Header() {
       >
         헬친
       </NavLink>
-      {data ? (
+      {/* data */ loginData.isLoggedIn ? (
         <React.Fragment>
           {/* {data.me.levelOf3Dae && data.me.messageToFriend ? null : ( */}
           <NavLink to="/register" className="item" css={navLinkItem}>
@@ -71,7 +75,7 @@ export default function Header() {
         </React.Fragment>
       ) : null}
 
-      {data ? (
+      {/* data */ loginData.isLoggedIn ? (
         <MypageDropdown name={data.me.nickname} />
       ) : (
         <NavLink to="/login" className="item" css={navLinkItem}>

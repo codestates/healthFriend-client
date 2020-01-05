@@ -2,9 +2,10 @@ import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { Menu, Dropdown, Icon } from 'antd';
 import cookie from 'js-cookie';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useApolloClient } from '@apollo/react-hooks';
 
 import { GET_USERINFO } from '../../graphql/queries';
+import useCheckToken from '../../utils/useCheckToken';
 
 type MypageDropdownProps = {
   name: string;
@@ -14,9 +15,11 @@ type MypageDropdownProps = {
 };
 
 function MypageDropdown({ name, history }: MypageDropdownProps) {
+  // const client = useApolloClient();
   const { data, refetch } = useQuery(GET_USERINFO, {
     fetchPolicy: 'network-only',
   });
+  const { client, getInfo, loadingUser, dataUser } = useCheckToken();
 
   const menu = (
     <Menu>
@@ -28,6 +31,7 @@ function MypageDropdown({ name, history }: MypageDropdownProps) {
         <Link
           to="/"
           onClick={() => {
+            client.writeData({ data: { isLoggedIn: false } });
             cookie.remove('access-token', {
               // 공식문서에는 path 를 필수적으로 적으란 식으로 되어있는데 서버에서 심어서 그런지 적으면 안 됨.
               // path: '/login',
@@ -51,9 +55,10 @@ function MypageDropdown({ name, history }: MypageDropdownProps) {
     <Dropdown overlay={menu}>
       <Link
         to="#"
-        onMouseEnter={() =>
-          cookie.get('access-token') && data ? refetch() : null
-        }
+        onMouseEnter={() => {
+          getInfo();
+          // !loadingUser && dataUser && data ? refetch() : null
+        }}
       >
         {name}친구님 <Icon type="down" />
       </Link>
