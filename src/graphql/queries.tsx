@@ -5,6 +5,7 @@ export const GET_USERINFO = gql`
     me {
       email
       nickname
+      gender
       openImageChoice
       levelOf3Dae
       messageToFriend
@@ -34,6 +35,7 @@ export const GET_USERS = gql`
       id
       email
       nickname
+      gender
       openImageChoice
       levelOf3Dae
       messageToFriend
@@ -86,6 +88,7 @@ export const GET_FILTERED_USERS = gql`
       id
       email
       nickname
+      gender
       openImageChoice
       levelOf3Dae
       messageToFriend
@@ -113,6 +116,7 @@ export const GET_FILTERED_USERS = gql`
 export const MUTATE_INFO = gql`
   mutation PostInfo(
     $nickname: String!
+    $gender: GenderEnum!
     $openImageChoice: OpenImageChoiceEnum!
     $levelOf3Dae: LevelOf3DaeEnum!
     $messageToFriend: String
@@ -120,6 +124,7 @@ export const MUTATE_INFO = gql`
     me(
       messageToFriend: $messageToFriend
       nickname: $nickname
+      gender: $gender
       openImageChoice: $openImageChoice
       levelOf3Dae: $levelOf3Dae
     ) {

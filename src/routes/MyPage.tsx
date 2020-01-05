@@ -90,22 +90,24 @@ function MyPage({ history }: MyPageProps) {
               />
             ) : (
               <React.Fragment>
-                {questionList.inputRegister.map((oneQ, idx) => (
-                  <React.Fragment key={oneQ.question}>
-                    <RegisterInput
-                      order={idx + 1}
-                      totalCheckArr={totalCheckArr}
-                      setTotalCheckArr={setTotalCheckArr}
-                      setIntroduction={setIntroduction}
-                      introduction={data.me.messageToFriend}
-                      setPlaces={setPlaces}
-                      selectedPlaces={data.me.ableDistricts.map(
-                        (oneData) => oneData.district.idOfDong,
-                      )}
-                    />
-                    <br />
-                  </React.Fragment>
-                ))}
+                {questionList.inputRegister.map((oneQ, idx) =>
+                  oneQ.subject === 'gender' ? null : (
+                    <React.Fragment key={oneQ.question}>
+                      <RegisterInput
+                        order={idx + 1}
+                        totalCheckArr={totalCheckArr}
+                        setTotalCheckArr={setTotalCheckArr}
+                        setIntroduction={setIntroduction}
+                        introduction={data.me.messageToFriend}
+                        setPlaces={setPlaces}
+                        selectedPlaces={data.me.ableDistricts.map(
+                          (oneData) => oneData.district.idOfDong,
+                        )}
+                      />
+                      <br />
+                    </React.Fragment>
+                  ),
+                )}
                 <Button
                   type="primary"
                   onClick={() => {
