@@ -96,6 +96,9 @@ function FindFriend() {
                 <UserCard
                   key={oneData.nickname}
                   nickname={oneData.nickname}
+                  openImageChoice={oneData.openImageChoice}
+                  messageToFriend={oneData.messageToFriend}
+                  motivations={oneData.motivations}
                   levelOf3Dae={oneData.levelOf3Dae}
                   weekdays={oneData.weekdays}
                   ableDistricts={oneData.ableDistricts}
