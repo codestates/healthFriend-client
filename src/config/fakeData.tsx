@@ -23,7 +23,7 @@ const questionList = {
     },
     {
       number: 2,
-      subject: 'place',
+      subject: 'ableDistricts',
       question: '운동 가능 지역은 어디신가요?',
       answer: ['none'],
       value: ['none'],

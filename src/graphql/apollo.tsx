@@ -4,19 +4,15 @@ import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { onError } from 'apollo-link-error';
 
-// import { typeDefs, defaults, resolvers } from './clientState';
+import { typeDefs, resolvers } from './resolvers';
 
-const link = createHttpLink({
+const httpLink = createHttpLink({
   uri:
     process.env.NODE_ENV === 'development'
       ? 'http://localhost:4000/graphql'
       : 'https://api.healthfriend.club/graphql',
   credentials: 'include',
 });
-
-// const errorLink = onError(({ graphQLErrors }) => {
-//   if (graphQLErrors) graphQLErrors.map(({ message }) => console.log(message));
-// });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
@@ -30,9 +26,15 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: ApolloLink.from([errorLink, link]),
-  // link,
-  // 여기에 typeDefs, defaults, resolvers 입력
+  link: ApolloLink.from([errorLink, httpLink]),
+  typeDefs,
+  resolvers,
 });
+
+// cache.writeData({
+//   data: {
+//     isLoggedIn: false,
+//   },
+// });
 
 export default client;
