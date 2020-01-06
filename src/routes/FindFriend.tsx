@@ -3,11 +3,12 @@ import { useState } from 'react';
 import { Row, Col, Button } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useLazyQuery, useQuery, useApolloClient } from '@apollo/react-hooks';
+import { Redirect } from 'react-router-dom';
 
 import SelectPlace from '../components/FindFriend/SelectPlace';
 import SelectDefault from '../components/FindFriend/SelectDefault';
 import UserCard from '../components/FindFriend/UserCard';
-import { questionList } from '../config/fakeData';
+import questionList from '../config/fakeData';
 import {
   GET_FILTERED_USERS,
   IS_LOGGED_IN,
@@ -36,7 +37,6 @@ function FindFriend({ history }: FindFriendProps) {
     weekdays: [],
   });
   const [places, setPlaces] = useState<string[]>([]);
-  const client = useApolloClient();
 
   const [getFilteredUsers, { loading, data, error }] = useLazyQuery(
     GET_FILTERED_USERS,
@@ -44,7 +44,6 @@ function FindFriend({ history }: FindFriendProps) {
       fetchPolicy: 'network-only',
     },
   );
-
   const { data: dataUser, error: errorUser, loading: loadingUser } = useQuery(
     GET_USERINFO,
     {
@@ -52,19 +51,22 @@ function FindFriend({ history }: FindFriendProps) {
     },
   );
   const { data: loginData } = useQuery(IS_LOGGED_IN);
+
+  const client = useApolloClient();
+
+  if (loginData.isLoggedIn === false) return <Redirect to="/" />;
+
   if (!loadingUser && !dataUser && loginData.isLoggedIn === true) {
     client.writeData({ data: { isLoggedIn: false } });
-    console.log('여기가 불리나?');
-    history.push('/login');
     return <ErrorLoginFirst error={errorUser} />;
   }
 
-  const filterList = questionList.inputRegister
+  const filterList = questionList
     .filter((elm) => elm.isFilterList)
     .map((ele) => ele.subject);
 
   const questions = filterList.map((filterQ) => {
-    const [{ subject, question, answer }] = questionList.inputRegister.filter(
+    const [{ subject, question, answer }] = questionList.filter(
       (elm) => elm.subject === filterQ,
     );
     return subject === 'ableDistricts' ? (
@@ -94,14 +96,13 @@ function FindFriend({ history }: FindFriendProps) {
     }
     if (error) {
       client.writeData({ data: { isLoggedIn: false } });
-      historys.push('/login');
+      alert('로그인 기한 만료로 검색 실패');
+      historys.push('/');
       return null;
       // return <ErrorLoginFirst error={error} />;
       // 여기도 서버에서 나오는 에러 종류에
       // 따라서 Login 먼저 하세요를 보여줄지, 혹은 다른 에러 메세지를 보여줄지
     }
-
-    console.log(data);
 
     return (
       <Row gutter={24} css={marginFilterdCards}>

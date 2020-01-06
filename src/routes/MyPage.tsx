@@ -2,15 +2,16 @@
 import React from 'react';
 import { Row, Col, Button, Result } from 'antd';
 import { css, jsx } from '@emotion/core';
-import { useQuery } from '@apollo/react-hooks';
+// import { useQuery } from '@apollo/react-hooks';
 
 import RegisterInput from '../components/Register/RegisterInput';
-import { questionList } from '../config/fakeData';
+import questionList from '../config/fakeData';
 import useMypage from '../hooks/useMypage';
 import Loading from '../components/Shared/Loading';
 import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 import useCheckToken from '../utils/useCheckToken';
-import { IS_LOGGED_IN } from '../graphql/queries';
+
+// import { IS_LOGGED_IN } from '../graphql/queries';
 
 const wrapper = css`
   margin: 20px;
@@ -42,8 +43,8 @@ function MyPage({ history }: MyPageProps) {
     setComplete,
   } = useMypage();
 
-  const { data: loginData } = useQuery(IS_LOGGED_IN);
-  const { client, getInfo, loadingUser, dataUser } = useCheckToken();
+  // const { data: loginData } = useQuery(IS_LOGGED_IN);
+  const { client, getInfo, loadingUser, dataUser, errorUser } = useCheckToken();
 
   if (loading) return <Loading />;
   if (!data) {
@@ -97,7 +98,7 @@ function MyPage({ history }: MyPageProps) {
               />
             ) : (
               <React.Fragment>
-                {questionList.inputRegister.map((oneQ, idx) =>
+                {questionList.map((oneQ, idx) =>
                   oneQ.subject === 'gender' ? null : (
                     <React.Fragment key={oneQ.question}>
                       <RegisterInput
@@ -134,6 +135,17 @@ function MyPage({ history }: MyPageProps) {
                       variables: { dongIds: places },
                     });
                     setComplete(true);
+                    getInfo();
+                    if (
+                      !loadingUser &&
+                      !dataUser &&
+                      !(!loadingUser && !dataUser && !errorUser)
+                      // && loginData.isLoggedIn === true
+                    ) {
+                      client.writeData({ data: { isLoggedIn: false } });
+                      alert('로그인 기한 만료로 저장 실패');
+                      history.push('/');
+                    }
                   }}
                 >
                   저장
@@ -141,16 +153,6 @@ function MyPage({ history }: MyPageProps) {
                 <Button
                   type="primary"
                   onClick={() => {
-                    getInfo();
-                    if (
-                      !loadingUser &&
-                      !dataUser &&
-                      loginData.isLoggedIn === true
-                    ) {
-                      client.writeData({ data: { isLoggedIn: false } });
-                      alert('로그인 기한 만료로 저장 실패');
-                      history.push('/login');
-                    }
                     history.push('/');
                     window.scrollTo(0, 0);
                   }}

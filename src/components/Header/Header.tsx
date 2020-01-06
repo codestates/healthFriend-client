@@ -37,16 +37,9 @@ const navLinkItem = css`
 export default function Header() {
   const { data: loginData } = useQuery(IS_LOGGED_IN);
 
-  console.log('local query', loginData);
-
   const { data } = useQuery(GET_USERINFO, {
     fetchPolicy: 'network-only',
   });
-
-  // const client = useApolloClient();
-  // const todos = client.readQuery({
-  //   query: IS_LOGGED_IN,
-  // });
 
   return (
     <div className="header" css={navHeader}>

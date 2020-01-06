@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { Menu, Dropdown, Icon } from 'antd';
 import cookie from 'js-cookie';
+
 // import { useQuery } from '@apollo/react-hooks';
 
 // import { GET_USERINFO } from '../../graphql/queries';
@@ -40,8 +41,9 @@ function MypageDropdown({ name, history }: MypageDropdownProps) {
               //     : 'https://api.healthfriend.club/',
             });
             history.push('/');
-            // window.location.reload();
-            // 여기도 reload 보다는 subscription으로 바꾸는게 좋을듯.
+
+            /* // window.location.reload();
+            // 여기도 reload 보다는 subscription으로 바꾸는게 좋을듯. */
           }}
         >
           로그아웃
