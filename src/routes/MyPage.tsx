@@ -1,8 +1,8 @@
 /** @jsx jsx */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Row, Col, Button, Result } from 'antd';
 import { css, jsx } from '@emotion/core';
-// import { useQuery } from '@apollo/react-hooks';
+import { Redirect } from 'react-router-dom';
 
 import RegisterInput from '../components/Register/RegisterInput';
 import questionList from '../config/fakeData';
@@ -10,8 +10,6 @@ import useMypage from '../hooks/useMypage';
 import Loading from '../components/Shared/Loading';
 import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 import useCheckToken from '../utils/useCheckToken';
-
-// import { IS_LOGGED_IN } from '../graphql/queries';
 
 const wrapper = css`
   margin: 20px;
@@ -43,8 +41,34 @@ function MyPage({ history }: MyPageProps) {
     setComplete,
   } = useMypage();
 
-  // const { data: loginData } = useQuery(IS_LOGGED_IN);
-  const { client, getInfo, loadingUser, dataUser, errorUser } = useCheckToken();
+  const { client, getInfo, dataUser, errorUser } = useCheckToken();
+
+  useEffect(() => {
+    if (dataUser) {
+      postInfo({
+        variables: {
+          ...submitVariable,
+          nickname: data.me.nickname,
+        },
+      });
+      setMotivation({
+        variables: submitMotivation,
+      });
+      setExerciseAbleDays({
+        variables: submitExerciseDays,
+      });
+      setAbleDistrict({
+        variables: { dongIds: places },
+      });
+      setComplete(true);
+    }
+    // eslint-disable-next-line
+  }, [dataUser]);
+  if (errorUser) {
+    client.writeData({ data: { isLoggedIn: false } });
+    alert('로그인 기한 만료로 저장 실패');
+    return <Redirect to="/" />;
+  }
 
   if (loading) return <Loading />;
   if (!data) {
@@ -116,38 +140,7 @@ function MyPage({ history }: MyPageProps) {
                     </React.Fragment>
                   ),
                 )}
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    postInfo({
-                      variables: {
-                        ...submitVariable,
-                        nickname: data.me.nickname,
-                      },
-                    });
-                    setMotivation({
-                      variables: submitMotivation,
-                    });
-                    setExerciseAbleDays({
-                      variables: submitExerciseDays,
-                    });
-                    setAbleDistrict({
-                      variables: { dongIds: places },
-                    });
-                    setComplete(true);
-                    getInfo();
-                    if (
-                      !loadingUser &&
-                      !dataUser &&
-                      !(!loadingUser && !dataUser && !errorUser)
-                      // && loginData.isLoggedIn === true
-                    ) {
-                      client.writeData({ data: { isLoggedIn: false } });
-                      alert('로그인 기한 만료로 저장 실패');
-                      history.push('/');
-                    }
-                  }}
-                >
+                <Button type="primary" onClick={() => getInfo()}>
                   저장
                 </Button>{' '}
                 <Button

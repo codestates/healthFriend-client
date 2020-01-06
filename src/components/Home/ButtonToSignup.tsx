@@ -21,7 +21,7 @@ export default function ButtonToSignup() {
             : 'https://api.healthfriend.club/auth/google'
         }
       >
-        로그인 후 시작하기 (1.5 오후 6시)
+        로그인 후 시작하기 (1.6 오후 2시)
       </a>
     </Button>
   );
