@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import useRegister from './useRegister';
-import { questionList } from '../config/fakeData';
 
 export default function useMypage() {
   const {
@@ -19,17 +18,16 @@ export default function useMypage() {
     data,
     error,
     loading,
+    questionList,
   } = useRegister();
 
   const [complete, setComplete] = useState<boolean>(false);
 
-  const subjects: string[] = questionList.inputRegister.map(
-    (elm) => elm.subject,
-  );
+  const subjects: string[] = questionList.map((elm) => elm.subject);
 
   // 해당 받아온 data의 값을 입력할 때와 같은 boolean array로 변경
   const getSelectedBooleans = (subj: string): boolean[] => {
-    const oneQ = questionList.inputRegister![subjects.indexOf(subj)];
+    const oneQ = questionList![subjects.indexOf(subj)];
     let selectedArray;
     if (oneQ.isMeQueryAvailable && oneQ.isCheckbox) {
       if (!oneQ.isMultiple) {

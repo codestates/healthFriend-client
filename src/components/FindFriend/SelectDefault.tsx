@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Select } from 'antd';
-import { questionList } from '../../config/fakeData';
+import questionList from '../../config/fakeData';
 
 const { Option } = Select;
 
@@ -22,13 +22,13 @@ function SelectDefault({
   const [value, setValue] = useState<any[]>([]);
 
   const getMatchedValue = (data: string): any => {
-    const questionIndex: number = questionList.inputRegister
+    const questionIndex: number = questionList
       .map((oneQ) => oneQ.subject)
       .indexOf(subject);
-    const optionIndex: number = questionList.inputRegister[
-      questionIndex
-    ].answer.indexOf(data);
-    return questionList.inputRegister[questionIndex].value[optionIndex];
+    const optionIndex: number = questionList[questionIndex].answer.indexOf(
+      data,
+    );
+    return questionList[questionIndex].value[optionIndex];
   };
 
   useEffect(() => {

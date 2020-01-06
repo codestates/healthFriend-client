@@ -43,7 +43,7 @@ function Register({ history }: RegisterProps) {
     setPlaces,
     setTotalCheckArr,
     totalCheckArr,
-    questions,
+    questionList,
     order,
     data,
     error,
@@ -59,6 +59,8 @@ function Register({ history }: RegisterProps) {
 
   const { client, getInfo, loadingUser, dataUser, errorUser } = useCheckToken();
   const { data: loginData } = useQuery(IS_LOGGED_IN);
+
+  if (loginData.isLoggedIn === false) return <ErrorLoginFirst error={error} />;
 
   if (!data && !loading && loginData.isLoggedIn === true) {
     client.writeData({ data: { isLoggedIn: false } });
@@ -77,7 +79,7 @@ function Register({ history }: RegisterProps) {
         <Loading />
       ) : (
         <Col xs={24} md={12} css={lowerContentWrapper}>
-          {order === questions.length + 1 ? (
+          {order === questionList.length + 1 ? (
             <Result
               status="success"
               title="축하합니다. 정보 입력이 완료되었습니다."
@@ -125,7 +127,7 @@ function Register({ history }: RegisterProps) {
                 <Button
                   type="primary"
                   onClick={async () => {
-                    if (order === questions.length) {
+                    if (order === questionList.length) {
                       postInfo({
                         variables: {
                           ...submitVariable,
@@ -147,23 +149,23 @@ function Register({ history }: RegisterProps) {
                     setOrder(order + 1);
                     await getInfo();
                     // await 안 먹는 이유가 뭐지? 이거 if 문 안에 넣은 것 나중에라도 다시 불리나?? 값 바뀌면?? 첫번째 getInfo에는 안걸리더라도 2번째 다음 버튼에서라도 걸리긴 할텐데...처음에는 안 잡히다가 나중엔 잡히는 이유가 뭐지?? 이거 말고 서버랑 살아있나 통신하는 방법은 ??
-                    console.log('loadingUser', loadingUser);
-                    console.log('dataUser', dataUser);
-                    console.log('errorUser', errorUser);
+                    // console.log('loadingUser', loadingUser);
+                    // console.log('dataUser', dataUser);
+                    // console.log('errorUser', errorUser);
                     if (
                       !loadingUser &&
                       !dataUser &&
                       !(!loadingUser && !dataUser && !errorUser)
                       // && loginData.isLoggedIn === true
                     ) {
-                      console.log('이쪽으로 오나?');
                       client.writeData({ data: { isLoggedIn: false } });
-                      history.push('/login');
+                      alert('로그인 기한 만료로 저장 실패');
+                      history.push('/');
                     }
                   }}
                   // disabled={!totalCheckArr[order - 1].some((elm) => elm === true)}... place에 대해서도 체크가 돼야 함.
                 >
-                  {order === questions.length ? '완료' : '다음'}
+                  {order === questionList.length ? '완료' : '다음'}
                 </Button>
               </div>
             </div>

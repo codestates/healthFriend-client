@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Checkbox } from 'antd';
 import { css, jsx } from '@emotion/core';
 
-import { questionList } from '../config/fakeData';
+import questionList from '../config/fakeData';
 
 const checkboxDesign = css`
   border-bottom: 1px solid #ededed;
@@ -29,9 +29,7 @@ export default function useRegisterInput({
   totalCheckArr,
   setTotalCheckArr,
 }: useRegisterInputProps) {
-  const currentInput = questionList.inputRegister.filter(
-    (elm) => elm.number === order,
-  );
+  const currentInput = questionList.filter((elm) => elm.number === order);
   const {
     question,
     answer,
@@ -64,7 +62,7 @@ export default function useRegisterInput({
   const onCheck = (e) => {
     // 여기도 e에 : MouseEvent 같은거 붙여줘야 함.
     let array: any[];
-    const singleChecks = questionList.inputRegister
+    const singleChecks = questionList
       .filter((elm) => !elm.isMultiple && elm.isCheckbox)
       .map((ele) => ele.subject);
 

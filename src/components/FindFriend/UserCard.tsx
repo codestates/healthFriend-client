@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Col, Card, Typography, Avatar } from 'antd';
 import { jsx, css } from '@emotion/core';
 
-import { questionList } from '../../config/fakeData';
+import questionList from '../../config/fakeData';
 import UserModal from './UserModal';
 
 const { Title } = Typography;
@@ -67,17 +67,17 @@ function UserCard({
   };
 
   const changeToKorean = (data) => {
-    const questionIndex: number = questionList.inputRegister
+    const questionIndex: number = questionList
       .map((oneQ) => oneQ.subject)
       .indexOf(Object.keys(data)[0]);
-    const optionIndex: number = questionList.inputRegister[
-      questionIndex
-    ].value.indexOf(Object.values(data)[0] as string); // 이런식 typescript 문법도 공부
-    return questionList.inputRegister[questionIndex].answer[optionIndex];
+    const optionIndex: number = questionList[questionIndex].value.indexOf(
+      Object.values(data)[0] as string,
+    ); // 이런식 typescript 문법도 공부
+    return questionList[questionIndex].answer[optionIndex];
   };
 
   const makeOrder = (data) => {
-    const targetQ = questionList.inputRegister.filter(
+    const targetQ = questionList.filter(
       (elm) => elm.subject === Object.keys(data)[0],
     )[0];
     const getOrder = (one: string): number => targetQ.answer.indexOf(one);

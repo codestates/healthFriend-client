@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
-import { questionList } from '../config/fakeData';
+import questionList from '../config/fakeData';
 import {
   GET_USERINFO,
   MUTATE_INFO,
@@ -11,10 +11,9 @@ import {
 } from '../graphql/queries';
 
 export default function useRegister() {
-  const questions = questionList.inputRegister;
-  const subjects = questions.map((elm) => elm.subject);
+  const subjects = questionList.map((elm) => elm.subject);
   const submitVariable = {};
-  const availables = questions
+  const availables = questionList
     .filter((elm) => elm.isMeMutateAvailable)
     .map((ele) => ele.subject);
   availables.forEach((elm) => {
@@ -25,7 +24,7 @@ export default function useRegister() {
   const [introduction, setIntroduction] = useState<string>('');
   const [places, setPlaces] = useState<string[]>([]);
   const [totalCheckArr, setTotalCheckArr] = useState<any[]>(
-    questions.map(() => []),
+    questionList.map(() => []),
   );
 
   const { data, error, loading } = useQuery(GET_USERINFO, {
@@ -41,7 +40,7 @@ export default function useRegister() {
 
   // 체크박스에서 선택된 것을 boolean 배열 -> 번호 배열 -> 값 배열로 변경하여 받음.
   const getSelected = (subj: string): undefined | any[] | string => {
-    const values = questions.filter((elm) => elm.subject === subj)[0].value;
+    const values = questionList.filter((elm) => elm.subject === subj)[0].value;
     const subjBooleans = totalCheckArr[subjects.indexOf(subj)];
     return subjBooleans
       .map((elm, idx) => (elm ? values[idx] : elm))
@@ -52,7 +51,9 @@ export default function useRegister() {
   Object.keys(submitVariable).forEach((subj) => {
     if (subj === 'messageToFriend') {
       submitVariable[subj] = introduction;
-    } else if (questions.filter((elm) => elm.subject === subj)[0].isMultiple) {
+    } else if (
+      questionList.filter((elm) => elm.subject === subj)[0].isMultiple
+    ) {
       submitVariable[subj] = getSelected(subj);
     } else {
       submitVariable[subj] = getSelected(subj)![0];
@@ -70,7 +71,7 @@ export default function useRegister() {
     setPlaces,
     setTotalCheckArr,
     totalCheckArr,
-    questions,
+    questionList,
     order,
     data,
     error,
