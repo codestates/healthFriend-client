@@ -56,22 +56,22 @@ function ButtonHome({ history, error, data }: HomeProps) {
 }
 
 function Home({ history }: HomeProps) {
+  // home 화면은 왜 별도의 장치를 마련해두지 않았는데 알아서 isLoggedIn: true로 되는지 모르겠음.
   const client = useApolloClient();
-  const { data: dataUser, error: errorUser, loading: loadingUser } = useQuery(
-    GET_USERINFO,
-    {
-      fetchPolicy: 'network-only',
-    },
-  );
+  const { data: dataUser, error: errorUser } = useQuery(GET_USERINFO, {
+    fetchPolicy: 'network-only',
+  });
   const { data: dataUsers } = useQuery(GET_USERS, {
     fetchPolicy: 'network-only',
   });
   const { data: loginData } = useQuery(IS_LOGGED_IN);
 
-  if (!loadingUser && !dataUser && loginData.isLoggedIn === true) {
+  if (errorUser && loginData.isLoggedIn === true) {
     client.writeData({ data: { isLoggedIn: false } });
     return <ErrorLoginFirst error={errorUser} />;
   }
+
+  // console.log('loginData.isLoggedIn', loginData.isLoggedIn);
 
   return (
     <Row type="flex" justify="center">

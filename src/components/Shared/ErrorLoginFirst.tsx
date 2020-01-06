@@ -1,5 +1,5 @@
 import React from 'react';
-import Login from '../../routes/Login';
+import { GoogleLoginButton } from '../../routes/Login';
 
 type ErrorLoginFirstProps = {
   error: any;
@@ -16,7 +16,9 @@ function ErrorLoginFirst({ error }: ErrorLoginFirstProps) {
       {error && error.message ? error.message : null}
       <br />
       <br /> 로그인 먼저 하세요
-      <Login />
+      <br />
+      <br />
+      <GoogleLoginButton />
     </div>
   );
 }

@@ -69,9 +69,11 @@ function MyPage({ history }: MyPageProps) {
     alert('로그인 기한 만료로 저장 실패');
     return <Redirect to="/" />;
   }
-
+  if (data) {
+    client.writeData({ data: { isLoggedIn: true } });
+  }
   if (loading) return <Loading />;
-  if (!data) {
+  if (error) {
     client.writeData({ data: { isLoggedIn: false } });
     return <ErrorLoginFirst error={error} />;
   }

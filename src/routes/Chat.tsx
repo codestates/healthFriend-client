@@ -10,12 +10,16 @@ function Chat() {
     fetchPolicy: 'network-only',
   });
   const client = useApolloClient();
-
   const { data: loginData } = useQuery(IS_LOGGED_IN);
-  if (loginData.isLoggedIn === false) return <ErrorLoginFirst error={error} />;
+  if (data) {
+    client.writeData({ data: { isLoggedIn: true } });
+  }
+
+  if (!loading && loginData.isLoggedIn === false)
+    return <ErrorLoginFirst error={error} />;
 
   if (loading) return <Loading />;
-  if (!data) {
+  if (error) {
     client.writeData({ data: { isLoggedIn: false } });
     return <ErrorLoginFirst error={error} />;
   }
