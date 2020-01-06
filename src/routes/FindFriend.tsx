@@ -9,7 +9,11 @@ import SelectPlace from '../components/FindFriend/SelectPlace';
 import SelectDefault from '../components/FindFriend/SelectDefault';
 import UserCard from '../components/FindFriend/UserCard';
 import questionList from '../config/fakeData';
-import { GET_FILTERED_USERS, IS_LOGGED_IN } from '../graphql/queries';
+import {
+  GET_FILTERED_USERS,
+  IS_LOGGED_IN,
+  GET_USERINFO,
+} from '../graphql/queries';
 import Loading from '../components/Shared/Loading';
 
 const filterCSS = css`
@@ -37,10 +41,22 @@ function FindFriend() {
   );
   const { data: loginData } = useQuery(IS_LOGGED_IN);
   const client = useApolloClient();
+  const { data: dataUser, error: errorUser, loading: loadingUser } = useQuery(
+    GET_USERINFO,
+    {
+      fetchPolicy: 'network-only',
+    },
+  );
 
-  if (loginData.isLoggedIn === false) return <Redirect to="/" />;
+  if (dataUser) {
+    client.writeData({ data: { isLoggedIn: true } });
+    // 이게 동기로 일어나는 줄 알았는데 비동기인듯. 잠깐 아래 if 문으로 들어갔다가 나옴.
+  }
 
-  if (error) {
+  if (!loadingUser && loginData.isLoggedIn === false)
+    return <Redirect to="/" />;
+
+  if (error || errorUser) {
     alert('로그인 기한 만료로 검색 실패');
     client.writeData({ data: { isLoggedIn: false } });
     return <Redirect to="/" />;

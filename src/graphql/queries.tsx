@@ -111,13 +111,111 @@ export const GET_FILTERED_USERS = gql`
     }
   }
 `;
-// 위의 부분 fragment로 변경
+// 위, 아래의 부분들  fragment로 변경
+
+export const GET_FOLLOWING = gql`
+  {
+    getFollowing {
+      id
+      email
+      nickname
+      gender
+      openImageChoice
+      levelOf3Dae
+      messageToFriend
+      motivations {
+        id
+        motivation
+      }
+      weekdays {
+        id
+        weekday
+      }
+      ableDistricts {
+        district {
+          idOfGu
+          nameOfGu
+          idOfDong
+          nameOfDong
+        }
+      }
+    }
+  }
+`;
+
+export const GET_FOLLOWERS = gql`
+  {
+    getFollowers {
+      id
+      email
+      nickname
+      gender
+      openImageChoice
+      levelOf3Dae
+      messageToFriend
+      motivations {
+        id
+        motivation
+      }
+      weekdays {
+        id
+        weekday
+      }
+      ableDistricts {
+        district {
+          idOfGu
+          nameOfGu
+          idOfDong
+          nameOfDong
+        }
+      }
+    }
+  }
+`;
+
+export const GET_FRIENDS = gql`
+  {
+    me {
+      friends {
+        id
+        email
+        nickname
+        gender
+        openImageChoice
+        levelOf3Dae
+        messageToFriend
+        motivations {
+          id
+          motivation
+        }
+        weekdays {
+          id
+          weekday
+        }
+        ableDistricts {
+          district {
+            idOfGu
+            nameOfGu
+            idOfDong
+            nameOfDong
+          }
+        }
+      }
+    }
+  }
+`;
+
+// local query =============================
 
 export const IS_LOGGED_IN = gql`
   query IsUserLoggedIn {
     isLoggedIn @client
   }
 `;
+
+// mutation===========================================================
+
+// user =============================
 
 export const MUTATE_INFO = gql`
   mutation PostInfo(
@@ -163,6 +261,58 @@ export const SET_ABLE_DISTRICT = gql`
         nameOfGu
         nameOfDong
       }
+    }
+  }
+`;
+
+// friend =============================
+
+export const FOLLOW_USER = gql`
+  mutation FollowUser($userId: String!) {
+    followingUser(userId: $userId) {
+      id
+      nickname
+      email
+    }
+  }
+`;
+
+export const CANCEL_FOLLOWING = gql`
+  mutation CancelFollowing($userId: String!) {
+    deleteFollowing(userId: $userId) {
+      id
+      nickname
+      email
+    }
+  }
+`;
+
+export const DELETE_FOLLOWER = gql`
+  mutation DeleteFollower($userId: String!) {
+    deleteFollowers(userId: $userId) {
+      id
+      nickname
+      email
+    }
+  }
+`;
+
+export const ADD_FRIEND = gql`
+  mutation AddFriend($userId: String!) {
+    addFriend(userId: $userId) {
+      id
+      nickname
+      email
+    }
+  }
+`;
+
+export const DELETE_FRIEND = gql`
+  mutation DeleteFriend($userId: String!) {
+    deleteFriend(userId: $userId) {
+      id
+      nickname
+      email
     }
   }
 `;

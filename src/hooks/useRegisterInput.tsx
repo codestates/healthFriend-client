@@ -29,14 +29,14 @@ export default function useRegisterInput({
   totalCheckArr,
   setTotalCheckArr,
 }: useRegisterInputProps) {
-  const currentInput = questionList.filter((elm) => elm.number === order);
   const {
     question,
     answer,
     subject,
     isMeMutateAvailable,
     isCheckbox,
-  } = currentInput[0];
+  } = questionList.filter((elm) => elm.number === order)[0];
+
   const oneCheckArr = totalCheckArr[order - 1];
   // 왜 let oneCheckArr를 밖에 선언하고 oneCheckArr = totalCheckArr[order - 1];를 useEffect 안에서 했을때 문제가 발생했던 것인지.
 

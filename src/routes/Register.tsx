@@ -94,9 +94,16 @@ function Register({ history }: RegisterProps) {
     // history.push('/');
   }
 
-  if (loginData.isLoggedIn === false) return <ErrorLoginFirst error={error} />;
+  if (data) {
+    client.writeData({ data: { isLoggedIn: true } });
+    // 이게 동기로 일어나는 줄 알았는데 비동기인듯. 잠깐 아래 if 문으로 들어갔다가 나옴.
+  }
 
-  if (!data && !loading && loginData.isLoggedIn === true) {
+  if (!loading && loginData.isLoggedIn === false) {
+    return <ErrorLoginFirst error={error} />;
+  }
+
+  if (error) {
     client.writeData({ data: { isLoggedIn: false } });
     return <ErrorLoginFirst error={error} />;
   }

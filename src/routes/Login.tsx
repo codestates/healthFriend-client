@@ -6,7 +6,7 @@ import { Redirect } from 'react-router-dom';
 import { GET_USERINFO } from '../graphql/queries';
 import Loading from '../components/Shared/Loading';
 
-function GoogleLoginButton() {
+export function GoogleLoginButton() {
   return (
     <Button type="primary">
       <a
