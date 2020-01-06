@@ -2,9 +2,9 @@ import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { Menu, Dropdown, Icon } from 'antd';
 import cookie from 'js-cookie';
-import { useQuery, useApolloClient } from '@apollo/react-hooks';
+// import { useQuery } from '@apollo/react-hooks';
 
-import { GET_USERINFO } from '../../graphql/queries';
+// import { GET_USERINFO } from '../../graphql/queries';
 import useCheckToken from '../../utils/useCheckToken';
 
 type MypageDropdownProps = {
@@ -15,11 +15,10 @@ type MypageDropdownProps = {
 };
 
 function MypageDropdown({ name, history }: MypageDropdownProps) {
-  // const client = useApolloClient();
-  const { data, refetch } = useQuery(GET_USERINFO, {
-    fetchPolicy: 'network-only',
-  });
-  const { client, getInfo, loadingUser, dataUser } = useCheckToken();
+  // const { data, refetch } = useQuery(GET_USERINFO, {
+  //   fetchPolicy: 'network-only',
+  // });
+  const { client, getInfo /* loadingUser, dataUser */ } = useCheckToken();
 
   const menu = (
     <Menu>
