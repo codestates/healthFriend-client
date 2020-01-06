@@ -18,6 +18,7 @@ type UserModalProps = {
   loading: boolean;
   setLoading: (args: boolean) => void;
   nickname: string;
+  gender: string;
   levelOf3Dae: string;
   weekdays: any[];
   ableDistricts: any[];
@@ -34,6 +35,7 @@ function UserModal({
   loading,
   setLoading,
   nickname,
+  gender,
   levelOf3Dae,
   weekdays,
   ableDistricts,
@@ -73,6 +75,10 @@ function UserModal({
       >
         <table css={tableCSS}>
           <tbody>
+            <tr>
+              <th css={tableTH}>성별</th>
+              <td>{changeToKorean({ gender })}</td>
+            </tr>
             <tr>
               <th css={tableTH}>3대 중량</th>
               <td>{changeToKorean({ levelOf3Dae })}</td>

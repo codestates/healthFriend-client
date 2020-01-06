@@ -14,11 +14,11 @@ const margin = css`
 
 const cardCSS = css`
   border-radius: 4px;
-  
+
   .ant-card-body {
     min-height: 300px;
   }
-  
+
   .ant-card-actions {
     border-radius: 0 0 4px 4px;
   }
@@ -31,7 +31,7 @@ const districtCSS = css`
   padding: 5px;
   margin-right: 5px;
   line-height: 2.5;
-  white-space: nowrap; 
+  white-space: nowrap;
 `;
 
 const titleCSS = css`
@@ -47,7 +47,6 @@ type UserCardProps = {
   motivations: any[];
   openImageChoice: string;
   messageToFriend: string;
-
 };
 
 function UserCard({
@@ -106,22 +105,21 @@ function UserCard({
           const temp = daysStr.split('');
           temp.splice(indexOfSaturday, 0, ' | ');
           return temp.join('');
-        } else if (indexOfSaturday === -1 && indexOfSunday !== -1) {
+        }
+        if (indexOfSaturday === -1 && indexOfSunday !== -1) {
           const temp = daysStr.split('');
           temp.splice(indexOfSunday, 0, ' | ');
           return temp.join('');
         }
         return daysStr;
     }
-  }
+  };
 
   return (
     <Col xs={24} sm={12} lg={8} css={margin}>
       <Card
         actions={[
-          <span onClick={showModal}>
-            상세 보기
-          </span>,
+          <span onClick={showModal}>상세 보기</span>,
           <span>
             <b>친구 신청하기</b>
           </span>,
@@ -137,16 +135,14 @@ function UserCard({
           setLoading={setLoaidng}
           nickname={nickname}
           levelOf3Dae={levelOf3Dae}
+          gender={gender}
           weekdays={weekdays}
           ableDistricts={ableDistricts}
           motivations={motivations}
           openImageChoice={openImageChoice}
           messageToFriend={messageToFriend}
         />
-        <Card.Meta 
-          avatar={<Avatar icon="user" />}
-          title={nickname}
-        />
+        <Card.Meta avatar={<Avatar icon="user" />} title={nickname} />
         <br />
         <p style={{ position: 'absolute', top: 20, right: 20 }}>
           {changeToKorean({ levelOf3Dae }).match(/\((.*?)\)/g)}
@@ -158,11 +154,15 @@ function UserCard({
             .join(', ')}
         </Title>
         <p>
-          <span>
-            {getPossibleDays(weekdays)}
-          </span>
+          <span>{getPossibleDays(weekdays)}</span>
         </p>
-        <p>{ableDistricts.map((elm) => <span css={districtCSS}>{elm.district.nameOfDong}</span>)}</p>
+        <p>
+          {ableDistricts.map((elm) => (
+            <span css={districtCSS} key={elm.district.nameOfDong}>
+              {elm.district.nameOfDong}
+            </span>
+          ))}
+        </p>
       </Card>
     </Col>
   );

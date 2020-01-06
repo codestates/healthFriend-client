@@ -2,13 +2,15 @@
 import React from 'react';
 import { Row, Col, Button, Result } from 'antd';
 import { css, jsx } from '@emotion/core';
-import cookie from 'js-cookie';
+import { useQuery } from '@apollo/react-hooks';
 
 import RegisterInput from '../components/Register/RegisterInput';
 import { questionList } from '../config/fakeData';
 import useMypage from '../hooks/useMypage';
 import Loading from '../components/Shared/Loading';
 import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
+import useCheckToken from '../utils/useCheckToken';
+import { IS_LOGGED_IN } from '../graphql/queries';
 
 const wrapper = css`
   margin: 20px;
@@ -40,9 +42,14 @@ function MyPage({ history }: MyPageProps) {
     setComplete,
   } = useMypage();
 
+  const { data: loginData } = useQuery(IS_LOGGED_IN);
+  const { client, getInfo, loadingUser, dataUser } = useCheckToken();
+
   if (loading) return <Loading />;
-  if (!data || !cookie.get('access-token'))
+  if (!data) {
+    client.writeData({ data: { isLoggedIn: false } });
     return <ErrorLoginFirst error={error} />;
+  }
 
   return (
     <div>
@@ -134,6 +141,16 @@ function MyPage({ history }: MyPageProps) {
                 <Button
                   type="primary"
                   onClick={() => {
+                    getInfo();
+                    if (
+                      !loadingUser &&
+                      !dataUser &&
+                      loginData.isLoggedIn === true
+                    ) {
+                      client.writeData({ data: { isLoggedIn: false } });
+                      alert('로그인 기한 만료로 저장 실패');
+                      history.push('/login');
+                    }
                     history.push('/');
                     window.scrollTo(0, 0);
                   }}

@@ -27,3 +27,5 @@ yarn-error.log*
 
 # todo
 todo.md
+
+/config/firebaseConfig.js

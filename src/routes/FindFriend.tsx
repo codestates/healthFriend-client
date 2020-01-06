@@ -2,13 +2,17 @@
 import { useState } from 'react';
 import { Row, Col, Button } from 'antd';
 import { css, jsx } from '@emotion/core';
-import { useLazyQuery } from '@apollo/react-hooks';
+import { useLazyQuery, useQuery, useApolloClient } from '@apollo/react-hooks';
 
 import SelectPlace from '../components/FindFriend/SelectPlace';
 import SelectDefault from '../components/FindFriend/SelectDefault';
 import UserCard from '../components/FindFriend/UserCard';
 import { questionList } from '../config/fakeData';
-import { GET_FILTERED_USERS } from '../graphql/queries';
+import {
+  GET_FILTERED_USERS,
+  IS_LOGGED_IN,
+  GET_USERINFO,
+} from '../graphql/queries';
 import Loading from '../components/Shared/Loading';
 import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 
@@ -20,7 +24,11 @@ const marginFilterdCards = css`
   margin-top: 40px;
 `;
 
-function FindFriend() {
+type FindFriendProps = {
+  history: any;
+};
+
+function FindFriend({ history }: FindFriendProps) {
   const [filter, setFilter] = useState<any>({
     openImageChoice: [],
     levelOf3Dae: [],
@@ -28,6 +36,7 @@ function FindFriend() {
     weekdays: [],
   });
   const [places, setPlaces] = useState<string[]>([]);
+  const client = useApolloClient();
 
   const [getFilteredUsers, { loading, data, error }] = useLazyQuery(
     GET_FILTERED_USERS,
@@ -36,8 +45,19 @@ function FindFriend() {
     },
   );
 
-  console.log('filter', filter);
-  console.log('places', places);
+  const { data: dataUser, error: errorUser, loading: loadingUser } = useQuery(
+    GET_USERINFO,
+    {
+      fetchPolicy: 'network-only',
+    },
+  );
+  const { data: loginData } = useQuery(IS_LOGGED_IN);
+  if (!loadingUser && !dataUser && loginData.isLoggedIn === true) {
+    client.writeData({ data: { isLoggedIn: false } });
+    console.log('여기가 불리나?');
+    history.push('/login');
+    return <ErrorLoginFirst error={errorUser} />;
+  }
 
   const filterList = questionList.inputRegister
     .filter((elm) => elm.isFilterList)
@@ -64,12 +84,19 @@ function FindFriend() {
     );
   });
 
-  function FilteredCards() {
+  type FilteredCards = {
+    historys: any;
+  };
+
+  function FilteredCards({ historys }: FilteredCards) {
     if (loading) {
       return <Loading />;
     }
     if (error) {
-      return <ErrorLoginFirst error={error} />;
+      client.writeData({ data: { isLoggedIn: false } });
+      historys.push('/login');
+      return null;
+      // return <ErrorLoginFirst error={error} />;
       // 여기도 서버에서 나오는 에러 종류에
       // 따라서 Login 먼저 하세요를 보여줄지, 혹은 다른 에러 메세지를 보여줄지
     }
@@ -115,7 +142,7 @@ function FindFriend() {
         </Button>
       </Col>
       <Col xs={20}>
-        <FilteredCards />
+        <FilteredCards historys={history} />
       </Col>
     </Row>
   );

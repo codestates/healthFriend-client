@@ -1,8 +1,8 @@
 /** @jsx jsx */
 import { Row, Col, Button, Result } from 'antd';
 import { css, jsx } from '@emotion/core';
+import { useQuery } from '@apollo/react-hooks';
 
-// import cookie from 'js-cookie';
 import ProgressBar from '../components/Register/ProgressBar';
 import RegisterImage from '../static/registerImage.jpg';
 import explanation from '../config/Message';
@@ -10,6 +10,8 @@ import RegisterInput from '../components/Register/RegisterInput';
 import useRegister from '../hooks/useRegister';
 import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 import Loading from '../components/Shared/Loading';
+import useCheckToken from '../utils/useCheckToken';
+import { IS_LOGGED_IN } from '../graphql/queries';
 
 const renderingImage = css`
   width: 100%;
@@ -55,100 +57,119 @@ function Register({ history }: RegisterProps) {
     setAbleDistrict,
   } = useRegister();
 
-  if (loading) {
-    return <Loading />;
-  }
+  const { client, getInfo, loadingUser, dataUser, errorUser } = useCheckToken();
+  const { data: loginData } = useQuery(IS_LOGGED_IN);
 
-  if (!data /* || !cookie.get('access-token') */) {
+  if (!data && !loading && loginData.isLoggedIn === true) {
+    client.writeData({ data: { isLoggedIn: false } });
     return <ErrorLoginFirst error={error} />;
   }
 
   // if (data.me.levelOf3Dae && data.me.messageToFriend) {
   //   return <Redirect to="/" />;
   // }
-
   return (
     <Row type="flex" justify="center">
       <Col xs={24} md={24}>
         <img src={RegisterImage} css={renderingImage} alt="" />
       </Col>
-      <Col xs={24} md={12} css={lowerContentWrapper}>
-        {order === questions.length + 1 ? (
-          <Result
-            status="success"
-            title="축하합니다. 정보 입력이 완료되었습니다."
-            extra={[
-              <Button
-                type="primary"
-                key="home"
-                onClick={() => history.push('/')}
-              >
-                홈으로
-              </Button>,
-              <Button key="find" onClick={() => history.push('/find')}>
-                친구 찾기로
-              </Button>,
-            ]}
-          />
-        ) : (
-          <div>
-            <div css={progressBar}>
-              <ProgressBar order={order} />
-            </div>
-
-            <RegisterInput
-              order={order}
-              totalCheckArr={totalCheckArr}
-              setTotalCheckArr={setTotalCheckArr}
-              introduction={introduction}
-              setIntroduction={setIntroduction}
-              setPlaces={setPlaces}
-              selectedPlaces={[]}
-            />
-
-            <div>
-              {order === 1 ? null : (
+      {loading ? (
+        <Loading />
+      ) : (
+        <Col xs={24} md={12} css={lowerContentWrapper}>
+          {order === questions.length + 1 ? (
+            <Result
+              status="success"
+              title="축하합니다. 정보 입력이 완료되었습니다."
+              extra={[
                 <Button
                   type="primary"
-                  onClick={() => {
-                    setOrder(order - 1);
-                  }}
+                  key="home"
+                  onClick={() => history.push('/')}
                 >
-                  이전
+                  홈으로
+                </Button>,
+                <Button key="find" onClick={() => history.push('/find')}>
+                  친구 찾기로
+                </Button>,
+              ]}
+            />
+          ) : (
+            <div>
+              <div css={progressBar}>
+                <ProgressBar order={order} />
+              </div>
+
+              <RegisterInput
+                order={order}
+                totalCheckArr={totalCheckArr}
+                setTotalCheckArr={setTotalCheckArr}
+                introduction={introduction}
+                setIntroduction={setIntroduction}
+                setPlaces={setPlaces}
+                selectedPlaces={[]}
+              />
+
+              <div>
+                {order === 1 ? null : (
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      setOrder(order - 1);
+                    }}
+                  >
+                    이전
+                  </Button>
+                )}
+                &nbsp;
+                <Button
+                  type="primary"
+                  onClick={async () => {
+                    if (order === questions.length) {
+                      postInfo({
+                        variables: {
+                          ...submitVariable,
+                          nickname: data.me.nickname,
+                        },
+                      });
+                      setMotivation({
+                        variables: submitMotivation,
+                      });
+                      setExerciseAbleDays({
+                        variables: submitExerciseDays,
+                      });
+                      setAbleDistrict({
+                        variables: { dongIds: places },
+                      });
+
+                      setIntroduction('');
+                    }
+                    setOrder(order + 1);
+                    await getInfo();
+                    // await 안 먹는 이유가 뭐지? 이거 if 문 안에 넣은 것 나중에라도 다시 불리나?? 값 바뀌면?? 첫번째 getInfo에는 안걸리더라도 2번째 다음 버튼에서라도 걸리긴 할텐데...처음에는 안 잡히다가 나중엔 잡히는 이유가 뭐지?? 이거 말고 서버랑 살아있나 통신하는 방법은 ??
+                    console.log('loadingUser', loadingUser);
+                    console.log('dataUser', dataUser);
+                    console.log('errorUser', errorUser);
+                    if (
+                      !loadingUser &&
+                      !dataUser &&
+                      !(!loadingUser && !dataUser && !errorUser)
+                      // && loginData.isLoggedIn === true
+                    ) {
+                      console.log('이쪽으로 오나?');
+                      client.writeData({ data: { isLoggedIn: false } });
+                      history.push('/login');
+                    }
+                  }}
+                  // disabled={!totalCheckArr[order - 1].some((elm) => elm === true)}... place에 대해서도 체크가 돼야 함.
+                >
+                  {order === questions.length ? '완료' : '다음'}
                 </Button>
-              )}
-              &nbsp;
-              <Button
-                type="primary"
-                onClick={() => {
-                  if (order === questions.length) {
-                    postInfo({
-                      variables: {
-                        ...submitVariable,
-                        nickname: data.me.nickname,
-                      },
-                    });
-                    setMotivation({
-                      variables: submitMotivation,
-                    });
-                    setExerciseAbleDays({
-                      variables: submitExerciseDays,
-                    });
-                    setAbleDistrict({
-                      variables: { dongIds: places },
-                    });
-                  }
-                  setOrder(order + 1);
-                  setIntroduction('');
-                }}
-                // disabled={!totalCheckArr[order - 1].some((elm) => elm === true)}
-              >
-                {order === questions.length ? '완료' : '다음'}
-              </Button>
+              </div>
             </div>
-          </div>
-        )}
-      </Col>
+          )}
+        </Col>
+      )}
       <Col xs={24} md={6} css={lowerContentWrapper}>
         <h3>헬스친구란</h3>
         <p>{explanation.introduction}</p>

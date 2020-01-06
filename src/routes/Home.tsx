@@ -1,16 +1,16 @@
 /** @jsx jsx */
 import { Row, Col, Typography } from 'antd';
 import { css, jsx } from '@emotion/core';
-import { useQuery } from '@apollo/react-hooks';
-import cookie from 'js-cookie';
+import { useQuery, useApolloClient } from '@apollo/react-hooks';
 
 import renderImage from '../static/renderImage.jpg';
-import { GET_USERINFO, GET_USERS } from '../graphql/queries';
+import { GET_USERS, IS_LOGGED_IN, GET_USERINFO } from '../graphql/queries';
 import ButtonToFind from '../components/Home/ButtonToFind';
 import ButtonToRegister from '../components/Home/ButtonToRegister';
 import ButtonToSignup from '../components/Home/ButtonToSignup';
 import IfLoginUSeeFriend from '../components/Shared/IfLoginUSeeFriend';
 import UserCard from '../components/FindFriend/UserCard';
+import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 
 const { Title } = Typography;
 
@@ -56,12 +56,22 @@ function ButtonHome({ history, error, data }: HomeProps) {
 }
 
 function Home({ history }: HomeProps) {
-  const { data: dataMe, error: errorMe } = useQuery(GET_USERINFO, {
-    fetchPolicy: 'network-only',
-  });
+  const client = useApolloClient();
+  const { data: dataUser, error: errorUser, loading: loadingUser } = useQuery(
+    GET_USERINFO,
+    {
+      fetchPolicy: 'network-only',
+    },
+  );
   const { data: dataUsers } = useQuery(GET_USERS, {
     fetchPolicy: 'network-only',
   });
+  const { data: loginData } = useQuery(IS_LOGGED_IN);
+
+  if (!loadingUser && !dataUser && loginData.isLoggedIn === true) {
+    client.writeData({ data: { isLoggedIn: false } });
+    return <ErrorLoginFirst error={errorUser} />;
+  }
 
   return (
     <Row type="flex" justify="center">
@@ -74,10 +84,10 @@ function Home({ history }: HomeProps) {
             현재 당신을 기다리고 있어요
           </Title>
         </div>
-        <ButtonHome history={history} error={errorMe} data={dataMe} />
+        <ButtonHome history={history} error={errorUser} data={dataUser} />
         {/* 이 윗 부분을 더 축약해서 쓰는 법 없나?  */}
       </Col>
-      {cookie.get('access-token') && dataUsers ? (
+      {dataUsers && loginData.isLoggedIn === true ? (
         <Col xs={20}>
           <Row type="flex" justify="center" style={{ marginTop: 20 }}>
             <Col xs={24}>

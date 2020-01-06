@@ -4,9 +4,9 @@ export const typeDefs = gql`
   extend type Query {
     isLoggedIn: Boolean!
   }
-  extend type Mutation {
-    changeLoginState(id: ID!): Boolean
-  }
+  # extend type Mutation {
+  #   changeLoginState(id: ID!): Boolean
+  # }
 `;
 
 export const resolvers = {

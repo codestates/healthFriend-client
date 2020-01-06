@@ -113,6 +113,12 @@ export const GET_FILTERED_USERS = gql`
 `;
 // 위의 부분 fragment로 변경
 
+export const IS_LOGGED_IN = gql`
+  query IsUserLoggedIn {
+    isLoggedIn @client
+  }
+`;
+
 export const MUTATE_INFO = gql`
   mutation PostInfo(
     $nickname: String!
