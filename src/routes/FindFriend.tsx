@@ -9,13 +9,8 @@ import SelectPlace from '../components/FindFriend/SelectPlace';
 import SelectDefault from '../components/FindFriend/SelectDefault';
 import UserCard from '../components/FindFriend/UserCard';
 import questionList from '../config/fakeData';
-import {
-  GET_FILTERED_USERS,
-  IS_LOGGED_IN,
-  GET_USERINFO,
-} from '../graphql/queries';
+import { GET_FILTERED_USERS, IS_LOGGED_IN } from '../graphql/queries';
 import Loading from '../components/Shared/Loading';
-import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 
 const filterCSS = css`
   margin-bottom: 20px;
@@ -25,11 +20,7 @@ const marginFilterdCards = css`
   margin-top: 40px;
 `;
 
-type FindFriendProps = {
-  history: any;
-};
-
-function FindFriend({ history }: FindFriendProps) {
+function FindFriend() {
   const [filter, setFilter] = useState<any>({
     openImageChoice: [],
     levelOf3Dae: [],
@@ -44,21 +35,15 @@ function FindFriend({ history }: FindFriendProps) {
       fetchPolicy: 'network-only',
     },
   );
-  const { data: dataUser, error: errorUser, loading: loadingUser } = useQuery(
-    GET_USERINFO,
-    {
-      fetchPolicy: 'network-only',
-    },
-  );
   const { data: loginData } = useQuery(IS_LOGGED_IN);
-
   const client = useApolloClient();
 
   if (loginData.isLoggedIn === false) return <Redirect to="/" />;
 
-  if (!loadingUser && !dataUser && loginData.isLoggedIn === true) {
+  if (error) {
+    alert('로그인 기한 만료로 검색 실패');
     client.writeData({ data: { isLoggedIn: false } });
-    return <ErrorLoginFirst error={errorUser} />;
+    return <Redirect to="/" />;
   }
 
   const filterList = questionList
@@ -86,22 +71,17 @@ function FindFriend({ history }: FindFriendProps) {
     );
   });
 
-  type FilteredCards = {
-    historys: any;
-  };
-
-  function FilteredCards({ historys }: FilteredCards) {
+  function FilteredCards() {
     if (loading) {
       return <Loading />;
     }
     if (error) {
       client.writeData({ data: { isLoggedIn: false } });
       alert('로그인 기한 만료로 검색 실패');
-      historys.push('/');
-      return null;
-      // return <ErrorLoginFirst error={error} />;
+      return <Redirect to="/" />;
       // 여기도 서버에서 나오는 에러 종류에
       // 따라서 Login 먼저 하세요를 보여줄지, 혹은 다른 에러 메세지를 보여줄지
+      // 꼭 로그인 만료 문제가 아닐 수 있음... error message에 따른 error handling?
     }
 
     return (
@@ -143,7 +123,7 @@ function FindFriend({ history }: FindFriendProps) {
         </Button>
       </Col>
       <Col xs={20}>
-        <FilteredCards historys={history} />
+        <FilteredCards />
       </Col>
     </Row>
   );
