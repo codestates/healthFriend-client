@@ -96,6 +96,7 @@ function Home({ history }: HomeProps) {
               <Row gutter={24}>
                 {dataUsers.users.map((oneData) => (
                   <UserCard
+                    id={oneData.id}
                     key={oneData.email}
                     nickname={oneData.nickname}
                     gender={oneData.gender}
@@ -105,6 +106,7 @@ function Home({ history }: HomeProps) {
                     levelOf3Dae={oneData.levelOf3Dae}
                     weekdays={oneData.weekdays}
                     ableDistricts={oneData.ableDistricts}
+                    type="unknown"
                   />
                 ))}
               </Row>

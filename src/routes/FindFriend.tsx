@@ -53,6 +53,7 @@ function FindFriend() {
     client.writeData({ data: { isLoggedIn: false } });
     // message.error('로그인 기한 만료로 검색 실패');
     alert('로그인 기한 만료로 검색 실패');
+    window.scrollTo(0, 0);
     return <Redirect to="/" />;
 
     // 여기도 서버에서 나오는 에러 종류에 따라서 Login 먼저 하세요를 보여줄지, 혹은 다른 에러 메세지를 보여줄지
@@ -101,6 +102,7 @@ function FindFriend() {
         {data
           ? data.filterUsers.map((oneData) => (
               <UserCard
+                id={oneData.id}
                 key={oneData.email}
                 nickname={oneData.nickname}
                 gender={oneData.gender}
@@ -110,6 +112,7 @@ function FindFriend() {
                 levelOf3Dae={oneData.levelOf3Dae}
                 weekdays={oneData.weekdays}
                 ableDistricts={oneData.ableDistricts}
+                type="unknown"
               />
             ))
           : null}

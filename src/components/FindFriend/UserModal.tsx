@@ -25,6 +25,7 @@ type UserModalProps = {
   motivations: any[];
   openImageChoice: string;
   messageToFriend: string;
+  type: string;
 };
 
 function UserModal({
@@ -42,6 +43,7 @@ function UserModal({
   motivations,
   openImageChoice,
   messageToFriend,
+  type,
 }: UserModalProps) {
   const handleOk = () => {
     setLoading(true);
@@ -50,6 +52,57 @@ function UserModal({
 
   const handleCancel = () => {
     setVisible(false);
+  };
+
+  const RightButton = (): any => {
+    if (type === 'unknown') {
+      return (
+        <Button
+          key="submit"
+          type="primary"
+          loading={loading}
+          onClick={handleOk}
+        >
+          친구신청
+        </Button>
+      );
+    }
+    if (type === 'friends') {
+      return (
+        <Button
+          key="submit"
+          type="primary"
+          loading={loading}
+          onClick={handleOk}
+        >
+          채팅하기
+        </Button>
+      );
+    }
+    if (type === 'following') {
+      return (
+        <Button
+          key="submit"
+          type="primary"
+          loading={loading}
+          onClick={handleOk}
+        >
+          친구신청 취소
+        </Button>
+      );
+    }
+    if (type === 'followers') {
+      return (
+        <Button
+          key="submit"
+          type="primary"
+          loading={loading}
+          onClick={handleOk}
+        >
+          친구수락
+        </Button>
+      );
+    }
   };
 
   return (
@@ -63,14 +116,7 @@ function UserModal({
           <Button key="back" onClick={handleCancel}>
             닫기
           </Button>,
-          <Button
-            key="submit"
-            type="primary"
-            loading={loading}
-            onClick={handleOk}
-          >
-            친구신청
-          </Button>,
+          <RightButton key="right" />,
         ]}
       >
         <table css={tableCSS}>

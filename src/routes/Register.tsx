@@ -12,7 +12,7 @@ import RegisterInput from '../components/Register/RegisterInput';
 import useRegister from '../hooks/useRegister';
 import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 import Loading from '../components/Shared/Loading';
-import useCheckToken from '../utils/useCheckToken';
+import useCheckToken from '../hooks/useCheckToken';
 import { IS_LOGGED_IN } from '../graphql/queries';
 
 const renderingImage = css`
@@ -90,6 +90,7 @@ function Register({ history }: RegisterProps) {
   if (errorUser) {
     client.writeData({ data: { isLoggedIn: false } });
     alert('로그인 기한 만료로 저장 실패');
+    window.scrollTo(0, 0);
     return <Redirect to="/" />;
     // history.push('/');
   }

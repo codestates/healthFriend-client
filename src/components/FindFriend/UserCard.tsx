@@ -1,10 +1,19 @@
 /** @jsx jsx */
-import { useState } from 'react';
-import { Col, Card, Typography, Avatar } from 'antd';
+import React, { useState } from 'react';
+import { Col, Card, Typography, Avatar, message } from 'antd';
 import { jsx, css } from '@emotion/core';
 
+import { useMutation } from '@apollo/react-hooks';
 import questionList from '../../config/fakeData';
 import UserModal from './UserModal';
+import {
+  FOLLOW_USER,
+  CANCEL_FOLLOWING,
+  ADD_FRIEND,
+  DELETE_FRIEND,
+  DELETE_FOLLOWER,
+} from '../../graphql/queries';
+import Loading from '../Shared/Loading';
 
 const { Title } = Typography;
 
@@ -39,6 +48,7 @@ const titleCSS = css`
 `;
 
 type UserCardProps = {
+  id: any; // string으로 하면 안 되는 이유는??
   nickname: string;
   gender: string;
   levelOf3Dae: string;
@@ -47,9 +57,11 @@ type UserCardProps = {
   motivations: any[];
   openImageChoice: string;
   messageToFriend: string;
+  type: string;
 };
 
 function UserCard({
+  id,
   nickname,
   gender,
   levelOf3Dae,
@@ -58,9 +70,30 @@ function UserCard({
   motivations,
   openImageChoice,
   messageToFriend,
+  type,
 }: UserCardProps) {
   const [visible, setVisible] = useState<boolean>(false);
   const [loading, setLoaidng] = useState<boolean>(false);
+
+  const [
+    followUser,
+    { data: dataFU, error: errorFU, loading: loadingFU },
+  ] = useMutation(FOLLOW_USER);
+  const [cancelFollow] = useMutation(CANCEL_FOLLOWING);
+  const [addFriend] = useMutation(ADD_FRIEND);
+  const [deleteFriend] = useMutation(DELETE_FRIEND);
+  const [deleteFollower] = useMutation(DELETE_FOLLOWER);
+
+  // 나중에 loading 같은 것 붙이기. 그리고 완료시 완료됐다는 문구. z-index같은 것 줘서 투명도 조절해서 친구 목록들 위에 띄워주면 좋을듯.
+  // 친구 성공하면 그 즉시 카드 목록에서 지워주거나 그런 것도 필요.
+  // 친구 신청 취소하면 취소됐다고 메세지 오고, 그 즉시 그 카드 날려버리기.
+
+  if (dataFU) {
+    message.success('친구신청 성공');
+  }
+  if (errorFU) {
+    message.error('친구신청 실패');
+  }
 
   const showModal = () => {
     setVisible(true);
@@ -115,14 +148,94 @@ function UserCard({
     }
   };
 
+  const MiddleButton = (): any => {
+    if (type === 'friends') {
+      return (
+        <span
+          onClick={() =>
+            deleteFriend({
+              variables: { userId: id },
+            })
+          }
+        >
+          <b>친구 끊기</b>
+        </span>
+      );
+    }
+    if (type === 'followers') {
+      return (
+        <span
+          onClick={() =>
+            deleteFollower({
+              variables: { userId: id },
+            })
+          }
+        >
+          <b>친구 거절</b>
+        </span>
+      );
+    }
+    return null;
+  };
+
+  const RightButton = (): any => {
+    if (type === 'unknown') {
+      return (
+        <span
+          onClick={() =>
+            followUser({
+              variables: { userId: id },
+            })
+          }
+        >
+          <b>친구 신청하기</b>
+        </span>
+      );
+    }
+    if (type === 'friends') {
+      return (
+        <span onClick={() => console.log('친구야 채팅하자')}>
+          <b>채팅하기</b>
+        </span>
+      );
+    }
+
+    if (type === 'following') {
+      return (
+        <span
+          onClick={() =>
+            cancelFollow({
+              variables: { userId: id },
+            })
+          }
+        >
+          <b>친구신청 취소</b>
+        </span>
+      );
+    }
+    if (type === 'followers') {
+      return (
+        <span
+          onClick={() =>
+            addFriend({
+              variables: { userId: id },
+            })
+          }
+        >
+          <b>친구신청 수락</b>
+        </span>
+      );
+    }
+  };
+  // Render methods should be a pure function of props and state; triggering nested component updates from render is not allowed.If necessary, trigger nested updates in componentDidUpdate.
+
   return (
     <Col xs={24} sm={12} lg={8} css={margin}>
       <Card
         actions={[
           <span onClick={showModal}>상세 보기</span>,
-          <span>
-            <b>친구 신청하기</b>
-          </span>,
+          <MiddleButton />,
+          <RightButton />,
         ]}
         css={cardCSS}
       >
@@ -141,6 +254,7 @@ function UserCard({
           motivations={motivations}
           openImageChoice={openImageChoice}
           messageToFriend={messageToFriend}
+          type={type}
         />
         <Card.Meta avatar={<Avatar icon="user" />} title={nickname} />
         <br />
@@ -148,21 +262,28 @@ function UserCard({
           {changeToKorean({ levelOf3Dae }).match(/\((.*?)\)/g)}
           {/* {changeToKorean({ gender })} */}
         </p>
-        <Title level={4} css={titleCSS}>
-          {motivations
-            .map((elm) => changeToKorean({ motivations: elm.motivation }))
-            .join(', ')}
-        </Title>
-        <p>
-          <span>{getPossibleDays(weekdays)}</span>
-        </p>
-        <p>
-          {ableDistricts.map((elm) => (
-            <span css={districtCSS} key={elm.district.nameOfDong}>
-              {elm.district.nameOfDong}
-            </span>
-          ))}
-        </p>
+
+        {loadingFU ? (
+          <Loading />
+        ) : (
+          <React.Fragment>
+            <Title level={4} css={titleCSS}>
+              {motivations
+                .map((elm) => changeToKorean({ motivations: elm.motivation }))
+                .join(', ')}
+            </Title>
+            <p>
+              <span>{getPossibleDays(weekdays)}</span>
+            </p>
+            <p>
+              {ableDistricts.map((elm) => (
+                <span css={districtCSS} key={elm.district.nameOfDong}>
+                  {elm.district.nameOfDong}
+                </span>
+              ))}
+            </p>
+          </React.Fragment>
+        )}
       </Card>
     </Col>
   );
