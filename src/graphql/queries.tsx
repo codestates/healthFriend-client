@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 export const GET_USERINFO = gql`
   {
     me {
+      id
       email
       nickname
       gender
@@ -115,58 +116,66 @@ export const GET_FILTERED_USERS = gql`
 
 export const GET_FOLLOWING = gql`
   {
-    getFollowing {
+    me {
       id
-      email
-      nickname
-      gender
-      openImageChoice
-      levelOf3Dae
-      messageToFriend
-      motivations {
+      following {
         id
-        motivation
-      }
-      weekdays {
-        id
-        weekday
-      }
-      ableDistricts {
-        district {
-          idOfGu
-          nameOfGu
-          idOfDong
-          nameOfDong
+        email
+        nickname
+        gender
+        openImageChoice
+        levelOf3Dae
+        messageToFriend
+        motivations {
+          id
+          motivation
+        }
+        weekdays {
+          id
+          weekday
+        }
+        ableDistricts {
+          district {
+            idOfGu
+            nameOfGu
+            idOfDong
+            nameOfDong
+          }
         }
       }
     }
   }
 `;
 
+// 이상하게 저리 follower 위에 id 를 안 붙이면 query가 안 돌아감. 이유는 모르겠음. graphQL 특성인듯 한데.
+
 export const GET_FOLLOWERS = gql`
   {
-    getFollowers {
+    me {
       id
-      email
-      nickname
-      gender
-      openImageChoice
-      levelOf3Dae
-      messageToFriend
-      motivations {
+      followers {
         id
-        motivation
-      }
-      weekdays {
-        id
-        weekday
-      }
-      ableDistricts {
-        district {
-          idOfGu
-          nameOfGu
-          idOfDong
-          nameOfDong
+        email
+        nickname
+        gender
+        openImageChoice
+        levelOf3Dae
+        messageToFriend
+        motivations {
+          id
+          motivation
+        }
+        weekdays {
+          id
+          weekday
+        }
+        ableDistricts {
+          district {
+            idOfGu
+            nameOfGu
+            idOfDong
+            nameOfDong
+          }
         }
       }
     }
@@ -176,6 +185,7 @@ export const GET_FOLLOWERS = gql`
 export const GET_FRIENDS = gql`
   {
     me {
+      id
       friends {
         id
         email

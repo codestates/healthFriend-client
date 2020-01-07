@@ -52,7 +52,7 @@ export default function Header() {
       >
         헬친
       </NavLink>
-      {/* data */ loginData.isLoggedIn ? (
+      {loginData.isLoggedIn && data ? (
         <React.Fragment>
           {/* {data.me.levelOf3Dae && data.me.messageToFriend ? null : ( */}
           <NavLink to="/register" className="item" css={navLinkItem}>
@@ -68,7 +68,7 @@ export default function Header() {
         </React.Fragment>
       ) : null}
 
-      {/* data */ loginData.isLoggedIn ? (
+      {loginData.isLoggedIn && data ? (
         <MypageDropdown name={data.me.nickname} />
       ) : (
         <NavLink to="/login" className="item" css={navLinkItem}>
