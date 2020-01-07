@@ -38,40 +38,42 @@ const renderingMessage = css`
 //   padding: 10px;
 // `;
 
-// 여기 type 더 명확하게
+// 어디는 history, match, location 다 써줘야 하고, 여긴 아니고 차이는??
 type HomeProps = {
   history: any;
-  error: any;
-  data: any;
 };
 
-function ButtonHome({ history, error, data }: HomeProps) {
-  if (error !== undefined) {
-    return <ButtonToSignup />;
-  }
-  if (data && data.me.levelOf3Dae) {
-    return <ButtonToFind history={history} />;
-  }
-  return <ButtonToRegister history={history} />;
-}
-
 function Home({ history }: HomeProps) {
-  // home 화면은 왜 별도의 장치를 마련해두지 않았는데 알아서 isLoggedIn: true로 되는지 모르겠음.
   const client = useApolloClient();
-  const { data: dataUser, error: errorUser } = useQuery(GET_USERINFO, {
+  const { data, error } = useQuery(GET_USERINFO, {
     fetchPolicy: 'network-only',
+    errorPolicy: 'all',
   });
-  const { data: dataUsers } = useQuery(GET_USERS, {
+  const { data: dataUsers, error: errorUsers } = useQuery(GET_USERS, {
     fetchPolicy: 'network-only',
+    errorPolicy: 'all',
   });
   const { data: loginData } = useQuery(IS_LOGGED_IN);
 
-  if (errorUser && loginData.isLoggedIn === true) {
-    client.writeData({ data: { isLoggedIn: false } });
-    return <ErrorLoginFirst error={errorUser} />;
+  // home 화면은 왜 아래 if 문이 없어도 알아서 isLoggedIn: true로 되는지 모르겠음.
+  if (data) {
+    client.writeData({ data: { isLoggedIn: true } });
   }
 
-  // console.log('loginData.isLoggedIn', loginData.isLoggedIn);
+  if (loginData.isLoggedIn === true && (error || errorUsers)) {
+    client.writeData({ data: { isLoggedIn: false } });
+    return <ErrorLoginFirst error={error} />;
+  }
+
+  function ButtonHome() {
+    if (loginData.isLoggedIn === false) {
+      return <ButtonToSignup />;
+    }
+    if (data && data.me.levelOf3Dae) {
+      return <ButtonToFind history={history} />;
+    }
+    return <ButtonToRegister history={history} />;
+  }
 
   return (
     <Row type="flex" justify="center">
@@ -84,10 +86,10 @@ function Home({ history }: HomeProps) {
             현재 당신을 기다리고 있어요
           </Title>
         </div>
-        <ButtonHome history={history} error={errorUser} data={dataUser} />
+        <ButtonHome />
         {/* 이 윗 부분을 더 축약해서 쓰는 법 없나?  */}
       </Col>
-      {dataUsers && loginData.isLoggedIn === true ? (
+      {loginData.isLoggedIn === true && dataUsers ? (
         <Col xs={20}>
           <Row type="flex" justify="center" style={{ marginTop: 20 }}>
             <Col xs={24}>

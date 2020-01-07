@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import { Row, Col, Button, Result } from 'antd';
 import { css, jsx } from '@emotion/core';
-import { Redirect } from 'react-router-dom';
 
 import RegisterInput from '../components/Register/RegisterInput';
 import questionList from '../config/fakeData';
@@ -43,8 +42,14 @@ function MyPage({ history }: MyPageProps) {
 
   const { client, getInfo, dataUser, errorUser } = useCheckToken();
 
-  useEffect(() => {
-    if (dataUser) {
+  useEffect((): void => {
+    // 왜 dataUser와 errorUser가 둘다 동시에 값을 가지고 있을 수 있는지 모르겠음.
+    if (errorUser) {
+      client.writeData({ data: { isLoggedIn: false } });
+      alert('로그인 기한 만료로 저장 실패');
+      window.scrollTo(0, 0);
+      history.push('/');
+    } else if (dataUser) {
       postInfo({
         variables: {
           ...submitVariable,
@@ -63,12 +68,7 @@ function MyPage({ history }: MyPageProps) {
       setComplete(true);
     }
     // eslint-disable-next-line
-  }, [dataUser]);
-  if (errorUser) {
-    client.writeData({ data: { isLoggedIn: false } });
-    alert('로그인 기한 만료로 저장 실패');
-    return <Redirect to="/" />;
-  }
+  }, [dataUser, errorUser]);
   if (data) {
     client.writeData({ data: { isLoggedIn: true } });
   }

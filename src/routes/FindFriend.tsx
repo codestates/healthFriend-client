@@ -48,17 +48,21 @@ function FindFriend() {
     },
   );
 
+  // alert이 2번 불리게 되는 이유가 무엇?? register와 find에서 2번 불림.
+  if (error) {
+    client.writeData({ data: { isLoggedIn: false } });
+    // message.error('로그인 기한 만료로 검색 실패');
+    alert('로그인 기한 만료로 검색 실패');
+    return <Redirect to="/" />;
+
+    // 여기도 서버에서 나오는 에러 종류에 따라서 Login 먼저 하세요를 보여줄지, 혹은 다른 에러 메세지를 보여줄지
+    // 꼭 로그인 만료 문제가 아닐 수 있으므로... error message에 따른 error handling?
+  }
   if (dataUser) {
     client.writeData({ data: { isLoggedIn: true } });
     // 이게 동기로 일어나는 줄 알았는데 비동기인듯. 잠깐 아래 if 문으로 들어갔다가 나옴.
   }
-
-  if (!loadingUser && loginData.isLoggedIn === false)
-    return <Redirect to="/" />;
-
-  if (error || errorUser) {
-    alert('로그인 기한 만료로 검색 실패');
-    client.writeData({ data: { isLoggedIn: false } });
+  if ((!loadingUser && loginData.isLoggedIn === false) || errorUser) {
     return <Redirect to="/" />;
   }
 
@@ -90,14 +94,6 @@ function FindFriend() {
   function FilteredCards() {
     if (loading) {
       return <Loading />;
-    }
-    if (error) {
-      client.writeData({ data: { isLoggedIn: false } });
-      alert('로그인 기한 만료로 검색 실패');
-      return <Redirect to="/" />;
-      // 여기도 서버에서 나오는 에러 종류에
-      // 따라서 Login 먼저 하세요를 보여줄지, 혹은 다른 에러 메세지를 보여줄지
-      // 꼭 로그인 만료 문제가 아닐 수 있음... error message에 따른 error handling?
     }
 
     return (
