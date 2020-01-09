@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core';
-import Login from '../../routes/Login';
+// import Login from '../../routes/Login';
 
 const wrapper = css`
   padding: 30px;
@@ -14,7 +14,7 @@ function IfLoginUSeeFriend() {
       기다리고 있는 헬스 친구들의 프로필을 볼 수 있습니다!!
       <br />
       <br />
-      <Login />
+      {/* <Login /> */}
       <br />
       <br />
       <h2>헬스친구 사용법</h2>

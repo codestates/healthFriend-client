@@ -28,5 +28,5 @@ yarn-error.log*
 # todo
 todo.md
 
-src/config/firebaseConfig.js
-src/config/sendbirdConfig.tsx
+/src/config/firebaseConfig.js
+/src/config/sendbirdConfig.tsx

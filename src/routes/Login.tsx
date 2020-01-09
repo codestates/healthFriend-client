@@ -1,10 +1,5 @@
 import React from 'react';
 import { Button } from 'antd';
-import { useQuery, useApolloClient } from '@apollo/react-hooks';
-import { Redirect } from 'react-router-dom';
-
-import { GET_USERINFO } from '../graphql/queries';
-import Loading from '../components/Shared/Loading';
 
 export function GoogleLoginButton() {
   return (
@@ -23,23 +18,15 @@ export function GoogleLoginButton() {
 }
 
 function Login() {
-  const { data, loading } = useQuery(GET_USERINFO, {
-    fetchPolicy: 'network-only',
-  });
+  // const { data, loading, refetch } = useQuery(GET_USERINFO, {
+  //   fetchPolicy: 'network-only',
+  // });
+  // 사실 page마다 위에처럼 적어서 주소를 치고 들어왔을 때도 무조건 로그인하라 가 아닌 로그인 된 상태면 다시 redirection 시켜버리는 것도 할 수 있는데 그렇게 쓰는건 일반적이지도 않고, 보통 그렇게 안 한다고 하므로 안 쓰기로 함.
 
-  const client = useApolloClient();
-
-  // useQuery도 비동기일 텐데 아래 loading, data 등에서 어떻게 다 걸리나?
-  if (loading) return <Loading />;
-  if (data) client.writeData({ data: { isLoggedIn: true } });
-
-  // 이미 로그인한 사람이 임의로 주소 쳐서 들어올것 대비
-  return data === undefined ? (
+  return (
     <div>
       <GoogleLoginButton />
     </div>
-  ) : (
-    <Redirect to="/" />
   );
 }
 

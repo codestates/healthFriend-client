@@ -48,7 +48,7 @@ function Register({ history }: RegisterProps) {
     questionList,
     order,
     data,
-    error,
+    // error,
     loading,
     submitVariable,
     submitMotivation,
@@ -87,31 +87,23 @@ function Register({ history }: RegisterProps) {
     // eslint-disable-next-line
   }, [dataUser]);
 
-  if (errorUser) {
+  if (errorUser && loginData.isLoggedIn === true) {
+    // 에러의 원인이 token 기한만료 말고, 그외 다른 원인일수 있으므로 error handling 해줘야 함 .
     client.writeData({ data: { isLoggedIn: false } });
     alert('로그인 기한 만료로 저장 실패');
     window.scrollTo(0, 0);
     return <Redirect to="/" />;
-    // history.push('/');
   }
 
-  if (data) {
-    client.writeData({ data: { isLoggedIn: true } });
-    // 이게 동기로 일어나는 줄 알았는데 비동기인듯. 잠깐 아래 if 문으로 들어갔다가 나옴.
+  if (loginData.isLoggedIn === false) {
+    return <ErrorLoginFirst error={null} />;
   }
 
-  if (!loading && loginData.isLoggedIn === false) {
-    return <ErrorLoginFirst error={error} />;
-  }
-
-  if (error) {
-    client.writeData({ data: { isLoggedIn: false } });
-    return <ErrorLoginFirst error={error} />;
-  }
-
-  // if (data.me.levelOf3Dae && data.me.messageToFriend) {
+  // data가 다 있으면 redirection
+  // if (data.me.levelOf3Dae && data.me.gender && data.me.ableDistricts) {
   //   return <Redirect to="/" />;
   // }
+
   return (
     <Row type="flex" justify="center">
       <Col xs={24} md={24}>
@@ -170,6 +162,7 @@ function Register({ history }: RegisterProps) {
                   type="primary"
                   onClick={() => {
                     getInfo();
+                    // .then((data) => console.log('data is...', data)); then 붙이려니 typescript 문제 발생. mutation 함수는 promise return하는데 useLazyQuery랑 refetch는 promise return 아닌 듯.
                     // await 안 먹는 이유가 뭐지?
                   }}
                   // disabled={!totalCheckArr[order - 1].some((elm) => elm === true)}... place에 대해서도 체크가 돼야 함.

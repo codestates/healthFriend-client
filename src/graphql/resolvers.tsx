@@ -10,6 +10,15 @@ export const typeDefs = gql`
 `;
 
 export const resolvers = {
+  // Mutation: {
+  //   logOut: (_, variables, {cache}) => {
+  //     const meStatus = cache.readQuery({
+  //       query: GET_USERINFO
+  //     })
+  //     const newStatus = meStatus.map(item => item === 'nickname'? 'loggedout': item);
+  //     cache.writeQuery({})
+  //         }
+  // }
   // Query: {
   //   note: (_, variables, {  getCacheKey }) => {
   //     const id = getCacheKey({

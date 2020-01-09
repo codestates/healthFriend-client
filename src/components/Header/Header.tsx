@@ -38,7 +38,7 @@ export default function Header() {
   const { data: loginData } = useQuery(IS_LOGGED_IN);
 
   const { data } = useQuery(GET_USERINFO, {
-    fetchPolicy: 'network-only',
+    // fetchPolicy: 'network-only',
   });
 
   return (
