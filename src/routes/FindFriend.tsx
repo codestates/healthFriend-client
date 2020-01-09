@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Row, Col, Button } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useLazyQuery, useQuery, useApolloClient } from '@apollo/react-hooks';
@@ -24,7 +24,11 @@ const marginFilterdCards = css`
   margin-top: 40px;
 `;
 
-function FindFriend() {
+type FindFriendProps = {
+  history: any; // match, location을 같이 쓰니 안되고, 얘만 쓰니 되네... withRouter로 붙인 애들은 다 써줘야 하는 것 같고, 아닌 애들은 아닌 듯.
+};
+
+function FindFriend({ history }: FindFriendProps) {
   const [filter, setFilter] = useState<any>({
     openImageChoice: [],
     levelOf3Dae: [],
@@ -35,34 +39,47 @@ function FindFriend() {
 
   const [getFilteredUsers, { loading, data, error }] = useLazyQuery(
     GET_FILTERED_USERS,
-    {
-      fetchPolicy: 'network-only',
-    },
   );
   const { data: loginData } = useQuery(IS_LOGGED_IN);
   const client = useApolloClient();
-  const { data: dataUser, error: errorUser, loading: loadingUser } = useQuery(
-    GET_USERINFO,
-    {
-      fetchPolicy: 'network-only',
-    },
-  );
+  const {
+    data: dataUser,
+    error: errorUser,
+    loading: loadingUser,
+    refetch,
+  } = useQuery(GET_USERINFO, {
+    fetchPolicy: 'network-only',
+    // errorPolicy: 'ignore', 어떤 효과 있는지 모르겠음.
+  });
 
-  // alert이 2번 불리게 되는 이유가 무엇?? register와 find에서 2번 불림.
-  if (error) {
-    client.writeData({ data: { isLoggedIn: false } });
-    // message.error('로그인 기한 만료로 검색 실패');
-    alert('로그인 기한 만료로 검색 실패');
-    window.scrollTo(0, 0);
-    return <Redirect to="/" />;
+  // refetch 할때의 error는 아래의 error나 errorUser에 안 잡히는 듯.
 
-    // 여기도 서버에서 나오는 에러 종류에 따라서 Login 먼저 하세요를 보여줄지, 혹은 다른 에러 메세지를 보여줄지
-    // 꼭 로그인 만료 문제가 아닐 수 있으므로... error message에 따른 error handling?
-  }
-  if (dataUser) {
-    client.writeData({ data: { isLoggedIn: true } });
-    // 이게 동기로 일어나는 줄 알았는데 비동기인듯. 잠깐 아래 if 문으로 들어갔다가 나옴.
-  }
+  // alert창이 2번 불리는 것 때문에 useEffect 붙여버림.
+  useEffect(() => {
+    if (errorUser || error) {
+      alert('로그인 기한 만료');
+      client.writeData({ data: { isLoggedIn: false } });
+      window.scrollTo(0, 0);
+      history.push('/');
+    }
+    // eslint-disable-next-line
+  }, [errorUser, error]);
+
+  // if (errorUser || error) {
+  //   message.error('로그인 기한 만료로 이동 실패');
+  //   // alert('로그인 기한 만료');
+  //   client.writeData({ data: { isLoggedIn: false } });
+  //   window.scrollTo(0, 0);
+  //   return <Redirect to="/" />;
+  // }
+
+  // 여기도 서버에서 나오는 에러 종류에 따라서 Login 먼저 하세요를 보여줄지, 혹은 다른 에러 메세지를 보여줄지
+  // 꼭 로그인 만료 문제가 아닐 수 있으므로... error message에 따른 error handling?
+
+  // if (dataUser) {
+  //   client.writeData({ data: { isLoggedIn: true } });
+  //   // 이게 동기로 일어나는 줄 알았는데 비동기인듯. 잠깐 아래 if 문으로 들어갔다가 나옴.
+  // }
   if ((!loadingUser && loginData.isLoggedIn === false) || errorUser) {
     return <Redirect to="/" />;
   }
@@ -100,21 +117,31 @@ function FindFriend() {
     return (
       <Row gutter={24} css={marginFilterdCards}>
         {data
-          ? data.filterUsers.map((oneData) => (
-              <UserCard
-                id={oneData.id}
-                key={oneData.email}
-                nickname={oneData.nickname}
-                gender={oneData.gender}
-                openImageChoice={oneData.openImageChoice}
-                messageToFriend={oneData.messageToFriend}
-                motivations={oneData.motivations}
-                levelOf3Dae={oneData.levelOf3Dae}
-                weekdays={oneData.weekdays}
-                ableDistricts={oneData.ableDistricts}
-                type="unknown"
-              />
-            ))
+          ? data.filterUsers
+              .filter((user) => user.id !== dataUser.me.id)
+              .filter((user) => {
+                const array = dataUser.me.following
+                  .concat(dataUser.me.followers)
+                  .concat(dataUser.me.friends)
+                  .map((one) => one.id);
+                return array.indexOf(user.id) === -1;
+              })
+              .map((oneData) => (
+                <UserCard
+                  id={oneData.id}
+                  key={oneData.email}
+                  nickname={oneData.nickname}
+                  gender={oneData.gender}
+                  openImageChoice={oneData.openImageChoice}
+                  messageToFriend={oneData.messageToFriend}
+                  motivations={oneData.motivations}
+                  levelOf3Dae={oneData.levelOf3Dae}
+                  weekdays={oneData.weekdays}
+                  ableDistricts={oneData.ableDistricts}
+                  type="unknown"
+                  renewFriends={refetch}
+                />
+              ))
           : null}
       </Row>
     );
@@ -132,6 +159,7 @@ function FindFriend() {
           type="primary"
           onClick={() => {
             getFilteredUsers({ variables: { ...filter, districts: places } });
+            // refetch().then((data) => console.log('data is....', data));
           }}
         >
           친구 찾기!!

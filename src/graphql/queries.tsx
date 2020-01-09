@@ -26,6 +26,21 @@ export const GET_USERINFO = gql`
           nameOfDong
         }
       }
+      following {
+        id
+        email
+        nickname
+      }
+      followers {
+        id
+        email
+        nickname
+      }
+      friends {
+        id
+        email
+        nickname
+      }
     }
   }
 `;

@@ -2,13 +2,14 @@
 import React, { useEffect } from 'react';
 import { Row, Col, Button, Result } from 'antd';
 import { css, jsx } from '@emotion/core';
+import { useQuery } from '@apollo/react-hooks';
 
 import RegisterInput from '../components/Register/RegisterInput';
 import questionList from '../config/fakeData';
 import useMypage from '../hooks/useMypage';
-import Loading from '../components/Shared/Loading';
 import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 import useCheckToken from '../hooks/useCheckToken';
+import { IS_LOGGED_IN } from '../graphql/queries';
 
 const wrapper = css`
   margin: 20px;
@@ -34,15 +35,14 @@ function MyPage({ history }: MyPageProps) {
     setAbleDistrict,
     places,
     data,
-    error,
-    loading,
     complete,
     setComplete,
   } = useMypage();
 
+  const { data: loginData } = useQuery(IS_LOGGED_IN);
   const { client, getInfo, dataUser, errorUser } = useCheckToken();
 
-  useEffect((): void => {
+  useEffect(() => {
     // 왜 dataUser와 errorUser가 둘다 동시에 값을 가지고 있을 수 있는지 모르겠음.
     // 더하여 그 grphaql 에러의 빨간 화면 뜨는 건 어느 상황에서 발생하는건지.
     if (errorUser) {
@@ -70,13 +70,9 @@ function MyPage({ history }: MyPageProps) {
     }
     // eslint-disable-next-line
   }, [dataUser, errorUser]);
-  if (data) {
-    client.writeData({ data: { isLoggedIn: true } });
-  }
-  if (loading) return <Loading />;
-  if (error) {
-    client.writeData({ data: { isLoggedIn: false } });
-    return <ErrorLoginFirst error={error} />;
+
+  if (loginData.isLoggedIn === false) {
+    return <ErrorLoginFirst error={null} />;
   }
 
   return (

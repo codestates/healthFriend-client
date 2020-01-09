@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { Row, Col, Button } from 'antd';
 import { /* css, */ jsx } from '@emotion/core';
 import { useQuery, useLazyQuery, useApolloClient } from '@apollo/react-hooks';
+import { Redirect } from 'react-router-dom';
 
 import {
-  GET_USERS,
   IS_LOGGED_IN,
   GET_FOLLOWING,
   GET_FRIENDS,
@@ -18,16 +18,16 @@ import UserCard from '../components/FindFriend/UserCard';
 function Chat() {
   const client = useApolloClient();
   const { data: loginData } = useQuery(IS_LOGGED_IN);
-  const { loading, error, data } = useQuery(GET_USERS, {
-    fetchPolicy: 'network-only',
-  });
+  // const { loading, error, data, refetch } = useQuery(GET_USERS, {
+  //   fetchPolicy: 'network-only',
+  // });
   const [list, setList] = useState<string>('');
 
   const [
     getFollowers,
     { loading: loadingFollowers, error: errorFollowers, data: dataFollowers },
   ] = useLazyQuery(GET_FOLLOWERS, {
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'network-only', // 각 옵션에는 모두 이유가 있게.
   });
   const [
     getFollowing,
@@ -42,18 +42,16 @@ function Chat() {
     fetchPolicy: 'network-only',
   });
 
-  if (loading) return <Loading />;
-  if (error) {
-    client.writeData({ data: { isLoggedIn: false } });
-    return <ErrorLoginFirst error={error} />;
-  }
-  // 여기도 서버에서 나오는 에러 종류에 따라서 Login 먼저 하세요를 보여줄지, 혹은 다른 에러 메세지를 보여줄지
-  if (data) {
-    client.writeData({ data: { isLoggedIn: true } });
-  }
+  // react가 SPA이기 때문에 주소창에 주소를 쳐서 들어오면 state가 무조건 initial로 돌아가면서 isLoggedIn = false로 되게 된다. 그래서 로긴 무조건 다시 하라고 뜨게 됨.
   if (loginData.isLoggedIn === false) {
-    return <ErrorLoginFirst error={error} />;
+    return <ErrorLoginFirst error={null} />;
   }
+
+  const renewFriends = () => {
+    if (list === 'friends') return getFriends;
+    if (list === 'followers') return getFollowers;
+    if (list === 'following') return getFollowing;
+  };
 
   const makeFriend = (oneData, type) => {
     return (
@@ -69,6 +67,7 @@ function Chat() {
         weekdays={oneData.weekdays}
         ableDistricts={oneData.ableDistricts}
         type={type}
+        renewFriends={renewFriends()}
       />
     );
   };
@@ -81,7 +80,12 @@ function Chat() {
         );
       }
       if (loadingFriends) return <Loading />;
-      if (errorFriends) return <p>{errorFriends.message}</p>;
+      if (errorFriends) {
+        client.writeData({ data: { isLoggedIn: false } });
+        alert('로그인 기한 만료');
+        window.scrollTo(0, 0);
+        return <Redirect to="/" />;
+      }
       return (
         <p>아직 친구가 없네요. 친구 찾기로 가서 먼저 친구신청을 해보세요</p>
       );
@@ -93,7 +97,12 @@ function Chat() {
         );
       }
       if (loadingFollowers) return <Loading />;
-      if (errorFollowers) return <p>{errorFollowers.message}</p>;
+      if (errorFollowers) {
+        client.writeData({ data: { isLoggedIn: false } });
+        alert('로그인 기한 만료');
+        window.scrollTo(0, 0);
+        return <Redirect to="/" />;
+      }
       return (
         <div>
           아직 사람들이 친구신청을 안 했네요. 마이페이지에서 정보를 상세하게
@@ -108,7 +117,12 @@ function Chat() {
         );
       }
       if (loadingFollowing) return <Loading />;
-      if (errorFollowing) return <p>{errorFollowing.message}</p>;
+      if (errorFollowing) {
+        client.writeData({ data: { isLoggedIn: false } });
+        alert('로그인 기한 만료');
+        window.scrollTo(0, 0);
+        return <Redirect to="/" />;
+      }
       return (
         <div>
           아직 아무에게도 친구신청을 안 하셨네요. 친구 찾기로 이동하셔서 한번
@@ -118,8 +132,6 @@ function Chat() {
     }
     return <div>여기는 채팅방 입니다</div>;
   }
-
-  // 로딩 빙글빙글 돌아가는 것 만들어야 함.
 
   return (
     <div>
@@ -144,7 +156,7 @@ function Chat() {
               setList('following');
             }}
           >
-            내가 친구하자 한 사람
+            보낸 요청
           </Button>
         </Col>
         <Col xs={24} md={5}>
@@ -155,7 +167,7 @@ function Chat() {
               setList('followers');
             }}
           >
-            나에게 친구하자 온 사람
+            받은 요청
           </Button>
         </Col>
         <Col xs={24} md={5}>

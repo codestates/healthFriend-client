@@ -2,6 +2,7 @@
 import { Row, Col, Typography } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
+import cookie from 'js-cookie';
 
 import renderImage from '../static/renderImage.jpg';
 import { GET_USERS, IS_LOGGED_IN, GET_USERINFO } from '../graphql/queries';
@@ -34,10 +35,6 @@ const renderingMessage = css`
   }
 `;
 
-// const wrapper = css`
-//   padding: 10px;
-// `;
-
 // 어디는 history, match, location 다 써줘야 하고, 여긴 아니고 차이는??
 type HomeProps = {
   history: any;
@@ -45,31 +42,38 @@ type HomeProps = {
 
 function Home({ history }: HomeProps) {
   const client = useApolloClient();
-  const { data, error } = useQuery(GET_USERINFO, {
+  // console.log('token 유무', cookie.get('access-token'));
+  const { data: dataMe, error: errorMe } = useQuery(GET_USERINFO, {
     fetchPolicy: 'network-only',
-    errorPolicy: 'all',
+    // errorPolicy: 'all',
   });
   const { data: dataUsers, error: errorUsers } = useQuery(GET_USERS, {
-    fetchPolicy: 'network-only',
-    errorPolicy: 'all',
+    // 'network-only', 굳이 중요한 data 아니므로 network-only 안 해줌. 아래 카드를 남길지, 아니면 다른 걸 보여주는게 좋을지도 좀 더 궁리. 이왕 보여줄거면 FindFriend 창처럼 필터해서 보여줘야 할듯.
   });
   const { data: loginData } = useQuery(IS_LOGGED_IN);
 
-  // home 화면은 왜 아래 if 문이 없어도 알아서 isLoggedIn: true로 되는지 모르겠음.
-  if (data) {
+  // console.log('dataMe', dataMe);
+  // console.log('errorMe', errorMe);
+  // console.log('errorUsers', errorUsers);
+
+  // 일단 어쩔수 없이 access-token을 이용했는데 이것보단 차라리 local useMutation을 날려서 로그아웃하면 local에서 me nickname같은걸 바꿔버리고, 그거 값이 이 값이면 로그아웃, 아니면 로그인 이런식으로 가보든가...
+  // if (dataMe) {
+  if (cookie.get('access-token')) {
+    // 이거 대신에 if (dataMe)로 했을 때 token이 이미 지워진 상태임에도 불구하고, dataMe에 올바른 정보가 들어옴. network-only 옵션을 붙였는데도. errorMe는 undefined로 바뀌고, dataMe에 다시 올바른 정보가 생김. 그랬다가 안 그랬다가 하는듯. 지속적 문제는 딴 페이지에서 넘어올땐 되기도 하는데 Home 화면에서 로그아웃 눌렀을 땐 안 지워짐. token 확인하는 지금 방식일 때도 dataMe가 그대로 찍히는 이유 잘 모르겠음.
     client.writeData({ data: { isLoggedIn: true } });
   }
 
-  if (loginData.isLoggedIn === true && (error || errorUsers)) {
+  // 일부러 로그아웃을 하지는 않았는데 token이 만료됐을 때
+  if (loginData.isLoggedIn === true && (errorMe || errorUsers)) {
     client.writeData({ data: { isLoggedIn: false } });
-    return <ErrorLoginFirst error={error} />;
+    return <ErrorLoginFirst error={errorMe} />;
   }
 
   function ButtonHome() {
     if (loginData.isLoggedIn === false) {
       return <ButtonToSignup />;
     }
-    if (data && data.me.levelOf3Dae) {
+    if (dataMe && dataMe.me.levelOf3Dae) {
       return <ButtonToFind history={history} />;
     }
     return <ButtonToRegister history={history} />;
@@ -87,7 +91,6 @@ function Home({ history }: HomeProps) {
           </Title>
         </div>
         <ButtonHome />
-        {/* 이 윗 부분을 더 축약해서 쓰는 법 없나?  */}
       </Col>
       {loginData.isLoggedIn === true && dataUsers ? (
         <Col xs={20}>
@@ -107,6 +110,7 @@ function Home({ history }: HomeProps) {
                     weekdays={oneData.weekdays}
                     ableDistricts={oneData.ableDistricts}
                     type="unknown"
+                    renewFriends={() => null}
                   />
                 ))}
               </Row>
