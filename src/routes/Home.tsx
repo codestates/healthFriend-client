@@ -47,7 +47,7 @@ function Home({ history }: HomeProps) {
     fetchPolicy: 'network-only',
     // errorPolicy: 'all',
   });
-  const { data: dataUsers, error: errorUsers } = useQuery(GET_USERS, {
+  const { data: dataUsers } = useQuery(GET_USERS, {
     // 'network-only', 굳이 중요한 data 아니므로 network-only 안 해줌. 아래 카드를 남길지, 아니면 다른 걸 보여주는게 좋을지도 좀 더 궁리. 이왕 보여줄거면 FindFriend 창처럼 필터해서 보여줘야 할듯.
   });
   const { data: loginData } = useQuery(IS_LOGGED_IN);
@@ -64,10 +64,25 @@ function Home({ history }: HomeProps) {
   }
 
   // 일부러 로그아웃을 하지는 않았는데 token이 만료됐을 때
-  if (loginData.isLoggedIn === true && (errorMe || errorUsers)) {
+
+  if (dataMe) {
+    console.log('dataMe', dataMe);
+  }
+
+  if (errorMe) {
+    console.log('graphQLErrors is ....', errorMe.graphQLErrors);
+  }
+
+  if (
+    loginData.isLoggedIn === true &&
+    errorMe
+    //  &&
+    // errorMe.extensions.code === 'NO_TOKEN'
+  ) {
     client.writeData({ data: { isLoggedIn: false } });
     return <ErrorLoginFirst error={errorMe} />;
   }
+  // if (errorMe) return <p>{errorMe.message}</p>;
 
   function ButtonHome() {
     if (loginData.isLoggedIn === false) {
