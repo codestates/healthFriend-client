@@ -31,15 +31,10 @@ const navLinkItem = css`
   }
 `;
 
-// api로 call 안 하고, cache에서 찾아서 data 받는건?
-// 로그인 과정에서 api call을 하면 cache에 이후 자동으로 저장되는건지도 확인
-
 export default function Header() {
   const { data: loginData } = useQuery(IS_LOGGED_IN);
 
-  const { data } = useQuery(GET_USERINFO, {
-    // fetchPolicy: 'network-only',
-  });
+  const { data } = useQuery(GET_USERINFO);
 
   return (
     <div className="header" css={navHeader}>

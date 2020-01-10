@@ -50,7 +50,6 @@ export const GET_FILTERED_USERS = gql`
   }
   ${USERS_INFO}
 `;
-// 위, 아래의 부분들  fragment로 변경
 
 export const GET_FOLLOWING = gql`
   {
@@ -63,8 +62,7 @@ export const GET_FOLLOWING = gql`
   }
   ${USERS_INFO}
 `;
-
-// 이상하게 저리 follower 위에 id 를 안 붙이면 query가 안 돌아감. 이유는 모르겠음. graphQL 특성인듯 한데.
+// 저리 follower 위에 id 를 안 붙이면 query가 안 돌아감. 이유는 모르겠음. graphQL 특성 구분인자 역할
 
 export const GET_FOLLOWERS = gql`
   {

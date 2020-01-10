@@ -4,7 +4,6 @@ import { jsx } from '@emotion/core';
 import { TreeSelect } from 'antd';
 import { useQuery } from '@apollo/react-hooks';
 
-// import { placeForFindFriends } from '../../config/fakeData';
 import { GET_PLACES } from '../../graphql/queries';
 import Loading from '../Shared/Loading';
 
