@@ -15,22 +15,44 @@ const httpLink = createHttpLink({
 });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
-    graphQLErrors.map(({ message, locations, path }) =>
+  // 아폴로 클라이언트 에러 핸들링을 top level에서만 할 때는 history.push 이런걸 못쓰겠고, local level에서 하려고 하면 graphQLErrors[0].extensions.code를 받아올 수가 없는 듯.
+  //
+  //   // client.writeData({ data: { isLoggedIn: false } });
+  //   alert('로그인 기한 만료로 저장 실패');
+  //   window.scrollTo(0, 0);
+  //   history.push('/');
+  // }
+  if (graphQLErrors) {
+    graphQLErrors.map(({ message, locations, path, extensions }) =>
       console.log(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}, Code: ${
+          extensions!.code
+        }`,
       ),
     );
+  }
   if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
 const cache = new InMemoryCache();
 
 const client = new ApolloClient({
+  defaultOptions: {
+    watchQuery: {
+      errorPolicy: 'all',
+    },
+    query: {
+      errorPolicy: 'all',
+    },
+    mutate: {
+      errorPolicy: 'all',
+    },
+  },
   cache,
   link: ApolloLink.from([errorLink, httpLink]),
   typeDefs,
   resolvers,
+  connectToDevTools: true,
 });
 
 cache.writeData({
