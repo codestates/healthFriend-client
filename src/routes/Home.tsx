@@ -53,7 +53,7 @@ function Home({ history }: HomeProps) {
   const { data: loginData } = useQuery(IS_LOGGED_IN);
 
   // console.log('dataMe', dataMe);
-  // console.log('errorMe', errorMe);
+  if (errorMe) console.log('errorMe', Object.keys(errorMe));
   // console.log('errorUsers', errorUsers);
 
   // 일단 어쩔수 없이 access-token을 이용했는데 이것보단 차라리 local useMutation을 날려서 로그아웃하면 local에서 me nickname같은걸 바꿔버리고, 그거 값이 이 값이면 로그아웃, 아니면 로그인 이런식으로 가보든가...

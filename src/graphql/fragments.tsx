@@ -1,11 +1,56 @@
 import gql from 'graphql-tag';
 
-export const NOTE_FRAGMENT = gql`
-  # fragment NoteParts on Note {
-  #   id
-  #   title
-  #   content
-  # }
+export const USERS_INFO = gql`
+  fragment UsersInfo on User {
+    id
+    email
+    nickname
+    gender
+    openImageChoice
+    levelOf3Dae
+    messageToFriend
+    motivations {
+      id
+      motivation
+    }
+    weekdays {
+      id
+      weekday
+    }
+    ableDistricts {
+      district {
+        idOfGu
+        nameOfGu
+        idOfDong
+        nameOfDong
+      }
+    }
+  }
 `;
 
-export const NOTES_FRAGMENT = gql``;
+export const BASE_INFO = gql`
+  fragment BaseInfo on User {
+    id
+    email
+    nickname
+  }
+`;
+
+export const ALL_INFO = gql`
+  fragment AllInfo on User {
+    ...UsersInfo
+    following {
+      ...BaseInfo
+    }
+    followers {
+      ...BaseInfo
+    }
+    friends {
+      ...BaseInfo
+    }
+  }
+  ${USERS_INFO}
+  ${BASE_INFO}
+  ${BASE_INFO}
+  ${BASE_INFO}
+`;
