@@ -46,7 +46,6 @@ export default function useMypage() {
     return [];
   };
 
-  // eslint-hook 있을땐 빈배열 넣을 수 없어서 주석처리 해버림.
   useEffect(() => {
     if (data) {
       setTotalCheckArr(subjects.map((subj) => getSelectedBooleans(subj)));

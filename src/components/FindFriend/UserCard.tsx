@@ -276,6 +276,4 @@ function UserCard({
   );
 }
 
-// export default UserCard;
-
 export default withRouter(UserCard);
