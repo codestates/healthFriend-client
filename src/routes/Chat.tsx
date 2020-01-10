@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Row, Col, Button } from 'antd';
 import { /* css, */ jsx } from '@emotion/core';
 import { useQuery, useLazyQuery, useApolloClient } from '@apollo/react-hooks';
-import { Redirect } from 'react-router-dom';
 
 import {
   IS_LOGGED_IN,
@@ -14,13 +13,16 @@ import {
 import Loading from '../components/Shared/Loading';
 import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 import UserCard from '../components/FindFriend/UserCard';
+import redirectWhenTokenExp from '../utils/redirectWhenTokenExp';
+import message from '../config/Message';
 
-function Chat() {
+type ChatProps = {
+  history: any; // match, location을 같이 쓰니 안되고, 얘만 쓰니 되네... withRouter로 붙인 애들은 다 써줘야 하는 것 같고, 아닌 애들은 아닌 듯.
+};
+
+function Chat({ history }: ChatProps) {
   const client = useApolloClient();
   const { data: loginData } = useQuery(IS_LOGGED_IN);
-  // const { loading, error, data, refetch } = useQuery(GET_USERS, {
-  //   fetchPolicy: 'network-only',
-  // });
   const [list, setList] = useState<string>('');
 
   const [
@@ -43,9 +45,7 @@ function Chat() {
   });
 
   // react가 SPA이기 때문에 주소창에 주소를 쳐서 들어오면 state가 무조건 initial로 돌아가면서 isLoggedIn = false로 되게 된다. 그래서 로긴 무조건 다시 하라고 뜨게 됨.
-  if (loginData.isLoggedIn === false) {
-    return <ErrorLoginFirst error={null} />;
-  }
+  if (!loginData.isLoggedIn) return <ErrorLoginFirst error={null} />;
 
   const renewFriends = () => {
     if (list === 'friends') return getFriends;
@@ -80,15 +80,8 @@ function Chat() {
         );
       }
       if (loadingFriends) return <Loading />;
-      if (errorFriends) {
-        client.writeData({ data: { isLoggedIn: false } });
-        alert('로그인 기한 만료');
-        window.scrollTo(0, 0);
-        return <Redirect to="/" />;
-      }
-      return (
-        <p>아직 친구가 없네요. 친구 찾기로 가서 먼저 친구신청을 해보세요</p>
-      );
+      if (errorFriends) redirectWhenTokenExp(history, client);
+      return <p>{message.friendsEmpty}</p>;
     }
     if (list === 'followers') {
       if (dataFollowers && dataFollowers.me.followers.length > 0) {
@@ -97,18 +90,8 @@ function Chat() {
         );
       }
       if (loadingFollowers) return <Loading />;
-      if (errorFollowers) {
-        client.writeData({ data: { isLoggedIn: false } });
-        alert('로그인 기한 만료');
-        window.scrollTo(0, 0);
-        return <Redirect to="/" />;
-      }
-      return (
-        <div>
-          아직 사람들이 친구신청을 안 했네요. 마이페이지에서 정보를 상세하게
-          입력해서 친구들이 나를 잘 찾을 수 있게 해보세요
-        </div>
-      );
+      if (errorFollowers) redirectWhenTokenExp(history, client);
+      return <div>{message.followersEmpty}</div>;
     }
     if (list === 'following') {
       if (dataFollowing && dataFollowing.me.following.length > 0) {
@@ -117,20 +100,10 @@ function Chat() {
         );
       }
       if (loadingFollowing) return <Loading />;
-      if (errorFollowing) {
-        client.writeData({ data: { isLoggedIn: false } });
-        alert('로그인 기한 만료');
-        window.scrollTo(0, 0);
-        return <Redirect to="/" />;
-      }
-      return (
-        <div>
-          아직 아무에게도 친구신청을 안 하셨네요. 친구 찾기로 이동하셔서 한번
-          해보세요
-        </div>
-      );
+      if (errorFollowing) redirectWhenTokenExp(history, client);
+      return <div>{message.followingEmpty}</div>;
     }
-    return <div>여기는 채팅방 입니다</div>;
+    return <div>{message.chatRoomWelcome}</div>;
   }
 
   return (

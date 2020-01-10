@@ -3,18 +3,19 @@ import { useState, useEffect } from 'react';
 import { Row, Col, Button } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useLazyQuery, useQuery, useApolloClient } from '@apollo/react-hooks';
-import { Redirect } from 'react-router-dom';
 
 import SelectPlace from '../components/FindFriend/SelectPlace';
 import SelectDefault from '../components/FindFriend/SelectDefault';
 import UserCard from '../components/FindFriend/UserCard';
-import questionList from '../config/fakeData';
+import questionList from '../config/questions';
 import {
   GET_FILTERED_USERS,
   IS_LOGGED_IN,
   GET_USERINFO,
 } from '../graphql/queries';
 import Loading from '../components/Shared/Loading';
+import redirectWhenTokenExp from '../utils/redirectWhenTokenExp';
+import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 
 const filterCSS = css`
   margin-bottom: 20px;
@@ -42,47 +43,21 @@ function FindFriend({ history }: FindFriendProps) {
   );
   const { data: loginData } = useQuery(IS_LOGGED_IN);
   const client = useApolloClient();
-  const {
-    data: dataUser,
-    error: errorUser,
-    loading: loadingUser,
-    refetch,
-  } = useQuery(GET_USERINFO, {
+  const { data: dataUser, error: errorUser, refetch } = useQuery(GET_USERINFO, {
     fetchPolicy: 'network-only',
-    // errorPolicy: 'ignore', 어떤 효과 있는지 모르겠음.
+    // errorPolicy: 'ignore', 어떤 효과 있는지 모르겠음. 확인.
   });
 
   // refetch 할때의 error는 아래의 error나 errorUser에 안 잡히는 듯.
 
   // alert창이 2번 불리는 것 때문에 useEffect 붙여버림.
   useEffect(() => {
-    if (errorUser || error) {
-      alert('로그인 기한 만료');
-      client.writeData({ data: { isLoggedIn: false } });
-      window.scrollTo(0, 0);
-      history.push('/');
-    }
+    if (errorUser || error) redirectWhenTokenExp(history, client);
     // eslint-disable-next-line
   }, [errorUser, error]);
+  // 여기도 서버에서 나오는 에러 종류에 따라서 꼭 로그인 만료 문제가 아닐 수 있으므로 Login 먼저 하세요를 보여줄지, 혹은 다른 에러 메세지를 보여줄지
 
-  // if (errorUser || error) {
-  //   message.error('로그인 기한 만료로 이동 실패');
-  //   // alert('로그인 기한 만료');
-  //   client.writeData({ data: { isLoggedIn: false } });
-  //   window.scrollTo(0, 0);
-  //   return <Redirect to="/" />;
-  // }
-
-  // 여기도 서버에서 나오는 에러 종류에 따라서 Login 먼저 하세요를 보여줄지, 혹은 다른 에러 메세지를 보여줄지
-  // 꼭 로그인 만료 문제가 아닐 수 있으므로... error message에 따른 error handling?
-
-  // if (dataUser) {
-  //   client.writeData({ data: { isLoggedIn: true } });
-  //   // 이게 동기로 일어나는 줄 알았는데 비동기인듯. 잠깐 아래 if 문으로 들어갔다가 나옴.
-  // }
-  if ((!loadingUser && loginData.isLoggedIn === false) || errorUser) {
-    return <Redirect to="/" />;
-  }
+  if (!loginData.isLoggedIn) return <ErrorLoginFirst error={null} />;
 
   const filterList = questionList
     .filter((elm) => elm.isFilterList)
@@ -110,10 +85,7 @@ function FindFriend({ history }: FindFriendProps) {
   });
 
   function FilteredCards() {
-    if (loading) {
-      return <Loading />;
-    }
-
+    if (loading) return <Loading />;
     return (
       <Row gutter={24} css={marginFilterdCards}>
         {data
@@ -159,10 +131,9 @@ function FindFriend({ history }: FindFriendProps) {
           type="primary"
           onClick={() => {
             getFilteredUsers({ variables: { ...filter, districts: places } });
-            // refetch().then((data) => console.log('data is....', data));
           }}
         >
-          친구 찾기!!
+          검색!!
         </Button>
       </Col>
       <Col xs={20}>

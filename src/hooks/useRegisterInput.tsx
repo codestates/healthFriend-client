@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Checkbox } from 'antd';
 import { css, jsx } from '@emotion/core';
 
-import questionList from '../config/fakeData';
+import questionList from '../config/questions';
 
 const checkboxDesign = css`
   border-bottom: 1px solid #ededed;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Progress } from 'antd';
 
-import questionList from '../../config/fakeData';
+import questionList from '../../config/questions';
 
 type ProgressBarProps = {
   order: number;

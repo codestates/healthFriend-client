@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Select } from 'antd';
-import questionList from '../../config/fakeData';
+import questionList from '../../config/questions';
 
 const { Option } = Select;
 

@@ -4,7 +4,6 @@ import { Row, Col, Button, Result } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useQuery } from '@apollo/react-hooks';
 
-import { Redirect } from 'react-router-dom';
 import ProgressBar from '../components/Register/ProgressBar';
 import RegisterImage from '../static/registerImage.jpg';
 import explanation from '../config/Message';
@@ -14,6 +13,7 @@ import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 import Loading from '../components/Shared/Loading';
 import useCheckToken from '../hooks/useCheckToken';
 import { IS_LOGGED_IN } from '../graphql/queries';
+import redirectWhenTokenExp from '../utils/redirectWhenTokenExp';
 
 const renderingImage = css`
   width: 100%;
@@ -62,6 +62,7 @@ function Register({ history }: RegisterProps) {
   const { client, getInfo, dataUser, errorUser } = useCheckToken();
   const { data: loginData } = useQuery(IS_LOGGED_IN);
 
+  // 이런 식으로 useEffect를 써서 처리해주는 부분이 일반적인가?
   useEffect(() => {
     if (dataUser) {
       if (order === questionList.length) {
@@ -87,17 +88,11 @@ function Register({ history }: RegisterProps) {
     // eslint-disable-next-line
   }, [dataUser]);
 
-  if (errorUser && loginData.isLoggedIn === true) {
-    // 에러의 원인이 token 기한만료 말고, 그외 다른 원인일수 있으므로 error handling 해줘야 함 .
-    client.writeData({ data: { isLoggedIn: false } });
-    alert('로그인 기한 만료로 저장 실패');
-    window.scrollTo(0, 0);
-    return <Redirect to="/" />;
-  }
+  // 에러의 원인이 token 기한만료 말고, 그외 다른 원인일수 있으므로 error handling 해줘야 함 .
 
-  if (loginData.isLoggedIn === false) {
-    return <ErrorLoginFirst error={null} />;
-  }
+  if (errorUser && loginData.isLoggedIn) redirectWhenTokenExp(history, client);
+
+  if (!loginData.isLoggedIn) return <ErrorLoginFirst error={null} />;
 
   // data가 다 있으면 redirection
   // if (data.me.levelOf3Dae && data.me.gender && data.me.ableDistricts) {
