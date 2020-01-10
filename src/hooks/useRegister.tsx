@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
-import questionList from '../config/fakeData';
+import questionList from '../config/questions';
 import {
   GET_USERINFO,
   MUTATE_INFO,

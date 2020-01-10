@@ -45,7 +45,6 @@ function Home({ history }: HomeProps) {
   // console.log('token 유무', cookie.get('access-token'));
   const { data: dataMe, error: errorMe } = useQuery(GET_USERINFO, {
     fetchPolicy: 'network-only',
-    // errorPolicy: 'all',
   });
   const { data: dataUsers } = useQuery(GET_USERS, {
     // 'network-only', 굳이 중요한 data 아니므로 network-only 안 해줌. 아래 카드를 남길지, 아니면 다른 걸 보여주는게 좋을지도 좀 더 궁리. 이왕 보여줄거면 FindFriend 창처럼 필터해서 보여줘야 할듯.
@@ -53,31 +52,20 @@ function Home({ history }: HomeProps) {
   const { data: loginData } = useQuery(IS_LOGGED_IN);
 
   // console.log('dataMe', dataMe);
-  if (errorMe) console.log('errorMe', Object.keys(errorMe));
-  // console.log('errorUsers', errorUsers);
+  // if (errorMe) console.log('errorMe', Object.keys(errorMe));
 
   // 일단 어쩔수 없이 access-token을 이용했는데 이것보단 차라리 local useMutation을 날려서 로그아웃하면 local에서 me nickname같은걸 바꿔버리고, 그거 값이 이 값이면 로그아웃, 아니면 로그인 이런식으로 가보든가...
-  // if (dataMe) {
   if (cookie.get('access-token')) {
     // 이거 대신에 if (dataMe)로 했을 때 token이 이미 지워진 상태임에도 불구하고, dataMe에 올바른 정보가 들어옴. network-only 옵션을 붙였는데도. errorMe는 undefined로 바뀌고, dataMe에 다시 올바른 정보가 생김. 그랬다가 안 그랬다가 하는듯. 지속적 문제는 딴 페이지에서 넘어올땐 되기도 하는데 Home 화면에서 로그아웃 눌렀을 땐 안 지워짐. token 확인하는 지금 방식일 때도 dataMe가 그대로 찍히는 이유 잘 모르겠음.
     client.writeData({ data: { isLoggedIn: true } });
   }
 
   // 일부러 로그아웃을 하지는 않았는데 token이 만료됐을 때
-
-  if (dataMe) {
-    console.log('dataMe', dataMe);
-  }
-
-  if (errorMe) {
-    console.log('graphQLErrors is ....', errorMe.graphQLErrors);
-  }
-
   if (
-    loginData.isLoggedIn === true &&
+    loginData.isLoggedIn &&
     errorMe
-    //  &&
-    // errorMe.extensions.code === 'NO_TOKEN'
+    //  &&  errorMe.extensions.code === 'NO_TOKEN'
+    // 에러 분기 처리를 해줘야 하나, 현재 errorMe.extensions.code가 안 불려서.
   ) {
     client.writeData({ data: { isLoggedIn: false } });
     return <ErrorLoginFirst error={errorMe} />;
@@ -85,7 +73,7 @@ function Home({ history }: HomeProps) {
   // if (errorMe) return <p>{errorMe.message}</p>;
 
   function ButtonHome() {
-    if (loginData.isLoggedIn === false) {
+    if (!loginData.isLoggedIn) {
       return <ButtonToSignup />;
     }
     if (dataMe && dataMe.me.levelOf3Dae) {
@@ -107,7 +95,7 @@ function Home({ history }: HomeProps) {
         </div>
         <ButtonHome />
       </Col>
-      {loginData.isLoggedIn === true && dataUsers ? (
+      {loginData.isLoggedIn && dataUsers ? (
         <Col xs={20}>
           <Row type="flex" justify="center" style={{ marginTop: 20 }}>
             <Col xs={24}>

@@ -5,11 +5,12 @@ import { css, jsx } from '@emotion/core';
 import { useQuery } from '@apollo/react-hooks';
 
 import RegisterInput from '../components/Register/RegisterInput';
-import questionList from '../config/fakeData';
+import questionList from '../config/questions';
 import useMypage from '../hooks/useMypage';
 import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 import useCheckToken from '../hooks/useCheckToken';
 import { IS_LOGGED_IN } from '../graphql/queries';
+import redirectWhenTokenExp from '../utils/redirectWhenTokenExp';
 
 const wrapper = css`
   margin: 20px;
@@ -46,10 +47,7 @@ function MyPage({ history }: MyPageProps) {
     // 왜 dataUser와 errorUser가 둘다 동시에 값을 가지고 있을 수 있는지 모르겠음.
     // 더하여 그 grphaql 에러의 빨간 화면 뜨는 건 어느 상황에서 발생하는건지.
     if (errorUser) {
-      client.writeData({ data: { isLoggedIn: false } });
-      alert('로그인 기한 만료로 저장 실패');
-      window.scrollTo(0, 0);
-      history.push('/');
+      redirectWhenTokenExp(client, history);
     } else if (dataUser) {
       postInfo({
         variables: {
@@ -71,9 +69,7 @@ function MyPage({ history }: MyPageProps) {
     // eslint-disable-next-line
   }, [dataUser, errorUser]);
 
-  if (loginData.isLoggedIn === false) {
-    return <ErrorLoginFirst error={null} />;
-  }
+  if (!loginData.isLoggedIn) return <ErrorLoginFirst error={null} />;
 
   return (
     <div>

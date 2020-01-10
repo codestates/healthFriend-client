@@ -5,7 +5,7 @@ import { jsx, css } from '@emotion/core';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
 
 import { withRouter } from 'react-router-dom';
-import questionList from '../../config/fakeData';
+import questionList from '../../config/questions';
 import UserModal from './UserModal';
 import {
   FOLLOW_USER,
