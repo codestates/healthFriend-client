@@ -1,78 +1,22 @@
 import gql from 'graphql-tag';
+import { ALL_INFO, USERS_INFO, BASE_INFO } from './fragments';
 
 export const GET_USERINFO = gql`
   {
     me {
-      id
-      email
-      nickname
-      gender
-      openImageChoice
-      levelOf3Dae
-      messageToFriend
-      motivations {
-        id
-        motivation
-      }
-      weekdays {
-        id
-        weekday
-      }
-      ableDistricts {
-        district {
-          idOfGu
-          nameOfGu
-          idOfDong
-          nameOfDong
-        }
-      }
-      following {
-        id
-        email
-        nickname
-      }
-      followers {
-        id
-        email
-        nickname
-      }
-      friends {
-        id
-        email
-        nickname
-      }
+      ...AllInfo
     }
   }
+  ${ALL_INFO}
 `;
 
 export const GET_USERS = gql`
   {
     users {
-      id
-      email
-      nickname
-      gender
-      openImageChoice
-      levelOf3Dae
-      messageToFriend
-      motivations {
-        id
-        motivation
-      }
-      weekdays {
-        id
-        weekday
-      }
-      ableDistricts {
-        district {
-          idOfGu
-          nameOfGu
-          idOfDong
-          nameOfDong
-        }
-      }
+      ...UsersInfo
     }
   }
+  ${USERS_INFO}
 `;
 
 export const GET_PLACES = gql`
@@ -101,31 +45,10 @@ export const GET_FILTERED_USERS = gql`
       weekdays: $weekdays
       districts: $districts
     ) {
-      id
-      email
-      nickname
-      gender
-      openImageChoice
-      levelOf3Dae
-      messageToFriend
-      motivations {
-        id
-        motivation
-      }
-      weekdays {
-        id
-        weekday
-      }
-      ableDistricts {
-        district {
-          idOfGu
-          nameOfGu
-          idOfDong
-          nameOfDong
-        }
-      }
+      ...UsersInfo
     }
   }
+  ${USERS_INFO}
 `;
 // 위, 아래의 부분들  fragment로 변경
 
@@ -134,32 +57,11 @@ export const GET_FOLLOWING = gql`
     me {
       id
       following {
-        id
-        email
-        nickname
-        gender
-        openImageChoice
-        levelOf3Dae
-        messageToFriend
-        motivations {
-          id
-          motivation
-        }
-        weekdays {
-          id
-          weekday
-        }
-        ableDistricts {
-          district {
-            idOfGu
-            nameOfGu
-            idOfDong
-            nameOfDong
-          }
-        }
+        ...UsersInfo
       }
     }
   }
+  ${USERS_INFO}
 `;
 
 // 이상하게 저리 follower 위에 id 를 안 붙이면 query가 안 돌아감. 이유는 모르겠음. graphQL 특성인듯 한데.
@@ -169,32 +71,11 @@ export const GET_FOLLOWERS = gql`
     me {
       id
       followers {
-        id
-        email
-        nickname
-        gender
-        openImageChoice
-        levelOf3Dae
-        messageToFriend
-        motivations {
-          id
-          motivation
-        }
-        weekdays {
-          id
-          weekday
-        }
-        ableDistricts {
-          district {
-            idOfGu
-            nameOfGu
-            idOfDong
-            nameOfDong
-          }
-        }
+        ...UsersInfo
       }
     }
   }
+  ${USERS_INFO}
 `;
 
 export const GET_FRIENDS = gql`
@@ -202,32 +83,11 @@ export const GET_FRIENDS = gql`
     me {
       id
       friends {
-        id
-        email
-        nickname
-        gender
-        openImageChoice
-        levelOf3Dae
-        messageToFriend
-        motivations {
-          id
-          motivation
-        }
-        weekdays {
-          id
-          weekday
-        }
-        ableDistricts {
-          district {
-            idOfGu
-            nameOfGu
-            idOfDong
-            nameOfDong
-          }
-        }
+        ...UsersInfo
       }
     }
   }
+  ${USERS_INFO}
 `;
 
 // local query =============================
@@ -295,49 +155,44 @@ export const SET_ABLE_DISTRICT = gql`
 export const FOLLOW_USER = gql`
   mutation FollowUser($userId: String!) {
     followingUser(userId: $userId) {
-      id
-      nickname
-      email
+      ...BaseInfo
     }
   }
+  ${BASE_INFO}
 `;
 
 export const CANCEL_FOLLOWING = gql`
   mutation CancelFollowing($userId: String!) {
     deleteFollowing(userId: $userId) {
-      id
-      nickname
-      email
+      ...BaseInfo
     }
   }
+  ${BASE_INFO}
 `;
 
 export const DELETE_FOLLOWER = gql`
   mutation DeleteFollower($userId: String!) {
     deleteFollowers(userId: $userId) {
-      id
-      nickname
-      email
+      ...BaseInfo
     }
   }
+  ${BASE_INFO}
 `;
 
 export const ADD_FRIEND = gql`
   mutation AddFriend($userId: String!) {
     addFriend(userId: $userId) {
-      id
-      nickname
-      email
+      ...BaseInfo
     }
   }
+  ${BASE_INFO}
 `;
 
 export const DELETE_FRIEND = gql`
   mutation DeleteFriend($userId: String!) {
     deleteFriend(userId: $userId) {
-      id
-      nickname
-      email
+      ...BaseInfo
     }
   }
+  ${BASE_INFO}
 `;

@@ -3,6 +3,7 @@ import { ApolloLink } from 'apollo-boost';
 import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { onError } from 'apollo-link-error';
+import cookie from 'js-cookie';
 
 import { typeDefs, resolvers } from './resolvers';
 
@@ -49,7 +50,15 @@ const client = new ApolloClient({
     },
   },
   cache,
-  link: ApolloLink.from([errorLink, httpLink]),
+  link: new ApolloLink((operation, forward) => {
+    const token = cookie.get('access-token');
+    operation.setContext({
+      headers: {
+        authorization: token ? `Bearer ${token}` : '',
+      },
+    });
+    return forward(operation);
+  }).concat(ApolloLink.from([errorLink, httpLink])),
   typeDefs,
   resolvers,
   connectToDevTools: true,
