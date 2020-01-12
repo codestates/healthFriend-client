@@ -22,7 +22,6 @@ const renderingImage = css`
   filter: grayscale(20%);
 `;
 
-// 가운데로 옮기는 법
 const renderingMessage = css`
   position: absolute;
   text-align: center;
@@ -35,7 +34,6 @@ const renderingMessage = css`
   }
 `;
 
-// 어디는 history, match, location 다 써줘야 하고, 여긴 아니고 차이는??
 type HomeProps = {
   history: any;
 };
@@ -46,9 +44,7 @@ function Home({ history }: HomeProps) {
   const { data: dataMe, error: errorMe } = useQuery(GET_USERINFO, {
     fetchPolicy: 'network-only',
   });
-  const { data: dataUsers } = useQuery(GET_USERS, {
-    // 'network-only', 굳이 중요한 data 아니므로 network-only 안 해줌. 아래 카드를 남길지, 아니면 다른 걸 보여주는게 좋을지도 좀 더 궁리. 이왕 보여줄거면 FindFriend 창처럼 필터해서 보여줘야 할듯.
-  });
+  const { data: dataUsers } = useQuery(GET_USERS);
   const { data: loginData } = useQuery(IS_LOGGED_IN);
 
   // console.log('dataMe', dataMe);
@@ -56,7 +52,7 @@ function Home({ history }: HomeProps) {
 
   // 일단 어쩔수 없이 access-token을 이용했는데 이것보단 차라리 local useMutation을 날려서 로그아웃하면 local에서 me nickname같은걸 바꿔버리고, 그거 값이 이 값이면 로그아웃, 아니면 로그인 이런식으로 가보든가...
   if (cookie.get('access-token')) {
-    // 이거 대신에 if (dataMe)로 했을 때 token이 이미 지워진 상태임에도 불구하고, dataMe에 올바른 정보가 들어옴. network-only 옵션을 붙였는데도. errorMe는 undefined로 바뀌고, dataMe에 다시 올바른 정보가 생김. 그랬다가 안 그랬다가 하는듯. 지속적 문제는 딴 페이지에서 넘어올땐 되기도 하는데 Home 화면에서 로그아웃 눌렀을 땐 안 지워짐. token 확인하는 지금 방식일 때도 dataMe가 그대로 찍히는 이유 잘 모르겠음.
+    // 이거 대신에 if (dataMe)로 했을 때 token이 이미 지워져있고, network-only 옵션을 붙였는데도 불구하고, dataMe에 올바른 정보가 들어옴. 그랬다가 안 그랬다가 하는듯. 지속적 문제는 딴 페이지에서 넘어올땐 되기도 하는데 Home 화면에서 로그아웃 눌렀을 땐 안 지워짐.
     client.writeData({ data: { isLoggedIn: true } });
   }
 
@@ -81,6 +77,8 @@ function Home({ history }: HomeProps) {
     }
     return <ButtonToRegister history={history} />;
   }
+
+  // 아래 카드를 남길지, 아니면 다른 걸 보여주는게 좋을지도 좀 더 궁리. 이왕 보여줄거면 FindFriend 창처럼 필터해서 보여줘야 할듯.
 
   return (
     <Row type="flex" justify="center">
@@ -114,6 +112,8 @@ function Home({ history }: HomeProps) {
                     ableDistricts={oneData.ableDistricts}
                     type="unknown"
                     renewFriends={() => null}
+                    setFriend={() => null}
+                    // 위의 것들 같은 것 ts의 ? 나 다른 해결책??
                   />
                 ))}
               </Row>

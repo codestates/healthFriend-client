@@ -3,18 +3,24 @@ import { useState } from 'react';
 import { Row, Col, Button } from 'antd';
 import { /* css, */ jsx } from '@emotion/core';
 import { useQuery, useLazyQuery, useApolloClient } from '@apollo/react-hooks';
+import { StreamChat } from 'stream-chat';
+import 'stream-chat-react/dist/css/index.css';
+import cookie from 'js-cookie';
 
 import {
   IS_LOGGED_IN,
   GET_FOLLOWING,
   GET_FRIENDS,
   GET_FOLLOWERS,
+  GET_USERINFO,
 } from '../graphql/queries';
 import Loading from '../components/Shared/Loading';
 import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 import UserCard from '../components/FindFriend/UserCard';
 import redirectWhenTokenExp from '../utils/redirectWhenTokenExp';
 import message from '../config/Message';
+import Chatting from '../components/Chat/Chatting';
+import { API_KEY } from '../config/streamConfig';
 
 type ChatProps = {
   history: any; // match, location을 같이 쓰니 안되고, 얘만 쓰니 되네... withRouter로 붙인 애들은 다 써줘야 하는 것 같고, 아닌 애들은 아닌 듯.
@@ -22,8 +28,10 @@ type ChatProps = {
 
 function Chat({ history }: ChatProps) {
   const client = useApolloClient();
+  const { data } = useQuery(GET_USERINFO);
   const { data: loginData } = useQuery(IS_LOGGED_IN);
   const [list, setList] = useState<string>('');
+  const [friend, setFriend] = useState<any>('');
 
   const [
     getFollowers,
@@ -53,6 +61,71 @@ function Chat({ history }: ChatProps) {
     if (list === 'following') return getFollowing;
   };
 
+  const makeChatRoom = (hf) => {
+    const token = cookie.get('stream-chat-token');
+
+    console.log('data.me.id', data.me.id);
+    console.log('friend', hf.id);
+
+    const chatClient = new StreamChat(API_KEY);
+
+    // async, await로 만드는 법 모르겠음.
+    // setUser하는 부분이 로그인하자마자 set을 해야 할까?? 그래야 친구들 목록에 등록이 되고, 바로 말 걸수 있나?
+    chatClient.setUser(
+      {
+        id: data.me.id,
+        name: data.me.nickname,
+        image: 'https://getstream.io/random_svg/?name=John', // data.me.image? 있는것: antd
+      },
+      token,
+    );
+
+    let newChannel;
+
+    if (friend) {
+      newChannel = chatClient.channel(
+        'messaging',
+        (data.me.id + friend.id).slice(0, 20),
+        {
+          members: [data.me.id, friend.id],
+          // invites: [friend],
+        },
+      );
+      // const state = newChannel.watch();
+      newChannel.on('message.new', (event) => {
+        console.log('메세지 왔어');
+      });
+    }
+
+    // as any말고 typescript error처리 안되네
+
+    chatClient.on(((event) => {
+      if (event.total_unread_count != null) {
+        console.log(
+          `unread messages count is now: ${event.total_unread_count}`,
+        );
+      }
+      if (event.unread_channels != null) {
+        console.log(`unread channels count is now: ${event.unread_channels}`);
+      }
+    }) as any);
+
+    const filters = { type: 'messaging' };
+    const sort = { last_message_at: -1 };
+
+    chatClient.queryChannels(
+      filters,
+      { last_message_at: -1 },
+      {
+        state: true,
+      },
+    );
+
+    console.log('newChannel in chat', newChannel);
+
+    return { chatClient, filters, sort, newChannel };
+  };
+
   const makeFriend = (oneData, type) => {
     return (
       <UserCard
@@ -68,6 +141,7 @@ function Chat({ history }: ChatProps) {
         ableDistricts={oneData.ableDistricts}
         type={type}
         renewFriends={renewFriends()}
+        setFriend={setFriend}
       />
     );
   };
@@ -144,12 +218,23 @@ function Chat({ history }: ChatProps) {
           </Button>
         </Col>
         <Col xs={24} md={5}>
-          <Button type="primary">채팅창</Button>
+          <Button
+            type="primary"
+            onClick={() => {
+              setList('chat');
+            }}
+          >
+            채팅창
+          </Button>
         </Col>
         <br />
         <br />
-        <Col xs={24} md={22}>
-          <FriendList />
+        <Col xs={24} md={15}>
+          {list === 'chat' ? (
+            <Chatting makeChatRoom={makeChatRoom} friend={friend} />
+          ) : (
+            <FriendList />
+          )}
         </Col>
       </Row>
     </div>

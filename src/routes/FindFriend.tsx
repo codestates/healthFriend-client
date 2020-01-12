@@ -112,6 +112,7 @@ function FindFriend({ history }: FindFriendProps) {
                   ableDistricts={oneData.ableDistricts}
                   type="unknown"
                   renewFriends={refetch}
+                  setFriend={() => null}
                 />
               ))
           : null}
