@@ -63,6 +63,7 @@ type UserCardProps = {
   history: any;
   location: any;
   match: any;
+  setFriend: Function;
 };
 
 function UserCard({
@@ -78,6 +79,7 @@ function UserCard({
   type,
   renewFriends,
   history,
+  setFriend,
 }: UserCardProps) {
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -184,8 +186,16 @@ function UserCard({
 
   const cardActions = [<span onClick={() => setVisible(true)}>상세 보기</span>];
 
-  const makeButton = (func, buttonText) =>
-    cardActions.push(
+  const makeButton = (func, buttonText) => {
+    if (buttonText === '채팅하기') {
+      return cardActions.push(
+        <span onClick={() => func()}>
+          <b>{buttonText}</b>
+        </span>,
+      );
+      // 채팅 연결 성공후 성공했다는 알림 및 채팅창 불 들어오는 noti 같은 것.
+    }
+    return cardActions.push(
       <span
         onClick={
           () =>
@@ -208,10 +218,11 @@ function UserCard({
         <b>{buttonText}</b>
       </span>,
     );
+  };
 
   if (type === 'friends') {
     makeButton(deleteFriend, '친구 끊기');
-    makeButton(() => console.log('친구야 채팅하자'), '채팅하기');
+    makeButton(() => setFriend({ id, nickname }), '채팅하기');
   } else if (type === 'followers') {
     makeButton(deleteFollower, '친구신청 거절');
     makeButton(addFriend, '친구신청 수락');
