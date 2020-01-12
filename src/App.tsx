@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/react-hooks';
+import { Layout } from 'antd';
 
 import Home from './routes/Home';
 import Register from './routes/Register';
@@ -16,7 +17,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <BrowserRouter>
-        <div>
+        <Layout style={{ background: '#fff' }}>
           <Header />
           <Switch>
             <Route exact path="/" component={Home} />
@@ -27,7 +28,7 @@ function App() {
             <Route path="/mypage" component={Mypage} />
             <Route component={NotFound} />
           </Switch>
-        </div>
+        </Layout>
       </BrowserRouter>
     </ApolloProvider>
   );
