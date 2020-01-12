@@ -1,34 +1,50 @@
 /** @jsx jsx */
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { Layout, Menu } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useQuery } from '@apollo/react-hooks';
 
 import MypageDropdown from './MypageDropdown';
 import { GET_USERINFO, IS_LOGGED_IN } from '../../graphql/queries';
 
+const logo = css`
+  width: 120px;
+  float: left;
+`;
+
+const navMenu = css`
+  float: right;
+  background: transparent;
+  border: 0;
+
+  & .ant-menu-item {
+    height: 100%;
+    border-bottom: 0 !important;
+    
+    &.ant-menu-item-selected {
+      background: transparent !important;
+    }
+    
+    & > .ant-dropdown-trigger {
+      color: #fff !important;
+      height: 62px;
+      display: flex !important;
+      align-items: center;  
+    }  
+  }
+`;
+
 const navHeader = css`
-  background-color: #1e272e;
-  display: table;
-  table-layout: fixed;
-  width: 100%;
+  background: #1e272e;
 `;
 
 const navLinkItem = css`
-  text-align: center;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  display: table-cell;
-  color: white;
-  text-decoration: none;
-  font-size: 1.1rem;
-  &:hover {
-    background-color: #485460;
-    color: white;
-  }
-  &:active {
-    background-color: #7d97ad;
-  }
+  color: #fff !important;
+  font-size: 1rem;
+  height: 62px;
+  display: flex !important;
+  align-items: center;
 `;
 
 export default function Header() {
@@ -37,39 +53,59 @@ export default function Header() {
   const { data } = useQuery(GET_USERINFO);
 
   return (
-    <div className="header" css={navHeader}>
-      <NavLink
-        exact
-        to="/"
-        className="item"
-        activeClassName="active"
-        css={navLinkItem}
-      >
-        헬친
-      </NavLink>
-      {loginData.isLoggedIn && data ? (
-        <React.Fragment>
-          {/* {data.me.levelOf3Dae && data.me.messageToFriend ? null : ( */}
-          <NavLink to="/register" className="item" css={navLinkItem}>
-            등록
-          </NavLink>
-          {/* )} */}
-          <NavLink to="/find" className="item" css={navLinkItem}>
-            친구찾기
-          </NavLink>
-          <NavLink to="/chat" className="item" css={navLinkItem}>
-            채팅
-          </NavLink>
-        </React.Fragment>
-      ) : null}
+    <Layout.Header className="header" css={navHeader}>
+      <div css={logo}>
+        <NavLink
+          exact
+          to="/"
+          className="item"
+          activeClassName="active"
+          css={navLinkItem}
+        >
+          헬스친구
+        </NavLink>
+      </div>
 
       {loginData.isLoggedIn && data ? (
-        <MypageDropdown name={data.me.nickname} />
+        <React.Fragment>
+          <Menu
+            mode="horizontal"
+            css={navMenu}
+          >
+            <Menu.Item>
+              {/* {data.me.levelOf3Dae && data.me.messageToFriend ? null : ( */}
+                <NavLink to="/register" className="item" css={navLinkItem}>
+                  등록
+                </NavLink>
+              {/* )} */}
+            </Menu.Item>
+            <Menu.Item>
+              <NavLink to="/find" className="item" css={navLinkItem}>
+                친구찾기
+              </NavLink>
+            </Menu.Item>
+            <Menu.Item>
+              <NavLink to="/chat" className="item" css={navLinkItem}>
+                채팅
+              </NavLink>
+            </Menu.Item>
+            <Menu.Item>
+              <MypageDropdown name={data.me.nickname} />
+            </Menu.Item>
+          </Menu>
+        </React.Fragment>
       ) : (
-        <NavLink to="/login" className="item" css={navLinkItem}>
-          로그인
-        </NavLink>
+        <Menu
+          mode="horizontal"
+          css={navMenu}
+        >
+          <Menu.Item>
+            <NavLink to="/login" className="item" css={navLinkItem}>
+              로그인
+            </NavLink> 
+          </Menu.Item>
+        </Menu>
       )}
-    </div>
+    </Layout.Header>
   );
 }
