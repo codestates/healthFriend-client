@@ -97,9 +97,9 @@ function Home({ history }: HomeProps) {
         <img src={renderImage} alt="" css={renderingImage} />
         <div css={renderingMessage}>
           <Title level={1}>
-            10000명의 헬스친구들이
+            {dataUsers ? dataUsers.users.length : 10000}명의 헬스친구들이
             <br />
-            현재 당신을 기다리고 있어요
+            당신을 기다리고 있어요
           </Title>
         </div>
         <ButtonHome />
