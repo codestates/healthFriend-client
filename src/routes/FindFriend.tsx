@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { useState, useEffect } from 'react';
-import { Row, Col, Button } from 'antd';
+import { Layout, Row, Col, Button, Divider } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useLazyQuery, useQuery, useApolloClient } from '@apollo/react-hooks';
 
@@ -17,12 +17,12 @@ import Loading from '../components/Shared/Loading';
 import redirectWhenTokenExp from '../utils/redirectWhenTokenExp';
 import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 
-const filterCSS = css`
-  margin-bottom: 20px;
-`;
-
 const marginFilterdCards = css`
   margin-top: 40px;
+`;
+
+const questionsCSS = css`
+  margin-top: 10px;
 `;
 
 type FindFriendProps = {
@@ -68,11 +68,11 @@ function FindFriend({ history }: FindFriendProps) {
       (elm) => elm.subject === filterQ,
     );
     return subject === 'ableDistricts' ? (
-      <Col md={6} key={question}>
+      <Col md={16} key={question} css={questionsCSS}>
         <SelectPlace setPlaces={setPlaces} selectedPlaces={[]} />
       </Col>
     ) : (
-      <Col md={4} key={question}>
+      <Col md={8} key={question} css={questionsCSS}>
         <SelectDefault
           subject={subject}
           options={answer}
@@ -121,26 +121,35 @@ function FindFriend({ history }: FindFriendProps) {
   }
 
   return (
-    <Row type="flex" justify="center" style={{ marginTop: 20 }}>
-      <Col xs={22} md={22} css={filterCSS}>
-        <Row gutter={24} type="flex" justify="space-between">
-          {questions}
+    <Layout style={{ background: '#fff', height: '100vh' }}>
+      <Layout.Content>
+        <Row type="flex" justify="center" style={{ background: '#fafafa', paddingTop: 20 }}>
+          <Col xs={20} md={20}>
+            <Divider>친구 필터</Divider>
+            <Row gutter={24} justify="center">
+              {questions}
+              <Col xs={24} md={{ span: 4, offset: 20 }}>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    getFilteredUsers({ variables: { ...filter, districts: places } });
+                  }}
+                  style={{ width: '100%', marginTop: 20 }}
+                >
+                  검색
+                </Button>
+              </Col>
+            </Row>
+          </Col>
+          <Divider style={{ marginBottom: 0 }} />
         </Row>
-      </Col>
-      <Col xs={22} md={22}>
-        <Button
-          type="primary"
-          onClick={() => {
-            getFilteredUsers({ variables: { ...filter, districts: places } });
-          }}
-        >
-          검색!!
-        </Button>
-      </Col>
-      <Col xs={20}>
-        <FilteredCards />
-      </Col>
-    </Row>
+        <Row type="flex" justify="center">
+          <Col xs={20}>
+            <FilteredCards />
+          </Col>
+        </Row>
+      </Layout.Content>
+    </Layout>
   );
 }
 
