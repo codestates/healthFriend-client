@@ -21,17 +21,17 @@ const navMenu = css`
   & .ant-menu-item {
     height: 100%;
     border-bottom: 0 !important;
-    
+
     &.ant-menu-item-selected {
       background: transparent !important;
     }
-    
+
     & > .ant-dropdown-trigger {
       color: #fff !important;
       height: 62px;
       display: flex !important;
-      align-items: center;  
-    }  
+      align-items: center;
+    }
   }
 `;
 
@@ -66,17 +66,14 @@ export default function Header() {
         </NavLink>
       </div>
 
-      {loginData.isLoggedIn && data ? (
+      {loginData.isLoggedIn && data && data.me ? (
         <React.Fragment>
-          <Menu
-            mode="horizontal"
-            css={navMenu}
-          >
+          <Menu mode="horizontal" css={navMenu}>
             <Menu.Item>
               {/* {data.me.levelOf3Dae && data.me.messageToFriend ? null : ( */}
-                <NavLink to="/register" className="item" css={navLinkItem}>
-                  등록
-                </NavLink>
+              <NavLink to="/register" className="item" css={navLinkItem}>
+                등록
+              </NavLink>
               {/* )} */}
             </Menu.Item>
             <Menu.Item>
@@ -95,17 +92,26 @@ export default function Header() {
           </Menu>
         </React.Fragment>
       ) : (
-        <Menu
-          mode="horizontal"
-          css={navMenu}
-        >
+        <Menu mode="horizontal" css={navMenu}>
           <Menu.Item>
             <NavLink to="/login" className="item" css={navLinkItem}>
               로그인
-            </NavLink> 
+            </NavLink>
           </Menu.Item>
         </Menu>
       )}
+
+      {/* {loginData.isLoggedIn && data && data.me ? (
+        <MypageDropdown name={data.me.nickname} />
+      ) : (
+        <Menu mode="horizontal" css={navMenu}>
+          <Menu.Item>
+            <NavLink to="/login" className="item" css={navLinkItem}>
+              로그인
+            </NavLink>
+          </Menu.Item>
+        </Menu>
+      )} */}
     </Layout.Header>
   );
 }

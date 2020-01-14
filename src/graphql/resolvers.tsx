@@ -11,6 +11,16 @@ export const typeDefs = gql`
 
 export const resolvers = {
   // Mutation: {
+  //   me: (_, variables, { cache, getCacheKey }) => {
+  //     const id = getCacheKey({ __typename: 'TodoItem', id: variables.id });
+  //     const fragment = gql`
+  //       fragment completeTodo on TodoItem {
+  //         completed
+  //       }
+  //     `;
+  //   },
+  // },
+  // Mutation: {
   //   logOut: (_, variables, {cache}) => {
   //     const meStatus = cache.readQuery({
   //       query: GET_USERINFO
