@@ -26,7 +26,8 @@ const cardCSS = css`
   border-radius: 4px;
 
   .ant-card-body {
-    min-height: 300px;
+    height: 220px;
+    overflow: auto;
   }
 
   .ant-card-actions {
