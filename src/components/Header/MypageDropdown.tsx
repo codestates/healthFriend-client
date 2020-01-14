@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { Menu, Dropdown, Icon } from 'antd';
-import cookie from 'js-cookie';
+import Cookies from 'js-cookie';
 
 import useCheckToken from '../../hooks/useCheckToken';
 
@@ -26,7 +26,8 @@ function MypageDropdown({ name, history }: MypageDropdownProps) {
           to="/"
           onClick={() => {
             client.writeData({ data: { isLoggedIn: false } });
-            cookie.remove('access-token', {
+            client.writeData({ data: { me: false } });
+            Cookies.remove('access-token', {
               // 공식문서에는 path 를 필수적으로 적으란 식으로 되어있는데 서버에서 심어서 그런지 적으면 안 됨.
               // path: '/login',
               // domain:

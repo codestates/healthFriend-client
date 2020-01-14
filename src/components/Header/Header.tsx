@@ -63,7 +63,7 @@ export default function Header() {
         </React.Fragment>
       ) : null}
 
-      {loginData.isLoggedIn && data ? (
+      {loginData.isLoggedIn && data && data.me ? (
         <MypageDropdown name={data.me.nickname} />
       ) : (
         <NavLink to="/login" className="item" css={navLinkItem}>

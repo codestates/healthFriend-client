@@ -2,7 +2,7 @@
 import { Row, Col, Typography } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
-import cookie from 'js-cookie';
+import Cookies from 'js-cookie';
 
 import renderImage from '../static/renderImage.jpg';
 import { GET_USERS, IS_LOGGED_IN, GET_USERINFO } from '../graphql/queries';
@@ -40,18 +40,29 @@ type HomeProps = {
 
 function Home({ history }: HomeProps) {
   const client = useApolloClient();
-  // console.log('token 유무', cookie.get('access-token'));
+  console.log('token 유무', Cookies.get('access-token'));
   const { data: dataMe, error: errorMe } = useQuery(GET_USERINFO, {
     fetchPolicy: 'network-only',
   });
+  // const { data: dataMe2, error: errorMe2 } = useQuery(GET_USERINFO, {
+  //   fetchPolicy: 'cache-only',
+  // });
   const { data: dataUsers } = useQuery(GET_USERS);
   const { data: loginData } = useQuery(IS_LOGGED_IN);
 
-  // console.log('dataMe', dataMe);
+  // 문제1. 브라우저에서 cookie.get 이 안되는 것
+  // 문제2. router redirect가 안되면 useQuery가 새로 안 불리는 듯... 그래서 기존 data값 그대로 들어가는 듯. 설령 cache값을 바꿔놓아도.
+
+  console.log('dataMe', dataMe);
+  console.log('errorMe', errorMe);
+  console.log('loginData', loginData.isLoggedIn);
+  // console.log('dateMeCache', dataMe2);
+  // console.log('errorMeCache', errorMe2);
   // if (errorMe) console.log('errorMe', Object.keys(errorMe));
 
   // 일단 어쩔수 없이 access-token을 이용했는데 이것보단 차라리 local useMutation을 날려서 로그아웃하면 local에서 me nickname같은걸 바꿔버리고, 그거 값이 이 값이면 로그아웃, 아니면 로그인 이런식으로 가보든가...
-  if (cookie.get('access-token')) {
+  if (dataMe && dataMe.me && dataMe.me.nickname) {
+    // if (cookie.get('access-token')) {
     // 이거 대신에 if (dataMe)로 했을 때 token이 이미 지워져있고, network-only 옵션을 붙였는데도 불구하고, dataMe에 올바른 정보가 들어옴. 그랬다가 안 그랬다가 하는듯. 지속적 문제는 딴 페이지에서 넘어올땐 되기도 하는데 Home 화면에서 로그아웃 눌렀을 땐 안 지워짐.
     client.writeData({ data: { isLoggedIn: true } });
   }

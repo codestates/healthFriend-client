@@ -36,6 +36,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
+    "deploy": "react-app-rewired build && aws s3 sync ./build s3://health-friend-client/",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.ts",

@@ -5,7 +5,7 @@ import { /* css, */ jsx } from '@emotion/core';
 import { useQuery, useLazyQuery, useApolloClient } from '@apollo/react-hooks';
 import { StreamChat } from 'stream-chat';
 import 'stream-chat-react/dist/css/index.css';
-import cookie from 'js-cookie';
+import Cookies from 'js-cookie';
 
 import {
   IS_LOGGED_IN,
@@ -61,17 +61,14 @@ function Chat({ history }: ChatProps) {
     if (list === 'following') return getFollowing;
   };
 
-  const makeChatRoom = (hf) => {
-    const token = cookie.get('stream-chat-token');
-
-    console.log('data.me.id', data.me.id);
-    console.log('friend', hf.id);
-
+  const makeChatRoom = /* async */ (hf) => {
+    const token = Cookies.get('stream-chat-token');
     const chatClient = new StreamChat(API_KEY);
 
     // async, await로 만드는 법 모르겠음.
-    // setUser하는 부분이 로그인하자마자 set을 해야 할까?? 그래야 친구들 목록에 등록이 되고, 바로 말 걸수 있나?
-    chatClient.setUser(
+    // setUser하는 부분이 로그인하자마자 set을 해야 할까?? 그래야 친구들 목록에 등록이 되고, 바로 말 걸수 있나? 새로 아이디 하나 더 만들어서 시험해봐야 할듯. 근데 채팅 목록에는 안 들어가서 setUser하는 과정 없이도 리스트에 등록이 되나 확인. 안 되면 setUser하는 부분 header나 첫 화면 등으로 옮겨야 함.
+
+    const user = /* await */ chatClient.setUser(
       {
         id: data.me.id,
         name: data.me.nickname,
@@ -80,17 +77,20 @@ function Chat({ history }: ChatProps) {
       token,
     );
 
+    console.log('user', user);
+
     let newChannel;
 
-    if (friend) {
+    if (hf) {
       newChannel = chatClient.channel(
         'messaging',
-        (data.me.id + friend.id).slice(0, 20),
+        (data.me.id + hf.id).slice(0, 20),
         {
-          members: [data.me.id, friend.id],
-          // invites: [friend],
+          members: [data.me.id, hf.id],
+          // invites: [hf.id],
         },
       );
+      newChannel.create();
       // const state = newChannel.watch();
       newChannel.on('message.new', (event) => {
         console.log('메세지 왔어');
@@ -113,15 +113,18 @@ function Chat({ history }: ChatProps) {
     const filters = { type: 'messaging' };
     const sort = { last_message_at: -1 };
 
-    chatClient.queryChannels(
+    const channels = /* await */ chatClient.queryChannels(
       filters,
       { last_message_at: -1 },
       {
         state: true,
+        watch: true,
       },
     );
+    // .then((chans) => chans.push(newChannel));
 
     console.log('newChannel in chat', newChannel);
+    console.log('channels in chnnels,', channels);
 
     return { chatClient, filters, sort, newChannel };
   };
@@ -229,9 +232,13 @@ function Chat({ history }: ChatProps) {
         </Col>
         <br />
         <br />
-        <Col xs={24} md={15}>
+        <Col xs={24} md={20}>
           {list === 'chat' ? (
-            <Chatting makeChatRoom={makeChatRoom} friend={friend} />
+            <Chatting
+              makeChatRoom={makeChatRoom}
+              friend={friend}
+              setFriend={setFriend}
+            />
           ) : (
             <FriendList />
           )}
