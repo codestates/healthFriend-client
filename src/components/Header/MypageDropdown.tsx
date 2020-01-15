@@ -28,15 +28,13 @@ function MypageDropdown({ name, history }: MypageDropdownProps) {
             client.writeData({ data: { isLoggedIn: false } });
             client.writeData({ data: { me: false } });
             Cookies.remove('access-token', {
-              // 공식문서에는 path 를 필수적으로 적으란 식으로 되어있는데 서버에서 심어서 그런지 적으면 안 됨.
-              // path: '/login',
-              // domain:
-              //   process.env.NODE_ENV === 'development'
-              //     ? 'http://localhost:4000/'
-              //     : 'https://api.healthfriend.club/',
+              path: '/',
+              domain:
+                process.env.NODE_ENV === 'development'
+                  ? 'localhost'
+                  : '.healthfriend.club',
             });
             history.push('/');
-            // async, await가 왜 안먹는지??
           }}
         >
           로그아웃
