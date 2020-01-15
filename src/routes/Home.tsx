@@ -40,7 +40,7 @@ type HomeProps = {
 
 function Home({ history }: HomeProps) {
   const client = useApolloClient();
-  console.log('token 유무', Cookies.get('access-token'));
+  console.log('token 유무를 보자', Cookies.get('access-token'));
   const { data: dataMe, error: errorMe } = useQuery(GET_USERINFO, {
     fetchPolicy: 'network-only',
   });
@@ -61,7 +61,7 @@ function Home({ history }: HomeProps) {
   // if (errorMe) console.log('errorMe', Object.keys(errorMe));
 
   // 일단 어쩔수 없이 access-token을 이용했는데 이것보단 차라리 local useMutation을 날려서 로그아웃하면 local에서 me nickname같은걸 바꿔버리고, 그거 값이 이 값이면 로그아웃, 아니면 로그인 이런식으로 가보든가...
-  if (dataMe && dataMe.me && dataMe.me.nickname) {
+  if (dataMe && dataMe.me && dataMe.me.nickname && cookie.get('access-token')) {
     // if (cookie.get('access-token')) {
     // 이거 대신에 if (dataMe)로 했을 때 token이 이미 지워져있고, network-only 옵션을 붙였는데도 불구하고, dataMe에 올바른 정보가 들어옴. 그랬다가 안 그랬다가 하는듯. 지속적 문제는 딴 페이지에서 넘어올땐 되기도 하는데 Home 화면에서 로그아웃 눌렀을 땐 안 지워짐.
     client.writeData({ data: { isLoggedIn: true } });

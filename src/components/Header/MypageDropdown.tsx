@@ -53,7 +53,8 @@ function MypageDropdown({ name, history }: MypageDropdownProps) {
           getInfo();
         }}
       >
-        {name} 친구님&nbsp;<Icon type="down" />
+        {name} 친구님&nbsp;
+        <Icon type="down" />
       </Link>
     </Dropdown>
   );
