@@ -50,7 +50,13 @@ const navLinkItem = css`
 export default function Header() {
   const { data: loginData } = useQuery(IS_LOGGED_IN);
 
-  const { data } = useQuery(GET_USERINFO);
+  const { data } = useQuery(GET_USERINFO, {
+    fetchPolicy: 'cache-only',
+  });
+  // home에서 불리는 순서랑 얘가 cache data 낚아오는 순서랑... 로직을 생각해봐야 할듯. 얘도 데이터 들어옴에 따라 re-render되나? 값 바뀌면 redux처럼 re-render되는 듯 함.
+
+  // console.log('로그인 상태 in header', loginData.isLoggedIn);
+  // console.log('data in header', data);
 
   return (
     <Layout.Header className="header" css={navHeader}>
@@ -87,7 +93,7 @@ export default function Header() {
               </NavLink>
             </Menu.Item>
             <Menu.Item>
-              <MypageDropdown name={data.me.nickname} />
+              <MypageDropdown name={data.me.nickname} meId={data.me.id} />
             </Menu.Item>
           </Menu>
         </React.Fragment>
@@ -100,18 +106,6 @@ export default function Header() {
           </Menu.Item>
         </Menu>
       )}
-
-      {/* {loginData.isLoggedIn && data && data.me ? (
-        <MypageDropdown name={data.me.nickname} />
-      ) : (
-        <Menu mode="horizontal" css={navMenu}>
-          <Menu.Item>
-            <NavLink to="/login" className="item" css={navLinkItem}>
-              로그인
-            </NavLink>
-          </Menu.Item>
-        </Menu>
-      )} */}
     </Layout.Header>
   );
 }

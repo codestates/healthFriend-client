@@ -2,7 +2,6 @@
 import { Row, Col, Typography } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
-import Cookies from 'js-cookie';
 
 import renderImage from '../static/renderImage.jpg';
 import { GET_USERS, IS_LOGGED_IN, GET_USERINFO } from '../graphql/queries';
@@ -40,36 +39,21 @@ type HomeProps = {
 
 function Home({ history }: HomeProps) {
   const client = useApolloClient();
-  console.log('token 유무를 보자', Cookies.get('access-token')?.slice(0,10));
+  // console.log('token 유무', Cookies.get('access-token'));
   const { data: dataMe, error: errorMe } = useQuery(GET_USERINFO, {
-    fetchPolicy: 'cache-only',
+    fetchPolicy: 'network-only',
   });
-  console.log('dataMe', dataMe);
-  // const { data: dataMe2, error: errorMe2 } = useQuery(GET_USERINFO, {
-  //   fetchPolicy: 'cache-only',
-  // });
+  // 문제 1. 왜 token을 지워도 dataMe에 데이터가 들어오는 쿼리가 날라갈까? 어디선가 있는지 모르는 cache에서 가져오는 듯한데.
+  // console.log('dataMe', dataMe);
   const { data: dataUsers } = useQuery(GET_USERS);
   const { data: loginData } = useQuery(IS_LOGGED_IN);
 
-  // 문제2. router redirect가 안되면 useQuery가 새로 안 불리는 듯... 그래서 기존 data값 그대로 들어가는 듯. 설령 cache값을 바꿔놓아도.
-
-  
-  // console.log('errorMe', errorMe);
-  console.log('loginData', loginData.isLoggedIn);
-  // console.log('dateMeCache', dataMe2);
-  // console.log('errorMeCache', errorMe2);
-  // if (errorMe) console.log('errorMe', Object.keys(errorMe));
-
-  // 일단 어쩔수 없이 access-token을 이용했는데 이것보단 차라리 local useMutation을 날려서 로그아웃하면 local에서 me nickname같은걸 바꿔버리고, 그거 값이 이 값이면 로그아웃, 아니면 로그인 이런식으로 가보든가...
   if (
     dataMe &&
     dataMe.me &&
     dataMe.me.nickname
-    // &&
-    // Cookies.get('access-token')
+    // && Cookies.get('access-token')
   ) {
-    // if (cookie.get('access-token')) {
-    // 이거 대신에 if (dataMe)로 했을 때 token이 이미 지워져있고, network-only 옵션을 붙였는데도 불구하고, dataMe에 올바른 정보가 들어옴. 그랬다가 안 그랬다가 하는듯. 지속적 문제는 딴 페이지에서 넘어올땐 되기도 하는데 Home 화면에서 로그아웃 눌렀을 땐 안 지워짐.
     client.writeData({ data: { isLoggedIn: true } });
   }
 
@@ -78,7 +62,7 @@ function Home({ history }: HomeProps) {
     loginData.isLoggedIn &&
     errorMe
     //  &&  errorMe.extensions.code === 'NO_TOKEN'
-    // 에러 분기 처리를 해줘야 하나, 현재 errorMe.extensions.code가 안 불려서.
+    // 문제2. erroMe의 key의 value값 안들이 비어있어서 에러 분기 처리가 안 됨. Object.keys(errorMe) ...... errorMe.extensions.code가 안 불려서.
   ) {
     client.writeData({ data: { isLoggedIn: false } });
     return <ErrorLoginFirst error={errorMe} />;
