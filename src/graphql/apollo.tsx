@@ -46,7 +46,6 @@ const client = new ApolloClient({
   cache,
   link: new ApolloLink((operation, forward) => {
     const token = Cookies.get('access-token');
-    console.log('here is cookie too', token);
     operation.setContext({
       headers: {
         authorization: token ? `Bearer ${token}` : '',

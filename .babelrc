@@ -1,15 +1,15 @@
 //babelrc 문제인지 babel plugin emotion 작동 안함.
 
-{
-  "plugins": [
-    [
-      "emotion",
-      {
-        "sourceMap": true,
-        "autoLabel": process.env.NODE_ENV !== "production",
-        "labelFormat": "[dirname]/[filename]/[local]",
-        "cssPropOptimization": true
-      }
-    ]
-  ]
-}
+// {
+//   "plugins": [
+//     [
+//       "emotion",
+//       {
+//         "sourceMap": true,
+//         "autoLabel": process.env.NODE_ENV !== "production",
+//         "labelFormat": "[dirname]/[filename]/[local]",
+//         "cssPropOptimization": true
+//       }
+//     ]
+//   ]
+// }

@@ -74,7 +74,7 @@ function Chat({ history }: ChatProps) {
         name: data.me.nickname,
         image: 'https://getstream.io/random_svg/?name=John', // data.me.image? 있는것: antd
       },
-      token,
+      token as any,
     );
 
     console.log('user', user);
