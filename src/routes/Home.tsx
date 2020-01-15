@@ -40,21 +40,21 @@ type HomeProps = {
 
 function Home({ history }: HomeProps) {
   const client = useApolloClient();
-  console.log('token 유무를 보자', Cookies.get('access-token'));
+  console.log('token 유무를 보자', Cookies.get('access-token')?.slice(0,10));
   const { data: dataMe, error: errorMe } = useQuery(GET_USERINFO, {
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'cache-only',
   });
+  console.log('dataMe', dataMe);
   // const { data: dataMe2, error: errorMe2 } = useQuery(GET_USERINFO, {
   //   fetchPolicy: 'cache-only',
   // });
   const { data: dataUsers } = useQuery(GET_USERS);
   const { data: loginData } = useQuery(IS_LOGGED_IN);
 
-  // 문제1. 브라우저에서 cookie.get 이 안되는 것
   // 문제2. router redirect가 안되면 useQuery가 새로 안 불리는 듯... 그래서 기존 data값 그대로 들어가는 듯. 설령 cache값을 바꿔놓아도.
 
-  console.log('dataMe', dataMe);
-  console.log('errorMe', errorMe);
+  
+  // console.log('errorMe', errorMe);
   console.log('loginData', loginData.isLoggedIn);
   // console.log('dateMeCache', dataMe2);
   // console.log('errorMeCache', errorMe2);
@@ -64,8 +64,9 @@ function Home({ history }: HomeProps) {
   if (
     dataMe &&
     dataMe.me &&
-    dataMe.me.nickname &&
-    Cookies.get('access-token')
+    dataMe.me.nickname
+    // &&
+    // Cookies.get('access-token')
   ) {
     // if (cookie.get('access-token')) {
     // 이거 대신에 if (dataMe)로 했을 때 token이 이미 지워져있고, network-only 옵션을 붙였는데도 불구하고, dataMe에 올바른 정보가 들어옴. 그랬다가 안 그랬다가 하는듯. 지속적 문제는 딴 페이지에서 넘어올땐 되기도 하는데 Home 화면에서 로그아웃 눌렀을 땐 안 지워짐.

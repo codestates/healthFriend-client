@@ -32,17 +32,17 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 const cache = new InMemoryCache();
 
 const client = new ApolloClient({
-  defaultOptions: {
-    watchQuery: {
-      errorPolicy: 'all',
-    },
-    query: {
-      errorPolicy: 'all',
-    },
-    mutate: {
-      errorPolicy: 'all',
-    },
-  },
+  // defaultOptions: {
+  //   watchQuery: {
+  //     errorPolicy: 'all',
+  //   },
+  //   query: {
+  //     errorPolicy: 'all',
+  //   },
+  //   mutate: {
+  //     errorPolicy: 'all',
+  //   },
+  // },
   cache,
   link: new ApolloLink((operation, forward) => {
     const token = Cookies.get('access-token');

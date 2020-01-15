@@ -28,6 +28,7 @@ function MypageDropdown({ name, history }: MypageDropdownProps) {
             client.writeData({ data: { isLoggedIn: false } });
             client.writeData({ data: { me: false } });
             Cookies.remove('access-token', {
+              // localhost에서는 안 적어도 상관없으나 production 환경에선 다 적어줘야 함.
               path: '/',
               domain:
                 process.env.NODE_ENV === 'development'
