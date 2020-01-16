@@ -8,9 +8,10 @@ import { GET_USERS, IS_LOGGED_IN, GET_USERINFO } from '../graphql/queries';
 import ButtonToFind from '../components/Home/ButtonToFind';
 import ButtonToRegister from '../components/Home/ButtonToRegister';
 import ButtonToSignup from '../components/Home/ButtonToSignup';
-import IfLoginUSeeFriend from '../components/Shared/IfLoginUSeeFriend';
+import IfLoginUSeeFriend from '../components/Home/IfLoginUSeeFriend';
 import UserCard from '../components/FindFriend/UserCard';
 import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
+import useSubscript from '../hooks/useSubscript';
 
 const { Title } = Typography;
 
@@ -47,6 +48,7 @@ function Home({ history }: HomeProps) {
   // console.log('dataMe', dataMe);
   const { data: dataUsers } = useQuery(GET_USERS);
   const { data: loginData } = useQuery(IS_LOGGED_IN);
+  useSubscript();
 
   if (
     dataMe &&

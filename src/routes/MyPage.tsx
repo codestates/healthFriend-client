@@ -11,6 +11,7 @@ import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 import useCheckToken from '../hooks/useCheckToken';
 import { IS_LOGGED_IN } from '../graphql/queries';
 import redirectWhenTokenExp from '../utils/redirectWhenTokenExp';
+import useSubscript from '../hooks/useSubscript';
 
 const wrapper = css`
   margin: 20px;
@@ -42,6 +43,7 @@ function MyPage({ history }: MyPageProps) {
 
   const { data: loginData } = useQuery(IS_LOGGED_IN);
   const { client, getInfo, dataUser, errorUser } = useCheckToken();
+  useSubscript();
 
   useEffect(() => {
     // 왜 dataUser와 errorUser가 둘다 동시에 값을 가지고 있을 수 있는지 모르겠음.

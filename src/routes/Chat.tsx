@@ -21,6 +21,7 @@ import redirectWhenTokenExp from '../utils/redirectWhenTokenExp';
 import message from '../config/Message';
 import Chatting from '../components/Chat/Chatting';
 import { API_KEY } from '../config/streamConfig';
+import useSubscript from '../hooks/useSubscript';
 
 type ChatProps = {
   history: any; // match, location을 같이 쓰니 안되고, 얘만 쓰니 되네... withRouter로 붙인 애들은 다 써줘야 하는 것 같고, 아닌 애들은 아닌 듯.
@@ -32,12 +33,13 @@ function Chat({ history }: ChatProps) {
   const { data: loginData } = useQuery(IS_LOGGED_IN);
   const [list, setList] = useState<string>('');
   const [friend, setFriend] = useState<any>('');
+  useSubscript();
 
   const [
     getFollowers,
     { loading: loadingFollowers, error: errorFollowers, data: dataFollowers },
   ] = useLazyQuery(GET_FOLLOWERS, {
-    fetchPolicy: 'network-only', // 각 옵션에는 모두 이유가 있게.
+    fetchPolicy: 'network-only',
   });
   const [
     getFollowing,

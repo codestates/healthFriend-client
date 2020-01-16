@@ -194,3 +194,23 @@ export const DELETE_FRIEND = gql`
   }
   ${BASE_INFO}
 `;
+
+// subscription ===========================================================
+
+export const SUBSCRIBE_FOLLOWERS = gql`
+  subscription {
+    subscribeRequestFriend {
+      ...AllInfo
+    }
+  }
+  ${ALL_INFO}
+`;
+
+export const SUBSCRIBE_FRIENDS = gql`
+  subscription {
+    subscribeAddFriend {
+      ...AllInfo
+    }
+  }
+  ${ALL_INFO}
+`;
