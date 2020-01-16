@@ -43,7 +43,7 @@ function MyPage({ history }: MyPageProps) {
 
   const { data: loginData } = useQuery(IS_LOGGED_IN);
   const { client, getInfo, dataUser, errorUser } = useCheckToken();
-  useSubscript();
+  useSubscript(history);
 
   useEffect(() => {
     // 왜 dataUser와 errorUser가 둘다 동시에 값을 가지고 있을 수 있는지 모르겠음.

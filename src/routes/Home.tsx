@@ -48,7 +48,7 @@ function Home({ history }: HomeProps) {
   // console.log('dataMe', dataMe);
   const { data: dataUsers } = useQuery(GET_USERS);
   const { data: loginData } = useQuery(IS_LOGGED_IN);
-  useSubscript();
+  useSubscript(history);
 
   if (
     dataMe &&
@@ -115,7 +115,7 @@ function Home({ history }: HomeProps) {
                     ableDistricts={oneData.ableDistricts}
                     type="unknown"
                     renewFriends={() => null}
-                    setFriend={() => null}
+                    setChatFriend={() => null}
                     // 위의 것들 같은 것 ts의 ? 나 다른 해결책??
                   />
                 ))}

@@ -48,7 +48,7 @@ function FindFriend({ history }: FindFriendProps) {
     fetchPolicy: 'network-only',
     // errorPolicy: 'ignore', 어떤 효과 있는지 모르겠음. 확인.
   });
-  useSubscript();
+  useSubscript(history);
 
   // refetch 할때의 error는 아래의 error나 errorUser에 안 잡히는 듯.
 
@@ -114,7 +114,7 @@ function FindFriend({ history }: FindFriendProps) {
                   ableDistricts={oneData.ableDistricts}
                   type="unknown"
                   renewFriends={refetch}
-                  setFriend={() => null}
+                  setChatFriend={() => null}
                 />
               ))
           : null}

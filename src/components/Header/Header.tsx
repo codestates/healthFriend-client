@@ -88,8 +88,8 @@ export default function Header() {
               </NavLink>
             </Menu.Item>
             <Menu.Item>
-              <NavLink to="/chat" className="item" css={navLinkItem}>
-                채팅
+              <NavLink to="/cards/friends" className="item" css={navLinkItem}>
+                친구카드
               </NavLink>
             </Menu.Item>
             <Menu.Item>

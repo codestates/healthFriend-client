@@ -64,7 +64,7 @@ type UserCardProps = {
   history: any;
   location: any;
   match: any;
-  setFriend: Function;
+  setChatFriend: Function;
 };
 
 function UserCard({
@@ -80,7 +80,7 @@ function UserCard({
   type,
   renewFriends,
   history,
-  setFriend,
+  setChatFriend,
 }: UserCardProps) {
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -223,7 +223,7 @@ function UserCard({
 
   if (type === 'friends') {
     makeButton(deleteFriend, '친구 끊기');
-    makeButton(() => setFriend({ id, nickname }), '채팅하기');
+    makeButton(() => setChatFriend({ id, nickname }), '채팅하기');
   } else if (type === 'followers') {
     makeButton(deleteFollower, '친구신청 거절');
     makeButton(addFriend, '친구신청 수락');
