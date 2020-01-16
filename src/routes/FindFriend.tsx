@@ -16,6 +16,7 @@ import {
 import Loading from '../components/Shared/Loading';
 import redirectWhenTokenExp from '../utils/redirectWhenTokenExp';
 import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
+import useSubscript from '../hooks/useSubscript';
 
 const marginFilterdCards = css`
   margin-top: 40px;
@@ -47,6 +48,7 @@ function FindFriend({ history }: FindFriendProps) {
     fetchPolicy: 'network-only',
     // errorPolicy: 'ignore', 어떤 효과 있는지 모르겠음. 확인.
   });
+  useSubscript();
 
   // refetch 할때의 error는 아래의 error나 errorUser에 안 잡히는 듯.
 
@@ -123,7 +125,11 @@ function FindFriend({ history }: FindFriendProps) {
   return (
     <Layout style={{ background: '#fff', height: '100vh' }}>
       <Layout.Content>
-        <Row type="flex" justify="center" style={{ background: '#fafafa', paddingTop: 20 }}>
+        <Row
+          type="flex"
+          justify="center"
+          style={{ background: '#fafafa', paddingTop: 20 }}
+        >
           <Col xs={20} md={20}>
             <Divider>친구 필터</Divider>
             <Row gutter={24} justify="center">
@@ -132,7 +138,9 @@ function FindFriend({ history }: FindFriendProps) {
                 <Button
                   type="primary"
                   onClick={() => {
-                    getFilteredUsers({ variables: { ...filter, districts: places } });
+                    getFilteredUsers({
+                      variables: { ...filter, districts: places },
+                    });
                   }}
                   style={{ width: '100%', marginTop: 20 }}
                 >

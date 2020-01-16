@@ -14,6 +14,7 @@ import Loading from '../components/Shared/Loading';
 import useCheckToken from '../hooks/useCheckToken';
 import { IS_LOGGED_IN } from '../graphql/queries';
 import redirectWhenTokenExp from '../utils/redirectWhenTokenExp';
+import useSubscript from '../hooks/useSubscript';
 
 const renderingImage = css`
   width: 100%;
@@ -61,6 +62,7 @@ function Register({ history }: RegisterProps) {
 
   const { client, getInfo, dataUser, errorUser } = useCheckToken();
   const { data: loginData } = useQuery(IS_LOGGED_IN);
+  useSubscript();
 
   // 이런 식으로 useEffect를 써서 처리해주는 부분이 일반적인가?
   useEffect(() => {

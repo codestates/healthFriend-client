@@ -24,11 +24,11 @@ type useRegisterInputProps = {
   // 왜 뒤에가 void고 앞에는 boolean[]가 안되는지 모르겠음.
 };
 
-export default function useRegisterInput({
+const useRegisterInput = ({
   order,
   totalCheckArr,
   setTotalCheckArr,
-}: useRegisterInputProps) {
+}: useRegisterInputProps) => {
   const {
     question,
     answer,
@@ -93,4 +93,6 @@ export default function useRegisterInput({
   });
 
   return { questionCheckboxes, question, answer, subject };
-}
+};
+
+export default useRegisterInput;

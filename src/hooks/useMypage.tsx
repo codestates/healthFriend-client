@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import useRegister from './useRegister';
 
-export default function useMypage() {
+const useMypage = () => {
   const {
     setIntroduction,
     setPlaces,
@@ -72,4 +72,6 @@ export default function useMypage() {
     complete,
     setComplete,
   };
-}
+};
+
+export default useMypage;

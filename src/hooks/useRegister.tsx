@@ -10,7 +10,7 @@ import {
   SET_ABLE_DISTRICT,
 } from '../graphql/queries';
 
-export default function useRegister() {
+const useRegister = () => {
   const [order, setOrder] = useState<number>(1);
   const [introduction, setIntroduction] = useState<string>('');
   const [places, setPlaces] = useState<string[]>([]);
@@ -84,4 +84,6 @@ export default function useRegister() {
     setExerciseAbleDays,
     setAbleDistrict,
   };
-}
+};
+
+export default useRegister;
