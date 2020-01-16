@@ -6,7 +6,7 @@ import { Layout } from 'antd';
 import Home from './routes/Home';
 import Register from './routes/Register';
 import FindFriend from './routes/FindFriend';
-import Chat from './routes/Chat';
+import Cards from './routes/Cards';
 import Login from './routes/Login';
 import Mypage from './routes/MyPage';
 import NotFound from './routes/NotFound';
@@ -23,7 +23,7 @@ function App() {
             <Route exact path="/" component={Home} />
             <Route path="/register" component={Register} />
             <Route path="/find" component={FindFriend} />
-            <Route path="/chat" component={Chat} />
+            <Route path="/cards/:state" component={Cards} />
             <Route path="/login" component={Login} />
             <Route path="/mypage" component={Mypage} />
             <Route component={NotFound} />

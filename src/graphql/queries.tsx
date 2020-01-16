@@ -51,42 +51,26 @@ export const GET_FILTERED_USERS = gql`
   ${USERS_INFO}
 `;
 
-export const GET_FOLLOWING = gql`
+export const GET_FRIENDS = gql`
   {
     me {
       id
       following {
         ...UsersInfo
       }
-    }
-  }
-  ${USERS_INFO}
-`;
-// 저리 follower 위에 id 를 안 붙이면 query가 안 돌아감. 이유는 모르겠음. graphQL 특성 구분인자 역할
-
-export const GET_FOLLOWERS = gql`
-  {
-    me {
-      id
       followers {
         ...UsersInfo
       }
-    }
-  }
-  ${USERS_INFO}
-`;
-
-export const GET_FRIENDS = gql`
-  {
-    me {
-      id
       friends {
         ...UsersInfo
       }
     }
   }
   ${USERS_INFO}
+  ${USERS_INFO}
+  ${USERS_INFO}
 `;
+// 저리 follower 위에 id 를 안 붙이면 query가 안 돌아감. 이유는 모르겠음. graphQL 특성 구분인자 역할
 
 // local query =============================
 

@@ -62,7 +62,7 @@ function Register({ history }: RegisterProps) {
 
   const { client, getInfo, dataUser, errorUser } = useCheckToken();
   const { data: loginData } = useQuery(IS_LOGGED_IN);
-  useSubscript();
+  useSubscript(history);
 
   // 이런 식으로 useEffect를 써서 처리해주는 부분이 일반적인가?
   useEffect(() => {

@@ -11,9 +11,9 @@ import {
 } from 'stream-chat-react';
 
 type ChattingProps = {
-  makeChatRoom: Function;
-  friend: any;
-  setFriend: Function;
+  useMakeChatRoom: Function;
+  chatFriend: any;
+  setChatFriend: Function;
 };
 
 // const MyMessageComponent = ({ setActiveChannel, channel }) => {
@@ -34,8 +34,12 @@ type ChattingProps = {
 //   );
 // };
 
-function Chatting({ makeChatRoom, friend, setFriend }: ChattingProps) {
-  const { chatClient, filters, sort, newChannel } = makeChatRoom(friend);
+function Chatting({
+  useMakeChatRoom,
+  chatFriend,
+  setChatFriend,
+}: ChattingProps) {
+  const { chatClient, filters, sort, newChannel } = useMakeChatRoom(chatFriend);
 
   console.log('chatClient', chatClient);
 
@@ -52,14 +56,14 @@ function Chatting({ makeChatRoom, friend, setFriend }: ChattingProps) {
         <Channel channel={newChannel}>
           <div style={{ height: '80%', width: '100%' }}>
             <Window>
-              <ChannelHeader title={`${friend.nickname}님과의 대화`} />
+              <ChannelHeader title={`${chatFriend.nickname}님과의 대화`} />
               <MessageList />
               <MessageInput />
             </Window>
             <button
               onClick={() => {
                 newChannel.delete();
-                setFriend('');
+                setChatFriend('');
               }}
             >
               나가기
