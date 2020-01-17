@@ -38,6 +38,8 @@ type RegisterProps = {
 };
 
 function Register({ history }: RegisterProps) {
+  const { client, getInfo, dataUser, errorUser } = useCheckToken();
+
   const {
     setOrder,
     introduction,
@@ -58,9 +60,8 @@ function Register({ history }: RegisterProps) {
     setMotivation,
     setExerciseAbleDays,
     setAbleDistrict,
-  } = useRegister();
+  } = useRegister(history, client);
 
-  const { client, getInfo, dataUser, errorUser } = useCheckToken();
   const { data: loginData } = useQuery(IS_LOGGED_IN);
   useSubscript(history);
 
@@ -100,6 +101,16 @@ function Register({ history }: RegisterProps) {
   // if (data.me.levelOf3Dae && data.me.gender && data.me.ableDistricts) {
   //   return <Redirect to="/" />;
   // }
+
+  const isNextButtonDisable = (): boolean => {
+    if (questionList[order - 1].subject === 'ableDistricts') {
+      return places.length === 0;
+    }
+    if (questionList[order - 1].subject === 'messageToFriend') {
+      return false;
+    }
+    return !totalCheckArr[order - 1].some((elm) => elm === true);
+  };
 
   return (
     <Row type="flex" justify="center">
@@ -157,12 +168,11 @@ function Register({ history }: RegisterProps) {
                 &nbsp;
                 <Button
                   type="primary"
-                  onClick={() => {
-                    getInfo();
-                    // .then((data) => console.log('data is...', data)); then 붙이려니 typescript 문제 발생. mutation 함수는 promise return하는데 useLazyQuery랑 refetch는 promise return 아닌 듯.
-                    // await 안 먹는 이유가 뭐지?
-                  }}
-                  // disabled={!totalCheckArr[order - 1].some((elm) => elm === true)}... place에 대해서도 체크가 돼야 함.
+                  onClick={getInfo as any}
+                  // .then((data) => console.log('data is...', data)); then 붙이려니 typescript 문제 발생. mutation 함수는 promise return하는데 useLazyQuery랑 refetch는 promise return 아닌 듯.
+                  // await 안 먹는 이유가 뭐지? promise return 하는 것 아니면 안 먹음.
+
+                  disabled={isNextButtonDisable()}
                 >
                   {order === questionList.length ? '완료' : '다음'}
                 </Button>

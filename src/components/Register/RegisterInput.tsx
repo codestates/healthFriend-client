@@ -49,7 +49,12 @@ export default function RegisterInput({
         <div css={checkboxDiv}>{questionCheckboxes}</div>
       )}
       {subject === 'ableDistricts' ? (
-        <SelectPlace setPlaces={setPlaces} selectedPlaces={selectedPlaces} />
+        <SelectPlace
+          setPlaces={setPlaces}
+          selectedPlaces={selectedPlaces}
+          search={() => null}
+          places={[]}
+        />
       ) : null}
       {subject === 'messageToFriend' ? (
         <TextArea

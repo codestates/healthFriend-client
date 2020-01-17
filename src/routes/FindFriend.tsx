@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { useState, useEffect } from 'react';
-import { Layout, Row, Col, Button, Divider } from 'antd';
+import { Layout, Row, Col, Divider } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useLazyQuery, useQuery, useApolloClient } from '@apollo/react-hooks';
 
@@ -50,10 +50,14 @@ function FindFriend({ history }: FindFriendProps) {
   });
   useSubscript(history);
 
+  console.log('errorUser', errorUser);
+  // if (errorUser || error) redirectWhenTokenExp(history, client);
+
   // refetch 할때의 error는 아래의 error나 errorUser에 안 잡히는 듯.
 
   // alert창이 2번 불리는 것 때문에 useEffect 붙여버림.
   useEffect(() => {
+    // console.log('여기로 오나?');
     if (errorUser || error) redirectWhenTokenExp(history, client);
     // eslint-disable-next-line
   }, [errorUser, error]);
@@ -65,13 +69,24 @@ function FindFriend({ history }: FindFriendProps) {
     .filter((elm) => elm.isFilterList)
     .map((ele) => ele.subject);
 
+  const search = () => {
+    getFilteredUsers({
+      variables: { ...filter, districts: places },
+    });
+  };
+
   const questions = filterList.map((filterQ) => {
     const [{ subject, question, answer }] = questionList.filter(
       (elm) => elm.subject === filterQ,
     );
     return subject === 'ableDistricts' ? (
       <Col md={16} key={question} css={questionsCSS}>
-        <SelectPlace setPlaces={setPlaces} selectedPlaces={[]} />
+        <SelectPlace
+          setPlaces={setPlaces}
+          selectedPlaces={[]}
+          search={search}
+          places={places}
+        />
       </Col>
     ) : (
       <Col md={8} key={question} css={questionsCSS}>
@@ -81,6 +96,7 @@ function FindFriend({ history }: FindFriendProps) {
           placeholder={question}
           filter={filter}
           setFilter={setFilter}
+          search={search}
         />
       </Col>
     );
@@ -88,9 +104,10 @@ function FindFriend({ history }: FindFriendProps) {
 
   function FilteredCards() {
     if (loading) return <Loading />;
+    console.log('data', data);
     return (
       <Row gutter={24} css={marginFilterdCards}>
-        {data
+        {data && data.filterUsers && dataUser && dataUser.me
           ? data.filterUsers
               .filter((user) => user.id !== dataUser.me.id)
               .filter((user) => {
@@ -135,7 +152,7 @@ function FindFriend({ history }: FindFriendProps) {
             <Row gutter={24} justify="center">
               {questions}
               <Col xs={24} md={{ span: 4, offset: 20 }}>
-                <Button
+                {/* <Button
                   type="primary"
                   onClick={() => {
                     getFilteredUsers({
@@ -145,7 +162,7 @@ function FindFriend({ history }: FindFriendProps) {
                   style={{ width: '100%', marginTop: 20 }}
                 >
                   검색
-                </Button>
+                </Button> */}
               </Col>
             </Row>
           </Col>

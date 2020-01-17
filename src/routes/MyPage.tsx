@@ -21,8 +21,10 @@ type MyPageProps = {
   history: any;
 };
 
-// 불필요하게 render가 여러번 되는 문제
+// 불필요하게 render가 여러번 되는 문제!!!
 function MyPage({ history }: MyPageProps) {
+  const { data: loginData } = useQuery(IS_LOGGED_IN);
+  const { client, getInfo, dataUser, errorUser } = useCheckToken();
   const {
     setIntroduction,
     setPlaces,
@@ -37,12 +39,11 @@ function MyPage({ history }: MyPageProps) {
     setAbleDistrict,
     places,
     data,
+    // error,
     complete,
     setComplete,
-  } = useMypage();
+  } = useMypage(history, client);
 
-  const { data: loginData } = useQuery(IS_LOGGED_IN);
-  const { client, getInfo, dataUser, errorUser } = useCheckToken();
   useSubscript(history);
 
   useEffect(() => {
@@ -73,6 +74,20 @@ function MyPage({ history }: MyPageProps) {
 
   if (!loginData.isLoggedIn) return <ErrorLoginFirst error={null} />;
 
+  const isNextButtonDisable = () => {
+    if (places.length === 0) {
+      return true;
+    }
+    if (
+      totalCheckArr
+        .filter((oneQ) => oneQ.length > 0)
+        .filter((elm) => elm.every((ele) => ele === false)).length === 0
+    ) {
+      return false;
+    }
+    return true;
+  };
+
   return (
     <div>
       <Button type="primary">
@@ -85,7 +100,7 @@ function MyPage({ history }: MyPageProps) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          graphql playground로 ㄱㄱ
+          graphql playground로 ㄱ
         </a>
       </Button>
       <Row type="flex" justify="center">
@@ -137,7 +152,11 @@ function MyPage({ history }: MyPageProps) {
                     </React.Fragment>
                   ),
                 )}
-                <Button type="primary" onClick={() => getInfo()}>
+                <Button
+                  type="primary"
+                  onClick={() => getInfo()}
+                  disabled={isNextButtonDisable()}
+                >
                   저장
                 </Button>{' '}
                 <Button

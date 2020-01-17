@@ -66,7 +66,7 @@ function Cards({ history, match }: CardsProps) {
     <div>
       <br />
       <Row type="flex" justify="center">
-        <Nav history={history} />
+        <Nav history={history} state={state} />
         <br />
         <br />
         <Col xs={24} md={20}>

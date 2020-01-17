@@ -10,6 +10,7 @@ type SelectDefaultProps = {
   placeholder: string;
   filter: any;
   setFilter: (args: any) => void;
+  search: Function;
 };
 
 function SelectDefault({
@@ -18,6 +19,7 @@ function SelectDefault({
   placeholder,
   filter,
   setFilter,
+  search,
 }: SelectDefaultProps) {
   const [value, setValue] = useState<any[]>([]);
 
@@ -38,6 +40,11 @@ function SelectDefault({
     });
     // eslint-disable-next-line
   }, [value]);
+
+  useEffect(() => {
+    search();
+    // eslint-disable-next-line
+  }, [filter]);
 
   return (
     <Select
