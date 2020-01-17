@@ -75,7 +75,7 @@ function Home({ history }: HomeProps) {
     if (!loginData.isLoggedIn) {
       return <ButtonToSignup />;
     }
-    if (dataMe && dataMe.me.levelOf3Dae) {
+    if (dataMe && dataMe.me && dataMe.me.levelOf3Dae) {
       return <ButtonToFind history={history} />;
     }
     return <ButtonToRegister history={history} />;

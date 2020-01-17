@@ -3,14 +3,15 @@ import { Col, Button } from 'antd';
 
 type NavProps = {
   history: any;
+  state: string;
 };
 
-export default function Nav({ history }: NavProps) {
+export default function Nav({ history, state }: NavProps) {
   return (
     <>
       <Col xs={24} md={5}>
         <Button
-          type="primary"
+          type={state === 'friends' ? 'primary' : 'default'}
           onClick={() => {
             history.push('/cards/friends');
           }}
@@ -20,7 +21,7 @@ export default function Nav({ history }: NavProps) {
       </Col>
       <Col xs={24} md={5}>
         <Button
-          type="primary"
+          type={state === 'following' ? 'primary' : 'default'}
           onClick={() => {
             history.push('/cards/following');
           }}
@@ -30,7 +31,7 @@ export default function Nav({ history }: NavProps) {
       </Col>
       <Col xs={24} md={5}>
         <Button
-          type="primary"
+          type={state === 'followers' ? 'primary' : 'default'}
           onClick={() => {
             history.push('/cards/followers');
           }}
@@ -40,7 +41,7 @@ export default function Nav({ history }: NavProps) {
       </Col>
       <Col xs={24} md={5}>
         <Button
-          type="primary"
+          type={state === 'chat' ? 'primary' : 'default'}
           onClick={() => {
             history.push('/cards/chat');
           }}

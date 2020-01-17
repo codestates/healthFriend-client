@@ -9,8 +9,9 @@ import {
   SET_EXERCISE_ABLE_DAYS,
   SET_ABLE_DISTRICT,
 } from '../graphql/queries';
+import redirectWhenTokenExp from '../utils/redirectWhenTokenExp';
 
-const useRegister = () => {
+const useRegister = (history, client) => {
   const [order, setOrder] = useState<number>(1);
   const [introduction, setIntroduction] = useState<string>('');
   const [places, setPlaces] = useState<string[]>([]);
@@ -28,6 +29,8 @@ const useRegister = () => {
   const [setExerciseAbleDays] = useMutation(SET_EXERCISE_ABLE_DAYS);
   const [setAbleDistrict] = useMutation(SET_ABLE_DISTRICT);
   // mutation시 error도 콜백으로 만들어줘야 함. onError, onComplete 등이 있는듯.
+
+  if (error) redirectWhenTokenExp(history, client);
 
   const subjects = questionList.map((elm) => elm.subject);
   const submitVariable = {};

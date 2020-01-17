@@ -12,9 +12,16 @@ const { SHOW_PARENT } = TreeSelect;
 type SelectPlaceProps = {
   setPlaces: (args: string[]) => void;
   selectedPlaces: any[];
+  search: Function;
+  places: string[];
 };
 
-function SelectPlace({ setPlaces, selectedPlaces }: SelectPlaceProps) {
+function SelectPlace({
+  setPlaces,
+  selectedPlaces,
+  search,
+  places,
+}: SelectPlaceProps) {
   const guList: string[] = [];
   const placeForTree: any[] = [];
 
@@ -49,6 +56,11 @@ function SelectPlace({ setPlaces, selectedPlaces }: SelectPlaceProps) {
     }
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    search();
+    // eslint-disable-next-line
+  }, [places]);
 
   const { data, loading } = useQuery(GET_PLACES);
 

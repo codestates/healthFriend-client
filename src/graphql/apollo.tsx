@@ -38,7 +38,7 @@ const wsLink = new WebSocketLink({
   uri:
     process.env.NODE_ENV === 'development'
       ? 'ws://localhost:4000/graphql'
-      : 'ws://api.healthfriend.club/graphql',
+      : 'wss://api.healthfriend.club/graphql',
   options: {
     reconnect: true,
     connectionParams: {

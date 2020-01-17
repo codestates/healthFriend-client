@@ -76,7 +76,9 @@ export default function Header() {
         <React.Fragment>
           <Menu mode="horizontal" css={navMenu}>
             <Menu.Item>
-              {/* {data.me.levelOf3Dae && data.me.messageToFriend ? null : ( */}
+              {/* {data.me.levelOf3Dae &&
+              data.me.gender &&
+              data.me.openImageChoice ? null : ( */}
               <NavLink to="/register" className="item" css={navLinkItem}>
                 등록
               </NavLink>

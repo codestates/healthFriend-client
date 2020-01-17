@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import useRegister from './useRegister';
+import redirectWhenTokenExp from '../utils/redirectWhenTokenExp';
 
-const useMypage = () => {
+const useMypage = (history, client) => {
   const {
     setIntroduction,
     setPlaces,
@@ -19,31 +20,35 @@ const useMypage = () => {
     error,
     loading,
     questionList,
-  } = useRegister();
+  } = useRegister(history, client);
 
   const [complete, setComplete] = useState<boolean>(false);
 
   const subjects: string[] = questionList.map((elm) => elm.subject);
 
-  // 해당 받아온 data의 값을 입력할 때와 같은 boolean array로 변경
-  const getSelectedBooleans = (subj: string): boolean[] => {
-    const oneQ = questionList![subjects.indexOf(subj)];
-    let selectedArray;
-    if (oneQ.isMeQueryAvailable && oneQ.isCheckbox) {
-      if (!oneQ.isMultiple) {
-        selectedArray = [data.me[subj]];
-      } else {
-        selectedArray = data.me[subj].map((elm) => elm[subj.slice(0, -1)]);
-      }
+  if (error) redirectWhenTokenExp(history, client);
 
-      return oneQ.value.map((elm) => {
-        if (selectedArray.indexOf(elm) === -1) {
-          return false;
+  // 해당 받아온 data의 값을 입력할 때와 같은 boolean array로 변경
+  const getSelectedBooleans = (subj: string): boolean[] | undefined => {
+    if (data && data.me) {
+      const oneQ = questionList![subjects.indexOf(subj)];
+      let selectedArray;
+      if (oneQ.isMeQueryAvailable && oneQ.isCheckbox) {
+        if (!oneQ.isMultiple) {
+          selectedArray = [data.me[subj]];
+        } else {
+          selectedArray = data.me[subj].map((elm) => elm[subj.slice(0, -1)]);
         }
-        return true;
-      });
+
+        return oneQ.value.map((elm) => {
+          if (selectedArray.indexOf(elm) === -1) {
+            return false;
+          }
+          return true;
+        });
+      }
+      return [];
     }
-    return [];
   };
 
   useEffect(() => {
