@@ -2,7 +2,7 @@
 import { notification } from 'antd';
 import { useSubscription } from '@apollo/react-hooks';
 
-import { SUBSCRIBE_FOLLOWERS, SUBSCRIBE_FRIENDS } from '../graphql/queries';
+import { SUBSCRIBE_FOLLOWERS, SUBSCRIBE_FRIENDS } from '../../graphql/queries';
 
 const useSubscript = (history) => {
   const { data: subsFollowers } = useSubscription(SUBSCRIBE_FOLLOWERS);

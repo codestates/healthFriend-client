@@ -84,6 +84,7 @@ const client = new ApolloClient({
     return forward(operation);
   }).concat(ApolloLink.from([errorLink, /* httpLink */ wsHttplink])),
   typeDefs,
+  // defaults,
   resolvers,
   connectToDevTools: true,
 });
@@ -91,6 +92,11 @@ const client = new ApolloClient({
 cache.writeData({
   data: {
     isLoggedIn: false,
+    // chatFriend: {
+    //   __typename: 'ChatFriend',
+    //   id: '',
+    //   nickname: '',
+    // },
   },
 });
 

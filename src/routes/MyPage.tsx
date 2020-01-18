@@ -1,17 +1,17 @@
 /** @jsx jsx */
-import React, { useEffect } from 'react';
-import { Row, Col, Button, Result } from 'antd';
+import React from 'react';
+import { Row, Col, Button, Result, Tooltip } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useQuery } from '@apollo/react-hooks';
 
 import RegisterInput from '../components/Register/RegisterInput';
 import questionList from '../config/questions';
-import useMypage from '../hooks/useMypage';
+import useMypage from '../hooks/Mypage/useMypage';
 import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
-import useCheckToken from '../hooks/useCheckToken';
+import useCheckToken from '../hooks/Shared/useCheckToken';
 import { IS_LOGGED_IN } from '../graphql/queries';
-import redirectWhenTokenExp from '../utils/redirectWhenTokenExp';
-import useSubscript from '../hooks/useSubscript';
+import useSubscript from '../hooks/Shared/useSubscript';
+import useEditButton from '../hooks/Mypage/useEditButton';
 
 const wrapper = css`
   margin: 20px;
@@ -46,47 +46,25 @@ function MyPage({ history }: MyPageProps) {
 
   useSubscript(history);
 
-  useEffect(() => {
-    // 왜 dataUser와 errorUser가 둘다 동시에 값을 가지고 있을 수 있는지 모르겠음.
-    // 더하여 그 grphaql 에러의 빨간 화면 뜨는 건 어느 상황에서 발생하는건지.
-    if (errorUser) {
-      redirectWhenTokenExp(client, history);
-    } else if (dataUser) {
-      postInfo({
-        variables: {
-          ...submitVariable,
-          nickname: data.me.nickname,
-        },
-      });
-      setMotivation({
-        variables: submitMotivation,
-      });
-      setExerciseAbleDays({
-        variables: submitExerciseDays,
-      });
-      setAbleDistrict({
-        variables: { dongIds: places },
-      });
-      setComplete(true);
-    }
-    // eslint-disable-next-line
-  }, [dataUser, errorUser]);
+  const { isEditButtonDisable } = useEditButton({
+    errorUser,
+    client,
+    history,
+    dataUser,
+    postInfo,
+    submitVariable,
+    data,
+    setMotivation,
+    submitMotivation,
+    totalCheckArr,
+    places,
+    setComplete,
+    setAbleDistrict,
+    submitExerciseDays,
+    setExerciseAbleDays,
+  });
 
   if (!loginData.isLoggedIn) return <ErrorLoginFirst error={null} />;
-
-  const isNextButtonDisable = () => {
-    if (places.length === 0) {
-      return true;
-    }
-    if (
-      totalCheckArr
-        .filter((oneQ) => oneQ.length > 0)
-        .filter((elm) => elm.every((ele) => ele === false)).length === 0
-    ) {
-      return false;
-    }
-    return true;
-  };
 
   return (
     <div>
@@ -152,13 +130,21 @@ function MyPage({ history }: MyPageProps) {
                     </React.Fragment>
                   ),
                 )}
-                <Button
-                  type="primary"
-                  onClick={() => getInfo()}
-                  disabled={isNextButtonDisable()}
+                <Tooltip
+                  title={
+                    isEditButtonDisable()
+                      ? '빠짐없이 적어야 저장가능합니다'
+                      : null
+                  }
                 >
-                  저장
-                </Button>{' '}
+                  <Button
+                    type="primary"
+                    onClick={() => getInfo()}
+                    disabled={isEditButtonDisable()}
+                  >
+                    저장
+                  </Button>
+                </Tooltip>{' '}
                 <Button
                   type="primary"
                   onClick={() => {

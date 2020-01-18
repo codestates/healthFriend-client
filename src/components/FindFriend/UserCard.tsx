@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Col, Card, Typography, Avatar, message } from 'antd';
 import { jsx, css } from '@emotion/core';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
@@ -86,23 +86,23 @@ function UserCard({
 
   const [
     followUser,
-    { data: dataFU, error: errorFU, loading: loadingFU },
+    { /* data: dataFU, error: errorFU, */ loading: loadingFU },
   ] = useMutation(FOLLOW_USER);
   const [
     cancelFollow,
-    { data: dataCF, error: errorCF, loading: loadingCF },
+    { /* data: dataCF, error: errorCF, */ loading: loadingCF },
   ] = useMutation(CANCEL_FOLLOWING);
   const [
     addFriend,
-    { data: dataAF, error: errorAF, loading: loadingAF },
+    { /* data: dataAF, error: errorAF, */ loading: loadingAF },
   ] = useMutation(ADD_FRIEND);
   const [
     deleteFriend,
-    { data: dataDF, error: errorDF, loading: loadingDF },
+    { /* data: dataDF, error: errorDF, */ loading: loadingDF },
   ] = useMutation(DELETE_FRIEND);
   const [
     deleteFollower,
-    { data: dataDFo, error: errorDFo, loading: loadingDFo },
+    { /* data: dataDFo, error: errorDFo, */ loading: loadingDFo },
   ] = useMutation(DELETE_FOLLOWER);
 
   // 나중에 loading 같은 것 붙이기. 그리고 완료시 완료됐다는 문구. z-index같은 것 줘서 투명도 조절해서 친구 목록들 위에 띄워주면 좋을듯.
@@ -121,7 +121,8 @@ function UserCard({
   //     window.scrollTo(0, 0);
   //     // 에러 핸들링 안됨. Unhandled Rejection (Error): GraphQL error: Cannot read property 계속 이것 뜸.
   //   }
-  // }, [
+  // }
+  // , [
   //   dataFU,
   //   dataCF,
   //   dataAF,
@@ -223,7 +224,10 @@ function UserCard({
 
   if (type === 'friends') {
     makeButton(deleteFriend, '친구 끊기');
-    makeButton(() => setChatFriend({ id, nickname }), '채팅하기');
+    makeButton(
+      () => setChatFriend({ variables: { id, nickname } }),
+      '채팅하기',
+    );
   } else if (type === 'followers') {
     makeButton(deleteFollower, '친구신청 거절');
     makeButton(addFriend, '친구신청 수락');

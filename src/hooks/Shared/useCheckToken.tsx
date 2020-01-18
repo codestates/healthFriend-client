@@ -1,6 +1,6 @@
 import { useApolloClient, useLazyQuery } from '@apollo/react-hooks';
 
-import { GET_USERINFO } from '../graphql/queries';
+import { GET_USERINFO } from '../../graphql/queries';
 
 const useCheckToken = () => {
   const client = useApolloClient();

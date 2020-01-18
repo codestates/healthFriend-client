@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 // import gql from 'graphql-tag';
 
 // import { useMutation } from '@apollo/react-hooks';
-import useCheckToken from '../../hooks/useCheckToken';
+import useCheckToken from '../../hooks/Shared/useCheckToken';
 
 type MypageDropdownProps = {
   name: string;

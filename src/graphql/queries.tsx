@@ -80,6 +80,15 @@ export const IS_LOGGED_IN = gql`
   }
 `;
 
+export const GET_CHAT_FRIEND = gql`
+  query ChatFriend {
+    chatFriend @client {
+      id
+      nickname
+    }
+  }
+`;
+
 // mutation===========================================================
 
 // user =============================
@@ -177,6 +186,17 @@ export const DELETE_FRIEND = gql`
     }
   }
   ${BASE_INFO}
+`;
+
+// local query =============================
+
+export const SET_CHAT_FRIEND = gql`
+  mutation SetChatFriend($id: String!, $nickname: String!) {
+    setChatFriend(id: $id, nickname: $nickname) @client {
+      id
+      nickname
+    }
+  }
 `;
 
 // subscription ===========================================================

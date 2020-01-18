@@ -1,17 +1,12 @@
 /** @jsx jsx */
 import { Row, Col, Typography } from 'antd';
 import { css, jsx } from '@emotion/core';
-import { useQuery, useApolloClient } from '@apollo/react-hooks';
 
 import renderImage from '../static/renderImage.jpg';
-import { GET_USERS, IS_LOGGED_IN, GET_USERINFO } from '../graphql/queries';
-import ButtonToFind from '../components/Home/ButtonToFind';
-import ButtonToRegister from '../components/Home/ButtonToRegister';
-import ButtonToSignup from '../components/Home/ButtonToSignup';
 import IfLoginUSeeFriend from '../components/Home/IfLoginUSeeFriend';
 import UserCard from '../components/FindFriend/UserCard';
-import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
-import useSubscript from '../hooks/useSubscript';
+import MainButton from '../components/Home/MainButton';
+import useHome from '../hooks/Home/useHome';
 
 const { Title } = Typography;
 
@@ -39,47 +34,7 @@ type HomeProps = {
 };
 
 function Home({ history }: HomeProps) {
-  const client = useApolloClient();
-  // console.log('token 유무', Cookies.get('access-token'));
-  const { data: dataMe, error: errorMe } = useQuery(GET_USERINFO, {
-    fetchPolicy: 'network-only',
-  });
-  // 문제 1. 왜 token을 지워도 dataMe에 데이터가 들어오는 쿼리가 날라갈까? 어디선가 있는지 모르는 cache에서 가져오는 듯한데.
-  // console.log('dataMe', dataMe);
-  const { data: dataUsers } = useQuery(GET_USERS);
-  const { data: loginData } = useQuery(IS_LOGGED_IN);
-  useSubscript(history);
-
-  if (
-    dataMe &&
-    dataMe.me &&
-    dataMe.me.nickname
-    // && Cookies.get('access-token')
-  ) {
-    client.writeData({ data: { isLoggedIn: true } });
-  }
-
-  // 일부러 로그아웃을 하지는 않았는데 token이 만료됐을 때
-  if (
-    loginData.isLoggedIn &&
-    errorMe
-    //  &&  errorMe.extensions.code === 'NO_TOKEN'
-    // 문제2. erroMe의 key의 value값 안들이 비어있어서 에러 분기 처리가 안 됨. Object.keys(errorMe) ...... errorMe.extensions.code가 안 불려서.
-  ) {
-    client.writeData({ data: { isLoggedIn: false } });
-    return <ErrorLoginFirst error={errorMe} />;
-  }
-  // if (errorMe) return <p>{errorMe.message}</p>;
-
-  function ButtonHome() {
-    if (!loginData.isLoggedIn) {
-      return <ButtonToSignup />;
-    }
-    if (dataMe && dataMe.me && dataMe.me.levelOf3Dae) {
-      return <ButtonToFind history={history} />;
-    }
-    return <ButtonToRegister history={history} />;
-  }
+  const { dataUsers, loginData, dataMe }: any = useHome({ history });
 
   // 아래 카드를 남길지, 아니면 다른 걸 보여주는게 좋을지도 좀 더 궁리. 이왕 보여줄거면 FindFriend 창처럼 필터해서 보여줘야 할듯.
 
@@ -94,7 +49,7 @@ function Home({ history }: HomeProps) {
             당신을 기다리고 있어요
           </Title>
         </div>
-        <ButtonHome />
+        <MainButton {...{ dataMe, history, loginData }} />
       </Col>
       {loginData.isLoggedIn && dataUsers ? (
         <Col xs={20}>
