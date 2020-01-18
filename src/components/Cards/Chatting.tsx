@@ -39,11 +39,13 @@ function Chatting({
   chatFriend,
   setChatFriend,
 }: ChattingProps) {
-  const { chatClient, filters, sort, newChannel } = useMakeChatRoom(chatFriend);
+  console.log('chatFriend in chatting', chatFriend);
+  const { chatClient, filters, sort, newChannel } = useMakeChatRoom(
+    chatFriend.chatFriend,
+  );
 
-  console.log('chatClient', chatClient);
-
-  console.log('newChannel in Chatting', newChannel);
+  // console.log('chatClient', chatClient);
+  // console.log('newChannel in Chatting', newChannel);
 
   return (
     <Chat client={chatClient} theme="messaging dark">
@@ -56,14 +58,16 @@ function Chatting({
         <Channel channel={newChannel}>
           <div style={{ height: '80%', width: '100%' }}>
             <Window>
-              <ChannelHeader title={`${chatFriend.nickname}님과의 대화`} />
+              <ChannelHeader
+                title={`${chatFriend.chatFriend.nickname}님과의 대화`}
+              />
               <MessageList />
               <MessageInput />
             </Window>
             <button
               onClick={() => {
                 newChannel.delete();
-                setChatFriend('');
+                setChatFriend({ variables: { id: '', nickname: '' } });
               }}
             >
               나가기

@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Row, Col } from 'antd';
-import { useQuery, useApolloClient } from '@apollo/react-hooks';
+import { useQuery, useApolloClient, useMutation } from '@apollo/react-hooks';
 
-import { IS_LOGGED_IN, GET_FRIENDS } from '../graphql/queries';
+import {
+  IS_LOGGED_IN,
+  GET_FRIENDS,
+  SET_CHAT_FRIEND,
+  GET_CHAT_FRIEND,
+} from '../graphql/queries';
 import Loading from '../components/Shared/Loading';
 import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 import redirectWhenTokenExp from '../utils/redirectWhenTokenExp';
 import message from '../config/Message';
-import useSubscript from '../hooks/useSubscript';
+import useSubscript from '../hooks/Shared/useSubscript';
 import Nav from '../components/Cards/Nav';
 import MakeCard from '../components/Cards/MakeCard';
-import Chatting from '../components/Cards/Chatting';
-import useMakeChatRoom from '../hooks/useMakeChatRoom';
 
 type CardsProps = {
   history: any; // match, location을 같이 쓰니 안되고, 얘만 쓰니 되네... withRouter로 붙인 애들은 다 써줘야 하는 것 같고, 아닌 애들은 아닌 듯.
@@ -21,7 +24,12 @@ type CardsProps = {
 
 function Cards({ history, match }: CardsProps) {
   const client = useApolloClient();
-  const [chatFriend, setChatFriend] = useState<any>('');
+  // const [chatFriend, setChatFriend] = useState<any>('');
+  const { data: chatFriend, error: errorChat } = useQuery(GET_CHAT_FRIEND);
+  const [setChatFriend] = useMutation(SET_CHAT_FRIEND);
+
+  console.log('chatFriend in Cards', chatFriend);
+  console.log('errorChat in Cards', errorChat);
 
   const { data: loginData } = useQuery(IS_LOGGED_IN);
   const { loading, error, data, refetch } = useQuery(GET_FRIENDS, {
@@ -36,7 +44,7 @@ function Cards({ history, match }: CardsProps) {
 
   function FriendList() {
     if (loading) return <Loading />;
-    if (error) redirectWhenTokenExp(history, client);
+    if (error) redirectWhenTokenExp({ history, client });
     if (data && data.me) {
       const cardRender = (oneData, func) =>
         MakeCard(oneData, state, refetch, func);
@@ -70,15 +78,7 @@ function Cards({ history, match }: CardsProps) {
         <br />
         <br />
         <Col xs={24} md={20}>
-          {state === 'chat' ? (
-            <Chatting
-              useMakeChatRoom={useMakeChatRoom}
-              chatFriend={chatFriend}
-              setChatFriend={setChatFriend}
-            />
-          ) : (
-            <FriendList />
-          )}
+          <FriendList />
         </Col>
       </Row>
     </div>

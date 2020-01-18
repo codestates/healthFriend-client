@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import useRegister from './useRegister';
-import redirectWhenTokenExp from '../utils/redirectWhenTokenExp';
+import useRegister from '../Register/useRegister';
+import redirectWhenTokenExp from '../../utils/redirectWhenTokenExp';
 
 const useMypage = (history, client) => {
   const {
@@ -26,7 +26,7 @@ const useMypage = (history, client) => {
 
   const subjects: string[] = questionList.map((elm) => elm.subject);
 
-  if (error) redirectWhenTokenExp(history, client);
+  if (error) redirectWhenTokenExp({ history, client });
 
   // 해당 받아온 data의 값을 입력할 때와 같은 boolean array로 변경
   const getSelectedBooleans = (subj: string): boolean[] | undefined => {

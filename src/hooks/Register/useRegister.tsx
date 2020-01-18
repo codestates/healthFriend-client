@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
-import questionList from '../config/questions';
+import questionList from '../../config/questions';
 import {
   GET_USERINFO,
   MUTATE_INFO,
   SET_MOTIVATION,
   SET_EXERCISE_ABLE_DAYS,
   SET_ABLE_DISTRICT,
-} from '../graphql/queries';
-import redirectWhenTokenExp from '../utils/redirectWhenTokenExp';
+} from '../../graphql/queries';
+import redirectWhenTokenExp from '../../utils/redirectWhenTokenExp';
 
 const useRegister = (history, client) => {
   const [order, setOrder] = useState<number>(1);
@@ -30,7 +30,7 @@ const useRegister = (history, client) => {
   const [setAbleDistrict] = useMutation(SET_ABLE_DISTRICT);
   // mutation시 error도 콜백으로 만들어줘야 함. onError, onComplete 등이 있는듯.
 
-  if (error) redirectWhenTokenExp(history, client);
+  if (error) redirectWhenTokenExp({ history, client });
 
   const subjects = questionList.map((elm) => elm.subject);
   const submitVariable = {};

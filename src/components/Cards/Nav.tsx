@@ -39,16 +39,6 @@ export default function Nav({ history, state }: NavProps) {
           받은 요청
         </Button>
       </Col>
-      <Col xs={24} md={5}>
-        <Button
-          type={state === 'chat' ? 'primary' : 'default'}
-          onClick={() => {
-            history.push('/cards/chat');
-          }}
-        >
-          채팅창
-        </Button>
-      </Col>
     </>
   );
 }

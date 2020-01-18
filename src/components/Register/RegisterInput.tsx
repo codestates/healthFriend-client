@@ -2,7 +2,7 @@
 import { Input } from 'antd';
 import { css, jsx } from '@emotion/core';
 
-import useRegisterInput from '../../hooks/useRegisterInput';
+import useRegisterInput from '../../hooks/Register/useRegisterInput';
 import SelectPlace from '../FindFriend/SelectPlace';
 
 const wrapper = css`

@@ -1,21 +1,6 @@
 import React from 'react';
-import { Button } from 'antd';
-
-export function GoogleLoginButton() {
-  return (
-    <Button type="primary">
-      <a
-        href={
-          process.env.NODE_ENV === 'development'
-            ? 'http://localhost:4000/auth/google'
-            : 'https://api.healthfriend.club/auth/google'
-        }
-      >
-        구글 로그인
-      </a>
-    </Button>
-  );
-}
+import { Row } from 'antd';
+import GoogleLogin from '../components/Login/GoogleLogin';
 
 function Login() {
   // const { data, loading, refetch } = useQuery(GET_USERINFO, {
@@ -25,7 +10,9 @@ function Login() {
 
   return (
     <div>
-      <GoogleLoginButton />
+      <Row type="flex" justify="center">
+        <GoogleLogin />
+      </Row>
     </div>
   );
 }

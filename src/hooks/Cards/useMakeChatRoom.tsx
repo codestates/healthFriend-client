@@ -3,8 +3,8 @@ import { StreamChat } from 'stream-chat';
 import Cookies from 'js-cookie';
 import 'stream-chat-react/dist/css/index.css';
 
-import { API_KEY } from '../config/streamConfig';
-import { GET_USERINFO } from '../graphql/queries';
+import { API_KEY } from '../../config/streamConfig';
+import { GET_USERINFO } from '../../graphql/queries';
 
 const useMakeChatRoom = /* async */ (hf) => {
   const { data: dataMe } = useQuery(GET_USERINFO);
@@ -13,7 +13,7 @@ const useMakeChatRoom = /* async */ (hf) => {
 
   // async, await로 만드는 법 모르겠음.
   // setUser하는 부분이 로그인하자마자 set을 해야 할까?? 그래야 친구들 목록에 등록이 되고, 바로 말 걸수 있나? 새로 아이디 하나 더 만들어서 시험해봐야 할듯. 근데 채팅 목록에는 안 들어가서 setUser하는 과정 없이도 리스트에 등록이 되나 확인. 안 되면 setUser하는 부분 header나 첫 화면 등으로 옮겨야 함.
-
+  // if (dataMe && dataMe.me) {
   const user = /* await */ chatClient.setUser(
     {
       id: dataMe.me.id,
@@ -23,7 +23,8 @@ const useMakeChatRoom = /* async */ (hf) => {
     token as any,
   );
 
-  console.log('user', user);
+  console.log('user in useMakeChatRoom', user);
+  console.log('hf in useMakeChatRoom', hf.id);
 
   let newChannel;
 
@@ -71,6 +72,9 @@ const useMakeChatRoom = /* async */ (hf) => {
   console.log('channels in chnnels,', channels);
 
   return { chatClient, filters, sort, newChannel };
+  // }
+
+  // 여기 아래 IF 문에 ErrorLoginFirst를 줄지? 아니면 저기 항목들 받아가니까 저기 항목에 '' 빈 값이라도 넣어줄지?
 };
 
 export default useMakeChatRoom;

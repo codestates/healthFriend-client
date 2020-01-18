@@ -95,6 +95,11 @@ export default function Header() {
               </NavLink>
             </Menu.Item>
             <Menu.Item>
+              <NavLink to="/chat" className="item" css={navLinkItem}>
+                채팅
+              </NavLink>
+            </Menu.Item>
+            <Menu.Item>
               <MypageDropdown name={data.me.nickname} meId={data.me.id} />
             </Menu.Item>
           </Menu>
