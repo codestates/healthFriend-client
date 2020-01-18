@@ -92,11 +92,11 @@ const client = new ApolloClient({
 cache.writeData({
   data: {
     isLoggedIn: false,
-    // chatFriend: {
-    //   __typename: 'ChatFriend',
-    //   id: '',
-    //   nickname: '',
-    // },
+    chatFriend: {
+      __typename: 'ChatFriend',
+      id: '',
+      nickname: '',
+    },
   },
 });
 

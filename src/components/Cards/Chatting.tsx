@@ -54,7 +54,7 @@ function Chatting({
         sort={sort}
         // Preview={MyMessageComponent}
       />
-      {newChannel ? (
+      {newChannel && chatFriend.chatFriend.id.length !== 0 ? (
         <Channel channel={newChannel}>
           <div style={{ height: '80%', width: '100%' }}>
             <Window>

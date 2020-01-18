@@ -28,7 +28,7 @@ const useMakeChatRoom = /* async */ (hf) => {
 
   let newChannel;
 
-  if (hf) {
+  if (hf.id.length !== 0) {
     newChannel = chatClient.channel(
       'messaging',
       (dataMe.me.id + hf.id).slice(0, 20),
