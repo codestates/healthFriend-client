@@ -1,12 +1,20 @@
 /** @jsx jsx */
 import { Row, Col, Typography } from 'antd';
 import { css, jsx } from '@emotion/core';
+import { useQuery, useApolloClient } from '@apollo/react-hooks';
 
 import renderImage from '../static/renderImage.jpg';
 import IfLoginUSeeFriend from '../components/Home/IfLoginUSeeFriend';
-import UserCard from '../components/FindFriend/UserCard';
 import MainButton from '../components/Home/MainButton';
-import useHome from '../hooks/Home/useHome';
+import {
+  GET_USERINFO,
+  IS_LOGGED_IN,
+  GET_USERS,
+  GET_USER_COUNT,
+} from '../graphql/queries';
+import useSubscript from '../hooks/Shared/useSubscript';
+import redirectWhenError from '../utils/redirectWhenError';
+import MakeCard from '../components/Cards/MakeCard';
 
 const { Title } = Typography;
 
@@ -34,9 +42,41 @@ type HomeProps = {
 };
 
 function Home({ history }: HomeProps) {
-  const { dataUsers, loginData, dataMe }: any = useHome({ history });
+  const client = useApolloClient();
+  // console.log('token 유무', Cookies.get('access-token'));
+  const { data: dataMe, error: errorMe } = useQuery(GET_USERINFO, {
+    fetchPolicy: 'network-only',
+  });
+  // 문제 1. 왜 token을 지워도 dataMe에 데이터가 들어오는 쿼리가 날라갈까? 어디선가 있는지 모르는 cache에서 가져오는 듯한데.
+  // console.log('dataMe', dataMe);
+  const { data: dataCount } = useQuery(GET_USER_COUNT, {
+    fetchPolicy: 'network-only',
+  });
+  const { data: dataUsers } = useQuery(GET_USERS);
+  const { data: loginData } = useQuery(IS_LOGGED_IN);
+  useSubscript(history);
 
-  // 아래 카드를 남길지, 아니면 다른 걸 보여주는게 좋을지도 좀 더 궁리. 이왕 보여줄거면 FindFriend 창처럼 필터해서 보여줘야 할듯.
+  if (
+    dataMe &&
+    dataMe.me &&
+    dataMe.me.nickname
+    // && Cookies.get('access-token')
+  ) {
+    client.writeData({ data: { isLoggedIn: true } });
+  }
+
+  // 일부러 로그아웃을 하지는 않았는데 token이 만료됐을 때
+  if (
+    loginData.isLoggedIn &&
+    errorMe
+    //  &&  errorMe.extensions.code === 'NO_TOKEN'
+    // 문제2. erroMe의 key의 value값 안들이 비어있어서 에러 분기 처리가 안 됨. Object.keys(errorMe) ...... errorMe.extensions.code가 안 불려서.
+  ) {
+    client.writeData({ data: { isLoggedIn: false } });
+    redirectWhenError({ history, client });
+  }
+
+  // 아래 카드를 남길지, 아니면 다른 걸 보여주는게 좋을지도 좀 더 궁리. 이왕 보여줄거면 FindFriend 창처럼 필터해서 보여줘야 할듯. 아니면 예시 카드들만 callosel로 보여주든가.. 아니면 tutorail 처럼 등록하는 사진, 친구 찾는 사진, 찾아서 채팅하는 사진, 같이 헬스하는 사진까지 쭉 이어지게 tutorial로 보여주든가...
 
   return (
     <Row type="flex" justify="center">
@@ -44,7 +84,7 @@ function Home({ history }: HomeProps) {
         <img src={renderImage} alt="" css={renderingImage} />
         <div css={renderingMessage}>
           <Title level={1}>
-            {dataUsers ? dataUsers.users.length : 10000}명의 헬스친구들이
+            {dataCount ? dataCount.userCount : 1000} 명의 헬스 친구들이
             <br />
             당신을 기다리고 있어요
           </Title>
@@ -56,24 +96,9 @@ function Home({ history }: HomeProps) {
           <Row type="flex" justify="center" style={{ marginTop: 20 }}>
             <Col xs={24}>
               <Row gutter={24}>
-                {dataUsers.users.map((oneData) => (
-                  <UserCard
-                    id={oneData.id}
-                    key={oneData.email}
-                    nickname={oneData.nickname}
-                    gender={oneData.gender}
-                    openImageChoice={oneData.openImageChoice}
-                    messageToFriend={oneData.messageToFriend}
-                    motivations={oneData.motivations}
-                    levelOf3Dae={oneData.levelOf3Dae}
-                    weekdays={oneData.weekdays}
-                    ableDistricts={oneData.ableDistricts}
-                    type="unknown"
-                    renewFriends={() => null}
-                    setChatFriend={() => null}
-                    // 위의 것들 같은 것 ts의 ? 나 다른 해결책??
-                  />
-                ))}
+                {dataUsers.users.map((oneData) =>
+                  MakeCard(oneData, 'unknown', () => null, () => null, true),
+                )}
               </Row>
             </Col>
           </Row>

@@ -1,30 +1,29 @@
 import { useEffect } from 'react';
+import questionList from '../../config/questions';
 
 const useSubmitButton = ({
-  dataUser,
-  places,
-  data,
-  submitVariable,
-  submitMotivation,
-  submitExerciseDays,
+  dataMe,
   postInfo,
   setMotivation,
   setExerciseAbleDays,
   setAbleDistrict,
+  places,
   order,
   setOrder,
-  questionList,
   setIntroduction,
   totalCheckArr,
+  submitVariable,
+  submitMotivation,
+  submitExerciseDays,
 }) => {
   // 이런 식으로 useEffect를 써서 처리해주는 부분이 일반적인가?
   useEffect(() => {
-    if (dataUser) {
+    if (dataMe) {
       if (order === questionList.length) {
         postInfo({
           variables: {
             ...submitVariable,
-            nickname: data.me.nickname,
+            nickname: dataMe.me.nickname,
           },
         });
         setMotivation({
@@ -41,7 +40,7 @@ const useSubmitButton = ({
       setOrder(order + 1);
     }
     // eslint-disable-next-line
-  }, [dataUser]);
+  }, [dataMe]);
 
   const isNextButtonDisable = (): boolean => {
     if (questionList[order - 1].subject === 'ableDistricts') {

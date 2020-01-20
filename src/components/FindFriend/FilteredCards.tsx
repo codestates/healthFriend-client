@@ -2,57 +2,45 @@
 import { css, jsx } from '@emotion/core';
 import { Row } from 'antd';
 
-import UserCard from './UserCard';
 import Loading from '../Shared/Loading';
+import sortByDate from '../../utils/sortByDate';
+import MakeCard from '../Cards/MakeCard';
 
 const marginFilterdCards = css`
   margin-top: 40px;
 `;
 
 type FilteredCardsProps = {
-  loading: boolean | undefined;
-  data: any;
-  dataUser: any;
+  loadingFU: boolean | undefined;
+  dataFU: any;
+  dataMe: any;
   refetch: Function;
 };
 
 export default function FilteredCards({
-  loading,
-  data,
-  dataUser,
+  loadingFU,
+  dataFU,
+  dataMe,
   refetch,
 }: FilteredCardsProps) {
-  if (loading) return <Loading />;
-  console.log('data', data);
+  if (loadingFU) return <Loading />;
   return (
     <Row gutter={24} css={marginFilterdCards}>
-      {data && data.filterUsers && dataUser && dataUser.me
-        ? data.filterUsers
-            .filter((user) => user.id !== dataUser.me.id)
+      {dataFU && dataFU.filterUsers && dataMe && dataMe.me
+        ? dataFU.filterUsers
+            .sort(sortByDate)
+            .filter((user) => user.id !== dataMe.me.id)
             .filter((user) => {
-              const array = dataUser.me.following
-                .concat(dataUser.me.followers)
-                .concat(dataUser.me.friends)
+              const array = dataMe.me.following
+                .map((elm) => elm.following)
+                .concat(dataMe.me.followers.map((el) => el.follower))
+                .concat(dataMe.me.friends.map((ele) => ele.friend))
                 .map((one) => one.id);
               return array.indexOf(user.id) === -1;
             })
-            .map((oneData) => (
-              <UserCard
-                id={oneData.id}
-                key={oneData.email}
-                nickname={oneData.nickname}
-                gender={oneData.gender}
-                openImageChoice={oneData.openImageChoice}
-                messageToFriend={oneData.messageToFriend}
-                motivations={oneData.motivations}
-                levelOf3Dae={oneData.levelOf3Dae}
-                weekdays={oneData.weekdays}
-                ableDistricts={oneData.ableDistricts}
-                type="unknown"
-                renewFriends={refetch}
-                setChatFriend={() => null}
-              />
-            ))
+            .map((oneData) =>
+              MakeCard(oneData, 'unknown', refetch, () => null, true),
+            )
         : null}
     </Row>
   );

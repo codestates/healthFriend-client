@@ -2,11 +2,11 @@ import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { Menu, Dropdown, Icon } from 'antd';
 import Cookies from 'js-cookie';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useApolloClient } from '@apollo/react-hooks';
 // import gql from 'graphql-tag';
 
 // import { useMutation } from '@apollo/react-hooks';
-import useCheckToken from '../../hooks/Shared/useCheckToken';
+import useLazyMe from '../../hooks/Shared/useLazyMe';
 import { SET_CHAT_FRIEND } from '../../graphql/queries';
 
 type MypageDropdownProps = {
@@ -27,7 +27,8 @@ type MypageDropdownProps = {
 // `;
 
 function MypageDropdown({ name, /* meId, */ history }: MypageDropdownProps) {
-  const { client, getInfo } = useCheckToken();
+  const client = useApolloClient();
+  const { getMe } = useLazyMe();
   // const [logoutMe] = useMutation(LOGOUT_ME);
 
   const [setChatFriend] = useMutation(SET_CHAT_FRIEND);
@@ -54,6 +55,14 @@ function MypageDropdown({ name, /* meId, */ history }: MypageDropdownProps) {
                   ? 'localhost'
                   : '.healthfriend.club',
             });
+            Cookies.remove('stream-chat-token', {
+              // localhost에서는 안 적어도 상관없으나 production 환경에선 다 적어줘야 함.
+              path: '/',
+              domain:
+                process.env.NODE_ENV === 'development'
+                  ? 'localhost'
+                  : '.healthfriend.club',
+            });
             history.push('/');
           }}
         >
@@ -68,7 +77,7 @@ function MypageDropdown({ name, /* meId, */ history }: MypageDropdownProps) {
       <Link
         to="#"
         onMouseEnter={() => {
-          getInfo();
+          getMe();
         }}
       >
         {name} 친구님&nbsp;

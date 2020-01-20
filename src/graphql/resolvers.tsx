@@ -1,5 +1,4 @@
 import gql from 'graphql-tag';
-// import { USERS_INFO } from './fragments';
 
 export const typeDefs = gql`
   extend type Query {

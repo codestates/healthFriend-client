@@ -1,32 +1,32 @@
-import { useState, useEffect } from 'react';
-import useRegister from '../Register/useRegister';
-import redirectWhenTokenExp from '../../utils/redirectWhenTokenExp';
+import { useEffect } from 'react';
+import { useQuery } from '@apollo/react-hooks';
 
-const useMypage = (history, client) => {
+import useProcessSelected from '../Register/useProcessSelected';
+import { GET_USERINFO } from '../../graphql/queries';
+import questionList from '../../config/questions';
+
+const useShowSelected = () => {
   const {
+    setTotalCheckArr,
     setIntroduction,
     setPlaces,
-    setTotalCheckArr,
     totalCheckArr,
+    places,
     submitVariable,
     submitMotivation,
     submitExerciseDays,
-    postInfo,
-    setMotivation,
-    setExerciseAbleDays,
-    setAbleDistrict,
-    places,
-    data,
-    error,
-    loading,
-    questionList,
-  } = useRegister(history, client);
+  } = useProcessSelected();
 
-  const [complete, setComplete] = useState<boolean>(false);
+  // console.log('submitVariable', submitVariable);
+  // console.log('submitExerciseDays', submitExerciseDays);
+
+  const { data, error, loading } = useQuery(GET_USERINFO, {
+    fetchPolicy: 'network-only',
+  });
+
+  console.log('data in useShowSelected', data);
 
   const subjects: string[] = questionList.map((elm) => elm.subject);
-
-  if (error) redirectWhenTokenExp({ history, client });
 
   // 해당 받아온 data의 값을 입력할 때와 같은 boolean array로 변경
   const getSelectedBooleans = (subj: string): boolean[] | undefined => {
@@ -61,22 +61,16 @@ const useMypage = (history, client) => {
   return {
     setIntroduction,
     setPlaces,
-    setTotalCheckArr,
     totalCheckArr,
-    submitVariable,
-    submitMotivation,
-    submitExerciseDays,
-    postInfo,
-    setMotivation,
-    setExerciseAbleDays,
-    setAbleDistrict,
-    places,
+    setTotalCheckArr,
     data,
     error,
     loading,
-    complete,
-    setComplete,
+    places,
+    submitVariable,
+    submitMotivation,
+    submitExerciseDays,
   };
 };
 
-export default useMypage;
+export default useShowSelected;

@@ -25,6 +25,7 @@ export const USERS_INFO = gql`
         nameOfDong
       }
     }
+    createdAt
   }
 `;
 
@@ -40,13 +41,22 @@ export const ALL_INFO = gql`
   fragment AllInfo on User {
     ...UsersInfo
     following {
-      ...BaseInfo
+      id
+      following {
+        ...BaseInfo
+      }
     }
     followers {
-      ...BaseInfo
+      id
+      follower {
+        ...BaseInfo
+      }
     }
     friends {
-      ...BaseInfo
+      id
+      friend {
+        ...BaseInfo
+      }
     }
   }
   ${USERS_INFO}
@@ -54,3 +64,11 @@ export const ALL_INFO = gql`
   ${BASE_INFO}
   ${BASE_INFO}
 `;
+
+// export const FOLLOW_INFO = gql`
+//   fragment FollowInfo on Follow {
+//     checked
+//     createdAt
+//     updatedAt
+//   }
+// `;
