@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { ALL_INFO, USERS_INFO, BASE_INFO } from './fragments';
+import { ALL_INFO, USERS_INFO, BASE_INFO /* FOLLOW_INFO */ } from './fragments';
 
 export const GET_USERINFO = gql`
   {
@@ -56,13 +56,34 @@ export const GET_FRIENDS = gql`
     me {
       id
       following {
-        ...UsersInfo
+        id
+        following {
+          ...UsersInfo
+        }
+        # ...FollowInfo
+        checked
+        createdAt
+        updatedAt
       }
       followers {
-        ...UsersInfo
+        id
+        follower {
+          ...UsersInfo
+        }
+        # ...FollowInfo
+        checked
+        createdAt
+        updatedAt
       }
       friends {
-        ...UsersInfo
+        id
+        friend {
+          ...UsersInfo
+        }
+        # ...FollowInfo
+        checked
+        createdAt
+        updatedAt
       }
     }
   }
@@ -70,7 +91,15 @@ export const GET_FRIENDS = gql`
   ${USERS_INFO}
   ${USERS_INFO}
 `;
+// 위의 저 Following들도 fragment로 묶었더니 introspectionFragment 쓰라고 에러남.
+
 // 저리 follower 위에 id 를 안 붙이면 query가 안 돌아감. 이유는 모르겠음. graphQL 특성 구분인자 역할
+
+export const GET_USER_COUNT = gql`
+  {
+    userCount
+  }
+`;
 
 // local query =============================
 
@@ -102,12 +131,16 @@ export const MUTATE_INFO = gql`
     $messageToFriend: String
   ) {
     me(
-      messageToFriend: $messageToFriend
       nickname: $nickname
       gender: $gender
       openImageChoice: $openImageChoice
       levelOf3Dae: $levelOf3Dae
+      messageToFriend: $messageToFriend
     ) {
+      nickname
+      gender
+      openImageChoice
+      levelOf3Dae
       messageToFriend
     }
   }
@@ -116,6 +149,7 @@ export const MUTATE_INFO = gql`
 export const SET_MOTIVATION = gql`
   mutation SetMotivation($input: [MotivationEnum]) {
     setMotivation(input: $input) {
+      id
       motivation
     }
   }
@@ -124,6 +158,7 @@ export const SET_MOTIVATION = gql`
 export const SET_EXERCISE_ABLE_DAYS = gql`
   mutation SetExerciseAbleDay($input: [WeekdayEnum]) {
     setExerciseAbleDay(input: $input) {
+      id
       weekday
     }
   }
@@ -134,7 +169,9 @@ export const SET_ABLE_DISTRICT = gql`
     setAbleDistrict(dongIds: $dongIds) {
       id
       district {
+        idOfGu
         nameOfGu
+        idOfDong
         nameOfDong
       }
     }
@@ -173,7 +210,10 @@ export const DELETE_FOLLOWER = gql`
 export const ADD_FRIEND = gql`
   mutation AddFriend($userId: String!) {
     addFriend(userId: $userId) {
-      ...BaseInfo
+      id
+      friend {
+        ...BaseInfo
+      }
     }
   }
   ${BASE_INFO}
@@ -188,7 +228,7 @@ export const DELETE_FRIEND = gql`
   ${BASE_INFO}
 `;
 
-// local query =============================
+// local mutation =============================
 
 export const SET_CHAT_FRIEND = gql`
   mutation SetChatFriend($id: String!, $nickname: String!) {

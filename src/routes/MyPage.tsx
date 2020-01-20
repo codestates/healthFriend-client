@@ -1,17 +1,24 @@
 /** @jsx jsx */
-import React from 'react';
+import React, { useState } from 'react';
 import { Row, Col, Button, Result, Tooltip } from 'antd';
 import { css, jsx } from '@emotion/core';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useApolloClient } from '@apollo/react-hooks';
 
 import RegisterInput from '../components/Register/RegisterInput';
 import questionList from '../config/questions';
-import useMypage from '../hooks/Mypage/useMypage';
-import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
-import useCheckToken from '../hooks/Shared/useCheckToken';
-import { IS_LOGGED_IN } from '../graphql/queries';
+import useShowSelected from '../hooks/Mypage/useShowSelected';
+import useLazyMe from '../hooks/Shared/useLazyMe';
+import {
+  IS_LOGGED_IN,
+  // MUTATE_INFO,
+  // SET_ABLE_DISTRICT,
+  // SET_EXERCISE_ABLE_DAYS,
+  // SET_MOTIVATION,
+} from '../graphql/queries';
 import useSubscript from '../hooks/Shared/useSubscript';
 import useEditButton from '../hooks/Mypage/useEditButton';
+import redirectWhenError from '../utils/redirectWhenError';
+import Loading from '../components/Shared/Loading';
 
 const wrapper = css`
   margin: 20px;
@@ -23,48 +30,44 @@ type MyPageProps = {
 
 // 불필요하게 render가 여러번 되는 문제!!!
 function MyPage({ history }: MyPageProps) {
+  const client = useApolloClient();
+
+  const [complete, setComplete] = useState<boolean>(false);
   const { data: loginData } = useQuery(IS_LOGGED_IN);
-  const { client, getInfo, dataUser, errorUser } = useCheckToken();
+  const { dataMe, errorMe, getMe } = useLazyMe();
+
   const {
+    setTotalCheckArr,
     setIntroduction,
     setPlaces,
-    setTotalCheckArr,
     totalCheckArr,
+    data,
+    error,
+    loading,
+    places,
     submitVariable,
     submitMotivation,
     submitExerciseDays,
-    postInfo,
-    setMotivation,
-    setExerciseAbleDays,
-    setAbleDistrict,
-    places,
-    data,
-    // error,
-    complete,
+  } = useShowSelected();
+
+  const { isEditButtonDisable } = useEditButton({
+    dataMe,
+    errorMe,
+    history,
+    totalCheckArr,
     setComplete,
-  } = useMypage(history, client);
+    places,
+    submitVariable,
+    submitMotivation,
+    submitExerciseDays,
+  });
 
   useSubscript(history);
 
-  const { isEditButtonDisable } = useEditButton({
-    errorUser,
-    client,
-    history,
-    dataUser,
-    postInfo,
-    submitVariable,
-    data,
-    setMotivation,
-    submitMotivation,
-    totalCheckArr,
-    places,
-    setComplete,
-    setAbleDistrict,
-    submitExerciseDays,
-    setExerciseAbleDays,
-  });
+  if (loading) return <Loading />;
+  if (error) redirectWhenError({ history, client });
 
-  if (!loginData.isLoggedIn) return <ErrorLoginFirst error={null} />;
+  if (!loginData.isLoggedIn) redirectWhenError({ history, client });
 
   return (
     <div>
@@ -139,7 +142,7 @@ function MyPage({ history }: MyPageProps) {
                 >
                   <Button
                     type="primary"
-                    onClick={() => getInfo()}
+                    onClick={() => getMe()}
                     disabled={isEditButtonDisable()}
                   >
                     저장

@@ -64,6 +64,7 @@ type UserCardProps = {
   history: any;
   location: any;
   match: any;
+  checked: boolean;
   setChatFriend: Function;
 };
 
@@ -80,6 +81,7 @@ function UserCard({
   type,
   renewFriends,
   history,
+  checked,
   setChatFriend,
 }: UserCardProps) {
   const [visible, setVisible] = useState<boolean>(false);
@@ -136,6 +138,9 @@ function UserCard({
   //   setVisible,
   //   renewFriends,
   // ]);
+
+  // 일단 이렇게 해놨는데 수정 필요할듯. 도장표시 같은 걸로.
+  const color = checked ? 'black' : 'red';
 
   const changeToKorean = (data) => {
     const questionIndex: number = questionList
@@ -261,7 +266,7 @@ function UserCard({
         />
         <Card.Meta avatar={<Avatar icon="user" />} title={nickname} />
         <br />
-        <p style={{ position: 'absolute', top: 20, right: 20 }}>
+        <p style={{ position: 'absolute', top: 20, right: 20, color }}>
           {changeToKorean({ levelOf3Dae }).match(/\((.*?)\)/g)}
           {/* {changeToKorean({ gender })} */}
         </p>

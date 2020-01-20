@@ -1,30 +1,55 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout, Row, Col, Divider } from 'antd';
+import { useLazyQuery, useQuery, useApolloClient } from '@apollo/react-hooks';
 
-import ErrorLoginFirst from '../components/Shared/ErrorLoginFirst';
 import FilterLists from '../components/FindFriend/FilterLists';
 import FilteredCards from '../components/FindFriend/FilteredCards';
-import useFindFriend from '../hooks/FindFriend/useFindFriend';
+import {
+  GET_FILTERED_USERS,
+  IS_LOGGED_IN,
+  GET_USERINFO,
+} from '../graphql/queries';
+import useSubscript from '../hooks/Shared/useSubscript';
+import redirectWhenError from '../utils/redirectWhenError';
 
 type FindFriendProps = {
   history: any; // match, location을 같이 쓰니 안되고, 얘만 쓰니 되네... withRouter로 붙인 애들은 다 써줘야 하는 것 같고, 아닌 애들은 아닌 듯.
 };
 
 function FindFriend({ history }: FindFriendProps) {
-  const {
-    filter,
-    setFilter,
-    places,
-    setPlaces,
-    getFilteredUsers,
-    loading,
-    data,
-    loginData,
-    dataUser,
-    refetch,
-  } = useFindFriend({ history });
+  const [filter, setFilter] = useState<any>({
+    openImageChoice: [],
+    levelOf3Dae: [],
+    motivations: [],
+    weekdays: [],
+  });
+  const [places, setPlaces] = useState<string[]>([]);
 
-  if (!loginData.isLoggedIn) return <ErrorLoginFirst error={null} />;
+  const [
+    getFilteredUsers,
+    { loading: loadingFU, data: dataFU, error: errorFU },
+  ] = useLazyQuery(GET_FILTERED_USERS);
+  const { data: loginData } = useQuery(IS_LOGGED_IN);
+  const client = useApolloClient();
+  const { data: dataMe, error: errorMe, refetch } = useQuery(GET_USERINFO, {
+    fetchPolicy: 'network-only',
+    // errorPolicy: 'ignore', 어떤 효과 있는지 모르겠음. 확인.
+  });
+  useSubscript(history);
+
+  console.log('errorMe', errorMe);
+  // if (errorMe || error) redirectWhenError(history, client);
+
+  // refetch 할때의 error는 아래의 error나 errorMe에 안 잡히는 듯.
+
+  // alert창이 2번 불리는 것 때문에 useEffect 붙여버림.
+  useEffect(() => {
+    if (errorMe || errorFU) redirectWhenError({ history, client });
+    // eslint-disable-next-line
+  }, [errorMe, errorFU]);
+  // 여기도 서버에서 나오는 에러 종류에 따라서 꼭 로그인 만료 문제가 아닐 수 있으므로 Login 먼저 하세요를 보여줄지, 혹은 다른 에러 메세지를 보여줄지
+
+  if (!loginData.isLoggedIn) redirectWhenError({ history, client });
 
   return (
     <Layout style={{ background: '#fff', height: '100vh' }}>
@@ -47,7 +72,7 @@ function FindFriend({ history }: FindFriendProps) {
         </Row>
         <Row type="flex" justify="center">
           <Col xs={20}>
-            <FilteredCards {...{ loading, data, dataUser, refetch }} />
+            <FilteredCards {...{ loadingFU, dataFU, dataMe, refetch }} />
           </Col>
         </Row>
       </Layout.Content>
