@@ -73,7 +73,6 @@ const useMakeChatRoom = /* async */ (hf) => {
 
   return { chatClient, filters, sort, newChannel };
   // }
-
   // 여기 아래 IF 문에 ErrorLoginFirst를 줄지? 아니면 저기 항목들 받아가니까 저기 항목에 '' 빈 값이라도 넣어줄지?
 };
 

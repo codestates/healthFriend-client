@@ -51,17 +51,34 @@ export const ALL_INFO = gql`
       follower {
         ...BaseInfo
       }
+      checked
     }
     friends {
       id
       friend {
         ...BaseInfo
       }
+      checked
     }
   }
   ${USERS_INFO}
   ${BASE_INFO}
   ${BASE_INFO}
+  ${BASE_INFO}
+`;
+
+export const BADGE_INFO = gql`
+  fragment BadgeInfo on User {
+    ...BaseInfo
+    followers {
+      id
+      checked
+    }
+    friends {
+      id
+      checked
+    }
+  }
   ${BASE_INFO}
 `;
 

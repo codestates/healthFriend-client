@@ -59,32 +59,88 @@ function UserModal({
   history,
 }: UserModalProps) {
   const client = useApolloClient();
+  // userCard와 userModal의 아래 mutation들 다 완전 중복인데 중복 제거하는 법 있나?
+
   const [followUser, { loading: loadingFU }] = useMutation(FOLLOW_USER, {
     refetchQueries: [{ query: GET_USERINFO }],
-    onCompleted: () => message.success('처리되었습니다'),
-    onError: () => redirectWhenError({ history, client }),
+    onCompleted: (data) => {
+      if (data) message.success('처리되었습니다');
+    },
+    onError: (error) => {
+      console.log(error);
+      redirectWhenError({ history, client });
+    },
   });
   const [cancelFollow, { loading: loadingCF }] = useMutation(CANCEL_FOLLOWING, {
     refetchQueries: [{ query: GET_FRIENDS }],
-    onCompleted: () => message.success('처리되었습니다'),
-    onError: () => redirectWhenError({ history, client }),
+    onCompleted: (data) => {
+      if (data) message.success('처리되었습니다');
+    },
+    onError: (error) => {
+      console.log(error);
+      redirectWhenError({ history, client });
+    },
   });
   const [addFriend, { loading: loadingAF }] = useMutation(ADD_FRIEND, {
     refetchQueries: [{ query: GET_FRIENDS }],
-    onCompleted: () => message.success('처리되었습니다'),
-    onError: () => redirectWhenError({ history, client }),
+    onCompleted: (data) => {
+      if (data) {
+        message.success('처리되었습니다');
+        client.writeData({
+          data: {
+            unread:
+              data.addFriend.followers.filter((elm) => !elm.checked).length +
+              data.addFriend.friends.filter((elm) => !elm.checked).length,
+          },
+        });
+      }
+    },
+    onError: (error) => {
+      console.log(error);
+      redirectWhenError({ history, client });
+    },
   });
   const [deleteFriend, { loading: loadingDF }] = useMutation(DELETE_FRIEND, {
     refetchQueries: [{ query: GET_FRIENDS }],
-    onCompleted: () => message.success('처리되었습니다'),
-    onError: () => redirectWhenError({ history, client }),
+    onCompleted: (data) => {
+      if (data) {
+        message.success('처리되었습니다');
+        client.writeData({
+          data: {
+            unread:
+              data.deleteFriend.followers.filter((elm) => !elm.checked).length +
+              data.deleteFriend.friends.filter((elm) => !elm.checked).length,
+          },
+        });
+      }
+    },
+    onError: (error) => {
+      console.log(error);
+      redirectWhenError({ history, client });
+    },
   });
   const [deleteFollower, { loading: loadingDFo }] = useMutation(
     DELETE_FOLLOWER,
     {
       refetchQueries: [{ query: GET_FRIENDS }],
-      onCompleted: () => message.success('처리되었습니다'),
-      onError: () => redirectWhenError({ history, client }),
+      onCompleted: (data) => {
+        if (data) {
+          message.success('처리되었습니다');
+          client.writeData({
+            data: {
+              unread:
+                data.deleteFollower.followers.filter((elm) => !elm.checked)
+                  .length +
+                data.deleteFollower.friends.filter((elm) => !elm.checked)
+                  .length,
+            },
+          });
+        }
+      },
+      onError: (error) => {
+        console.log(error);
+        redirectWhenError({ history, client });
+      },
     },
   );
 

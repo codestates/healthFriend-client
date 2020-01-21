@@ -28,11 +28,15 @@ export default function Chat({ history }: ChatProps) {
       <br />
       <Row type="flex" justify="center">
         <Col xs={24} md={20}>
-          <Chatting
-            useMakeChatRoom={useMakeChatRoom}
-            chatFriend={chatFriend}
-            setChatFriend={setChatFriend}
-          />
+          {chatFriend ? (
+            <Chatting
+              useMakeChatRoom={useMakeChatRoom}
+              chatFriend={chatFriend}
+              setChatFriend={setChatFriend}
+            />
+          ) : (
+            <div>채팅 대화 상대가 없습니다</div>
+          )}
         </Col>
       </Row>
     </div>

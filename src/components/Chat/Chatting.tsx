@@ -4,7 +4,7 @@ import {
   Channel,
   ChannelList,
   Window,
-  ChannelHeader,
+  // ChannelHeader,
   MessageList,
   MessageInput,
   // Thread,
@@ -58,13 +58,14 @@ function Chatting({
         <Channel channel={newChannel}>
           <div style={{ height: '80%', width: '100%' }}>
             <Window>
-              <ChannelHeader
+              {/* <ChannelHeader
                 title={`${chatFriend.chatFriend.nickname}님과의 대화`}
-              />
+              /> */}
               <MessageList />
               <MessageInput />
             </Window>
             <button
+              type="button"
               onClick={() => {
                 newChannel.delete();
                 setChatFriend({ variables: { id: '', nickname: '' } });
@@ -78,7 +79,7 @@ function Chatting({
       <Channel>
         <div style={{ height: '80%', width: '100%' }}>
           <Window>
-            <ChannelHeader />
+            {/* <ChannelHeader /> */}
             <MessageList />
             <MessageInput />
           </Window>

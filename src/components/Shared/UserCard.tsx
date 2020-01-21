@@ -93,40 +93,123 @@ function UserCard({
   // useEffect 쓰는 것보다 아래처럼 내장 callback 쓰는게 나음.
   const [followUser, { loading: loadingFU }] = useMutation(FOLLOW_USER, {
     refetchQueries: [{ query: GET_USERINFO }],
-    onCompleted: () => message.success('처리되었습니다'),
-    onError: () => redirectWhenError({ history, client }),
+    onCompleted: (data) => {
+      if (data) message.success('처리되었습니다');
+    },
+    onError: (error) => {
+      console.log(error);
+      redirectWhenError({ history, client });
+    },
   });
   const [cancelFollow, { loading: loadingCF }] = useMutation(CANCEL_FOLLOWING, {
     refetchQueries: [{ query: GET_FRIENDS }],
-    onCompleted: () => message.success('처리되었습니다'),
-    onError: () => redirectWhenError({ history, client }),
+    onCompleted: (data) => {
+      if (data) message.success('처리되었습니다');
+    },
+    onError: (error) => {
+      console.log(error);
+      redirectWhenError({ history, client });
+    },
   });
   const [addFriend, { loading: loadingAF }] = useMutation(ADD_FRIEND, {
     refetchQueries: [{ query: GET_FRIENDS }],
-    onCompleted: () => message.success('처리되었습니다'),
-    onError: () => redirectWhenError({ history, client }),
+    onCompleted: (data) => {
+      if (data) {
+        message.success('처리되었습니다');
+        client.writeData({
+          data: {
+            unread:
+              data.addFriend.followers.filter((elm) => !elm.checked).length +
+              data.addFriend.friends.filter((elm) => !elm.checked).length,
+          },
+        });
+      }
+    },
+    onError: (error) => {
+      console.log(error);
+      redirectWhenError({ history, client });
+    },
   });
   const [deleteFriend, { loading: loadingDF }] = useMutation(DELETE_FRIEND, {
     refetchQueries: [{ query: GET_FRIENDS }],
-    onCompleted: () => message.success('처리되었습니다'),
-    onError: () => redirectWhenError({ history, client }),
+    onCompleted: (data) => {
+      if (data) {
+        message.success('처리되었습니다');
+        client.writeData({
+          data: {
+            unread:
+              data.deleteFriend.followers.filter((elm) => !elm.checked).length +
+              data.deleteFriend.friends.filter((elm) => !elm.checked).length,
+          },
+        });
+      }
+    },
+    onError: (error) => {
+      console.log(error);
+      redirectWhenError({ history, client });
+    },
   });
   const [deleteFollower, { loading: loadingDFo }] = useMutation(
     DELETE_FOLLOWER,
     {
       refetchQueries: [{ query: GET_FRIENDS }],
-      onCompleted: () => message.success('처리되었습니다'),
-      onError: () => redirectWhenError({ history, client }),
+      onCompleted: (data) => {
+        if (data) {
+          message.success('처리되었습니다');
+          client.writeData({
+            data: {
+              unread:
+                data.deleteFollower.followers.filter((elm) => !elm.checked)
+                  .length +
+                data.deleteFollower.friends.filter((elm) => !elm.checked)
+                  .length,
+            },
+          });
+        }
+      },
+      onError: (error) => {
+        console.log(error);
+        redirectWhenError({ history, client });
+      },
     },
   );
   const [checkFollowers] = useMutation(CHECK_FOLLOWERS, {
     refetchQueries: [{ query: GET_FRIENDS }],
-    onError: () => redirectWhenError({ history, client }),
+    onCompleted: (data) => {
+      if (data) {
+        client.writeData({
+          data: {
+            unread:
+              data.checkFollowers.followers.filter((elm) => !elm.checked)
+                .length +
+              data.checkFollowers.friends.filter((elm) => !elm.checked).length,
+          },
+        });
+      }
+    },
+    onError: (error) => {
+      console.log(error);
+      redirectWhenError({ history, client });
+    },
   });
 
   const [checkFriends] = useMutation(CHECK_FRIENDS, {
     refetchQueries: [{ query: GET_FRIENDS }],
-    onError: () => redirectWhenError({ history, client }),
+    onCompleted: (data) => {
+      if (data) {
+        client.writeData({
+          data: {
+            unread:
+              data.checkFriends.followers.filter((elm) => !elm.checked).length +
+              data.checkFriends.friends.filter((elm) => !elm.checked).length,
+          },
+        });
+      }
+    },
+    onError: (error) => {
+      console.log(error);
+      redirectWhenError({ history, client });
+    },
   });
 
   // 나중에 loading 같은 것 붙이기. 그리고 완료시 완료됐다는 문구. z-index같은 것 줘서 투명도 조절해서 친구 목록들 위에 띄워주면 좋을듯.
@@ -206,14 +289,23 @@ function UserCard({
   const makeButton = (func, buttonText) => {
     if (buttonText === '채팅하기') {
       return cardActions.push(
-        <span onClick={() => func()}>
+        <span
+          onClick={() => {
+            func();
+            checkCard();
+          }}
+        >
           <b>{buttonText}</b>
         </span>,
       );
       // 채팅 연결 성공후 성공했다는 알림 및 채팅창 불 들어오는 noti 같은 것.
     }
     return cardActions.push(
-      <span onClick={() => func({ variables: { userId: id } })}>
+      <span
+        onClick={() => {
+          func({ variables: { userId: id } });
+        }}
+      >
         <b>{buttonText}</b>
       </span>,
     );

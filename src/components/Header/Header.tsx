@@ -3,10 +3,10 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Layout, Menu, Badge } from 'antd';
 import { css, jsx } from '@emotion/core';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useApolloClient } from '@apollo/react-hooks';
 
 import MypageDropdown from './MypageDropdown';
-import { GET_USERINFO, IS_LOGGED_IN } from '../../graphql/queries';
+import { GET_USERINFO, IS_LOGGED_IN, GET_UNREAD } from '../../graphql/queries';
 
 const logo = css`
   width: 120px;
@@ -48,19 +48,33 @@ const navLinkItem = css`
 `;
 
 export default function Header() {
+  const client = useApolloClient();
   const { data: loginData } = useQuery(IS_LOGGED_IN);
+
+  const { data: unread } = useQuery(GET_UNREAD);
 
   const { data: dataMe } = useQuery(GET_USERINFO, {
     fetchPolicy: 'cache-only',
   });
   // home에서 불리는 순서랑 얘가 cache data 낚아오는 순서랑... 로직을 생각해봐야 할듯. 얘도 데이터 들어옴에 따라 re-render되나? 값 바뀌면 redux처럼 re-render되는 듯 함.
 
-  let unreadCount;
-  if (dataMe && dataMe.me) {
-    unreadCount =
-      dataMe.me.followers.filter((elm) => !elm.checked).length +
-      dataMe.me.friends.filter((elm) => !elm.checked).length;
+  // let unreadCount;
+  if (dataMe && dataMe.me && !unread) {
+    console.log('followers', dataMe.me.followers);
+    console.log(
+      'friends',
+      dataMe.me.friends.filter((elm) => !elm.checked).length,
+    );
+    client.writeData({
+      data: {
+        unread:
+          dataMe.me.followers.filter((elm) => !elm.checked).length +
+          dataMe.me.friends.filter((elm) => !elm.checked).length,
+      },
+    });
   }
+
+  console.log('unread', unread);
 
   return (
     <Layout.Header className="header" css={navHeader}>
@@ -94,10 +108,10 @@ export default function Header() {
               </NavLink>
             </Menu.Item>
 
-            {unreadCount && unreadCount !== 0 ? (
+            {unread && unread.unread !== 0 ? (
               <Menu.Item>
                 <Badge
-                  count={unreadCount}
+                  count={unread.unread}
                   overflowCount={999}
                   offset={[0, 12]}
                   // style={{ fontSize: '30px' }}

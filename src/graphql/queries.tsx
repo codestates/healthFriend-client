@@ -1,5 +1,10 @@
 import gql from 'graphql-tag';
-import { ALL_INFO, USERS_INFO, BASE_INFO /* FOLLOW_INFO */ } from './fragments';
+import {
+  ALL_INFO,
+  USERS_INFO,
+  BASE_INFO /* FOLLOW_INFO */,
+  BADGE_INFO,
+} from './fragments';
 
 export const GET_USERINFO = gql`
   {
@@ -118,6 +123,12 @@ export const GET_CHAT_FRIEND = gql`
   }
 `;
 
+export const GET_UNREAD = gql`
+  query Unread {
+    unread @client
+  }
+`;
+
 // mutation===========================================================
 
 // user =============================
@@ -200,32 +211,29 @@ export const CANCEL_FOLLOWING = gql`
 
 export const DELETE_FOLLOWER = gql`
   mutation DeleteFollower($userId: String!) {
-    deleteFollowers(userId: $userId) {
-      ...BaseInfo
+    deleteFollower(userId: $userId) {
+      ...BadgeInfo
     }
   }
-  ${BASE_INFO}
+  ${BADGE_INFO}
 `;
 
 export const ADD_FRIEND = gql`
   mutation AddFriend($userId: String!) {
     addFriend(userId: $userId) {
-      id
-      friend {
-        ...BaseInfo
-      }
+      ...BadgeInfo
     }
   }
-  ${BASE_INFO}
+  ${BADGE_INFO}
 `;
 
 export const DELETE_FRIEND = gql`
   mutation DeleteFriend($userId: String!) {
     deleteFriend(userId: $userId) {
-      ...BaseInfo
+      ...BadgeInfo
     }
   }
-  ${BASE_INFO}
+  ${BADGE_INFO}
 `;
 
 // check userCard ==============================
@@ -233,19 +241,19 @@ export const DELETE_FRIEND = gql`
 export const CHECK_FOLLOWERS = gql`
   mutation CheckFollowers($userIds: [String]!) {
     checkFollowers(userIds: $userIds) {
-      ...BaseInfo
+      ...BadgeInfo
     }
   }
-  ${BASE_INFO}
+  ${BADGE_INFO}
 `;
 
 export const CHECK_FRIENDS = gql`
   mutation CheckFriends($userIds: [String]!) {
     checkFriends(userIds: $userIds) {
-      ...BaseInfo
+      ...BadgeInfo
     }
   }
-  ${BASE_INFO}
+  ${BADGE_INFO}
 `;
 
 // local mutation =============================
