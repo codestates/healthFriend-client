@@ -1,8 +1,7 @@
 /** @jsx jsx */
-import { useEffect } from 'react';
 import { Modal, Button, message } from 'antd';
 import { jsx, css } from '@emotion/core';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useApolloClient } from '@apollo/react-hooks';
 
 import {
   FOLLOW_USER,
@@ -10,8 +9,11 @@ import {
   ADD_FRIEND,
   DELETE_FRIEND,
   DELETE_FOLLOWER,
+  GET_USERINFO,
+  GET_FRIENDS,
 } from '../../graphql/queries';
-import Loading from '../Shared/Loading';
+import Loading from './Loading';
+import redirectWhenError from '../../utils/redirectWhenError';
 
 const tableCSS = css`
   width: 100%;
@@ -36,7 +38,7 @@ type UserModalProps = {
   openImageChoice: string;
   messageToFriend: string;
   type: string;
-  renewFriends: any;
+  history: any;
 };
 
 function UserModal({
@@ -54,53 +56,37 @@ function UserModal({
   openImageChoice,
   messageToFriend,
   type,
-  renewFriends,
+  history,
 }: UserModalProps) {
-  const [
-    followUser,
-    { data: dataFU, error: errorFU, loading: loadingFU },
-  ] = useMutation(FOLLOW_USER);
-  const [
-    cancelFollow,
-    { data: dataCF, error: errorCF, loading: loadingCF },
-  ] = useMutation(CANCEL_FOLLOWING);
-  const [
-    addFriend,
-    { data: dataAF, error: errorAF, loading: loadingAF },
-  ] = useMutation(ADD_FRIEND);
-  const [
-    deleteFriend,
-    { data: dataDF, error: errorDF, loading: loadingDF },
-  ] = useMutation(DELETE_FRIEND);
-  const [
-    deleteFollower,
-    { data: dataDFo, error: errorDFo, loading: loadingDFo },
-  ] = useMutation(DELETE_FOLLOWER);
-
-  useEffect(() => {
-    if (dataFU || dataCF || dataAF || dataDF || dataDFo) {
-      message.success('처리되었습니다');
-      setVisible(false);
-      renewFriends();
-    }
-    if (errorFU || errorCF || errorAF || errorDF || errorDFo) {
-      message.error('처리에 실패하였습니다');
-      setVisible(false);
-    }
-  }, [
-    dataFU,
-    dataCF,
-    dataAF,
-    dataDF,
-    dataDFo,
-    errorFU,
-    errorCF,
-    errorAF,
-    errorDF,
-    errorDFo,
-    setVisible,
-    renewFriends,
-  ]);
+  const client = useApolloClient();
+  const [followUser, { loading: loadingFU }] = useMutation(FOLLOW_USER, {
+    refetchQueries: [{ query: GET_USERINFO }],
+    onCompleted: () => message.success('처리되었습니다'),
+    onError: () => redirectWhenError({ history, client }),
+  });
+  const [cancelFollow, { loading: loadingCF }] = useMutation(CANCEL_FOLLOWING, {
+    refetchQueries: [{ query: GET_FRIENDS }],
+    onCompleted: () => message.success('처리되었습니다'),
+    onError: () => redirectWhenError({ history, client }),
+  });
+  const [addFriend, { loading: loadingAF }] = useMutation(ADD_FRIEND, {
+    refetchQueries: [{ query: GET_FRIENDS }],
+    onCompleted: () => message.success('처리되었습니다'),
+    onError: () => redirectWhenError({ history, client }),
+  });
+  const [deleteFriend, { loading: loadingDF }] = useMutation(DELETE_FRIEND, {
+    refetchQueries: [{ query: GET_FRIENDS }],
+    onCompleted: () => message.success('처리되었습니다'),
+    onError: () => redirectWhenError({ history, client }),
+  });
+  const [deleteFollower, { loading: loadingDFo }] = useMutation(
+    DELETE_FOLLOWER,
+    {
+      refetchQueries: [{ query: GET_FRIENDS }],
+      onCompleted: () => message.success('처리되었습니다'),
+      onError: () => redirectWhenError({ history, client }),
+    },
+  );
 
   const modalFooter = [
     <Button key="back" onClick={() => setVisible(false)}>

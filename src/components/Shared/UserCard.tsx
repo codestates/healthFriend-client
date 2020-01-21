@@ -13,8 +13,11 @@ import {
   ADD_FRIEND,
   DELETE_FRIEND,
   DELETE_FOLLOWER,
+  GET_USERINFO,
+  GET_FRIENDS,
 } from '../../graphql/queries';
-import Loading from '../Shared/Loading';
+import Loading from './Loading';
+import redirectWhenError from '../../utils/redirectWhenError';
 
 const { Title } = Typography;
 
@@ -60,7 +63,6 @@ type UserCardProps = {
   openImageChoice: string;
   messageToFriend: string;
   type: string;
-  renewFriends: any;
   history: any;
   location: any;
   match: any;
@@ -79,65 +81,44 @@ function UserCard({
   openImageChoice,
   messageToFriend,
   type,
-  renewFriends,
   history,
   checked,
   setChatFriend,
 }: UserCardProps) {
+  const client = useApolloClient();
   const [visible, setVisible] = useState<boolean>(false);
 
-  const [
-    followUser,
-    { /* data: dataFU, error: errorFU, */ loading: loadingFU },
-  ] = useMutation(FOLLOW_USER);
-  const [
-    cancelFollow,
-    { /* data: dataCF, error: errorCF, */ loading: loadingCF },
-  ] = useMutation(CANCEL_FOLLOWING);
-  const [
-    addFriend,
-    { /* data: dataAF, error: errorAF, */ loading: loadingAF },
-  ] = useMutation(ADD_FRIEND);
-  const [
-    deleteFriend,
-    { /* data: dataDF, error: errorDF, */ loading: loadingDF },
-  ] = useMutation(DELETE_FRIEND);
-  const [
-    deleteFollower,
-    { /* data: dataDFo, error: errorDFo, */ loading: loadingDFo },
-  ] = useMutation(DELETE_FOLLOWER);
+  // useEffect 쓰는 것보다 아래처럼 내장 callback 쓰는게 나음.
+  const [followUser, { loading: loadingFU }] = useMutation(FOLLOW_USER, {
+    refetchQueries: [{ query: GET_USERINFO }],
+    onCompleted: () => message.success('처리되었습니다'),
+    onError: () => redirectWhenError({ history, client }),
+  });
+  const [cancelFollow, { loading: loadingCF }] = useMutation(CANCEL_FOLLOWING, {
+    refetchQueries: [{ query: GET_FRIENDS }],
+    onCompleted: () => message.success('처리되었습니다'),
+    onError: () => redirectWhenError({ history, client }),
+  });
+  const [addFriend, { loading: loadingAF }] = useMutation(ADD_FRIEND, {
+    refetchQueries: [{ query: GET_FRIENDS }],
+    onCompleted: () => message.success('처리되었습니다'),
+    onError: () => redirectWhenError({ history, client }),
+  });
+  const [deleteFriend, { loading: loadingDF }] = useMutation(DELETE_FRIEND, {
+    refetchQueries: [{ query: GET_FRIENDS }],
+    onCompleted: () => message.success('처리되었습니다'),
+    onError: () => redirectWhenError({ history, client }),
+  });
+  const [deleteFollower, { loading: loadingDFo }] = useMutation(
+    DELETE_FOLLOWER,
+    {
+      refetchQueries: [{ query: GET_FRIENDS }],
+      onCompleted: () => message.success('처리되었습니다'),
+      onError: () => redirectWhenError({ history, client }),
+    },
+  );
 
   // 나중에 loading 같은 것 붙이기. 그리고 완료시 완료됐다는 문구. z-index같은 것 줘서 투명도 조절해서 친구 목록들 위에 띄워주면 좋을듯.
-
-  const client = useApolloClient();
-
-  // useEffect(() => {
-  //   if (dataFU || dataCF || dataAF || dataDF || dataDFo) {
-  //     message.success('처리되었습니다');
-  //     renewFriends();
-  //   }
-  //   if (errorFU || errorCF || errorAF || errorDF || errorDFo) {
-  //     client.writeData({ data: { isLoggedIn: false } });
-  //     message.error('처리에 실패하였습니다');
-  //     history.push('/');
-  //     window.scrollTo(0, 0);
-  //     // 에러 핸들링 안됨. Unhandled Rejection (Error): GraphQL error: Cannot read property 계속 이것 뜸.
-  //   }
-  // }
-  // , [
-  //   dataFU,
-  //   dataCF,
-  //   dataAF,
-  //   dataDF,
-  //   dataDFo,
-  //   errorFU,
-  //   errorCF,
-  //   errorAF,
-  //   errorDF,
-  //   errorDFo,
-  //   setVisible,
-  //   renewFriends,
-  // ]);
 
   // 일단 이렇게 해놨는데 수정 필요할듯. 도장표시 같은 걸로.
   const color = checked ? 'black' : 'red';
@@ -209,16 +190,6 @@ function UserCard({
             func({
               variables: { userId: id },
             })
-              .then(() => {
-                message.success('처리되었습니다');
-                renewFriends();
-              })
-              .catch(() => {
-                client.writeData({ data: { isLoggedIn: false } });
-                message.error('처리에 실패하였습니다');
-                history.push('/');
-                window.scrollTo(0, 0);
-              })
           // 여기다가 바로 붙이면 Unhandled Rejection (Error): GraphQL error: Cannot read property 'id' of null 그런게 안나는데 useEffect로 해서 위에다가 분기 붙이면 문제 생기는 이유가 뭘까???
         }
       >
@@ -262,7 +233,7 @@ function UserCard({
           openImageChoice={openImageChoice}
           messageToFriend={messageToFriend}
           type={type}
-          renewFriends={renewFriends}
+          history={history}
         />
         <Card.Meta avatar={<Avatar icon="user" />} title={nickname} />
         <br />

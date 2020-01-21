@@ -64,13 +64,13 @@ const cache = new InMemoryCache();
 const client = new ApolloClient({
   defaultOptions: {
     watchQuery: {
-      errorPolicy: 'all',
+      errorPolicy: 'none',
     },
     query: {
-      errorPolicy: 'all',
+      errorPolicy: 'none',
     },
     mutate: {
-      errorPolicy: 'all',
+      errorPolicy: 'none',
     },
   },
   cache,

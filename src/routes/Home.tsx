@@ -14,7 +14,7 @@ import {
 } from '../graphql/queries';
 import useSubscript from '../hooks/Shared/useSubscript';
 import redirectWhenError from '../utils/redirectWhenError';
-import MakeCard from '../components/Cards/MakeCard';
+import MadeCard from '../components/Shared/MadeCard';
 
 const { Title } = Typography;
 
@@ -97,7 +97,12 @@ function Home({ history }: HomeProps) {
             <Col xs={24}>
               <Row gutter={24}>
                 {dataUsers.users.map((oneData) =>
-                  MakeCard(oneData, 'unknown', () => null, () => null, true),
+                  MadeCard(
+                    oneData,
+                    'unknown',
+                    /* () => null, */ () => null,
+                    true,
+                  ),
                 )}
               </Row>
             </Col>

@@ -17,6 +17,7 @@ type FindFriendProps = {
 };
 
 function FindFriend({ history }: FindFriendProps) {
+  const client = useApolloClient();
   const [filter, setFilter] = useState<any>({
     openImageChoice: [],
     levelOf3Dae: [],
@@ -24,14 +25,12 @@ function FindFriend({ history }: FindFriendProps) {
     weekdays: [],
   });
   const [places, setPlaces] = useState<string[]>([]);
-
   const [
     getFilteredUsers,
     { loading: loadingFU, data: dataFU, error: errorFU },
   ] = useLazyQuery(GET_FILTERED_USERS);
   const { data: loginData } = useQuery(IS_LOGGED_IN);
-  const client = useApolloClient();
-  const { data: dataMe, error: errorMe, refetch } = useQuery(GET_USERINFO, {
+  const { data: dataMe, error: errorMe } = useQuery(GET_USERINFO, {
     fetchPolicy: 'network-only',
     // errorPolicy: 'ignore', 어떤 효과 있는지 모르겠음. 확인.
   });
@@ -72,7 +71,7 @@ function FindFriend({ history }: FindFriendProps) {
         </Row>
         <Row type="flex" justify="center">
           <Col xs={20}>
-            <FilteredCards {...{ loadingFU, dataFU, dataMe, refetch }} />
+            <FilteredCards {...{ loadingFU, dataFU, dataMe }} />
           </Col>
         </Row>
       </Layout.Content>

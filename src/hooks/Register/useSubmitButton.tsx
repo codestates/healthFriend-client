@@ -51,7 +51,6 @@ const useSubmitButton = ({
     }
     return !totalCheckArr[order - 1].some((elm) => elm === true);
   };
-
   return { isNextButtonDisable };
 };
 

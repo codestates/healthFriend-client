@@ -1,23 +1,16 @@
 import React from 'react';
-import UserCard from '../FindFriend/UserCard';
+import UserCard from './UserCard';
 
-// 여기 MakeCard 앞에 type 정의를 안해도 아무 문제 안 생기던데 원래 그런가? {} 형태로 props 형태로 안 넘기고, 그냥 함수 arg 형태로 넘겨서 그런듯.
+// 여기 MadeCard 앞에 type 정의를 안해도 아무 문제 안 생기던데 원래 그런가? {} 형태로 props 형태로 안 넘기고, 그냥 함수 arg 형태로 넘겨서 그런듯.
 
-// type MakeCardProps = {
+// type MadeCardProps = {
 //   oneData: any;
 //   type: any;
-//   renewFriends: Function;
 //   setChatFriend: Function;
 //   checked: boolean;
 // };
 
-export default function MakeCard(
-  oneData,
-  type,
-  renewFriends,
-  setChatFriend,
-  checked,
-) {
+export default function MadeCard(oneData, type, setChatFriend, checked) {
   return (
     <UserCard
       id={oneData.id}
@@ -31,7 +24,6 @@ export default function MakeCard(
       weekdays={oneData.weekdays}
       ableDistricts={oneData.ableDistricts}
       type={type}
-      renewFriends={renewFriends}
       setChatFriend={setChatFriend}
       checked={checked}
     />

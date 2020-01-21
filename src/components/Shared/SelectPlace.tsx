@@ -5,7 +5,7 @@ import { TreeSelect } from 'antd';
 import { useQuery } from '@apollo/react-hooks';
 
 import { GET_PLACES } from '../../graphql/queries';
-import Loading from '../Shared/Loading';
+import Loading from './Loading';
 
 const { SHOW_PARENT } = TreeSelect;
 
@@ -62,12 +62,12 @@ function SelectPlace({
     // eslint-disable-next-line
   }, [places]);
 
-  const { data, loading } = useQuery(GET_PLACES);
+  const { data: dataPlace, loading: loadingPlace } = useQuery(GET_PLACES);
 
-  if (loading) return <Loading />;
+  if (loadingPlace) return <Loading />;
 
-  if (data) {
-    data.allDistricts.forEach((onePlace) => {
+  if (dataPlace) {
+    dataPlace.allDistricts.forEach((onePlace) => {
       const { idOfDong, nameOfDong, idOfGu, nameOfGu } = onePlace;
       if (guList.indexOf(nameOfGu) === -1) {
         guList.push(nameOfGu);

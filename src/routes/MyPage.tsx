@@ -4,7 +4,7 @@ import { Row, Col, Button, Result, Tooltip } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
 
-import RegisterInput from '../components/Register/RegisterInput';
+import RegisterInput from '../components/Shared/RegisterInput';
 import questionList from '../config/questions';
 import useShowSelected from '../hooks/Mypage/useShowSelected';
 import useLazyMe from '../hooks/Shared/useLazyMe';
@@ -41,9 +41,9 @@ function MyPage({ history }: MyPageProps) {
     setIntroduction,
     setPlaces,
     totalCheckArr,
-    data,
-    error,
-    loading,
+    dataI,
+    errorI,
+    loadingI,
     places,
     submitVariable,
     submitMotivation,
@@ -64,8 +64,8 @@ function MyPage({ history }: MyPageProps) {
 
   useSubscript(history);
 
-  if (loading) return <Loading />;
-  if (error) redirectWhenError({ history, client });
+  if (loadingI) return <Loading />;
+  if (errorI) redirectWhenError({ history, client });
 
   if (!loginData.isLoggedIn) redirectWhenError({ history, client });
 
@@ -123,9 +123,9 @@ function MyPage({ history }: MyPageProps) {
                         totalCheckArr={totalCheckArr}
                         setTotalCheckArr={setTotalCheckArr}
                         setIntroduction={setIntroduction}
-                        introduction={data.me.messageToFriend}
+                        introduction={dataI.me.messageToFriend}
                         setPlaces={setPlaces}
-                        selectedPlaces={data.me.ableDistricts.map(
+                        selectedPlaces={dataI.me.ableDistricts.map(
                           (oneData) => oneData.district.idOfDong,
                         )}
                       />

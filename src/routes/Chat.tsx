@@ -14,13 +14,11 @@ type ChatProps = {
 };
 
 export default function Chat({ history }: ChatProps) {
-  // 여긴 아직 /chat 으로 직접 주소 치고 들어올때 에러 대비 등이 안 돼 있음.
-
-  useSubscript(history);
-
+  const client = useApolloClient();
+  // 여긴 아직 /chat 으로 직접 주소 치고 들어올때 dataMe undefined 에러 대비 등이 안 돼 있음.
   const { data: chatFriend, loading, error } = useQuery(GET_CHAT_FRIEND);
   const [setChatFriend] = useMutation(SET_CHAT_FRIEND);
-  const client = useApolloClient();
+  useSubscript(history);
 
   if (loading) return <Loading />;
   if (error) redirectWhenError({ history, client });

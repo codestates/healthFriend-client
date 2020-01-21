@@ -3,9 +3,7 @@ import { withRouter, Link } from 'react-router-dom';
 import { Menu, Dropdown, Icon } from 'antd';
 import Cookies from 'js-cookie';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
-// import gql from 'graphql-tag';
 
-// import { useMutation } from '@apollo/react-hooks';
 import useLazyMe from '../../hooks/Shared/useLazyMe';
 import { SET_CHAT_FRIEND } from '../../graphql/queries';
 
@@ -17,19 +15,9 @@ type MypageDropdownProps = {
   match: any;
 };
 
-// const LOGOUT_ME = gql`
-//   mutation logoutMe($id: String!) {
-//     logoutMe(id: $id) @client {
-//       id
-//       nickname
-//     }
-//   }
-// `;
-
 function MypageDropdown({ name, /* meId, */ history }: MypageDropdownProps) {
   const client = useApolloClient();
   const { getMe } = useLazyMe();
-  // const [logoutMe] = useMutation(LOGOUT_ME);
 
   const [setChatFriend] = useMutation(SET_CHAT_FRIEND);
 

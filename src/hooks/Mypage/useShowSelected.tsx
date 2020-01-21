@@ -7,37 +7,35 @@ import questionList from '../../config/questions';
 
 const useShowSelected = () => {
   const {
-    setTotalCheckArr,
     setIntroduction,
-    setPlaces,
     totalCheckArr,
+    setTotalCheckArr,
     places,
+    setPlaces,
     submitVariable,
     submitMotivation,
     submitExerciseDays,
   } = useProcessSelected();
 
-  // console.log('submitVariable', submitVariable);
-  // console.log('submitExerciseDays', submitExerciseDays);
-
-  const { data, error, loading } = useQuery(GET_USERINFO, {
-    fetchPolicy: 'network-only',
-  });
-
-  console.log('data in useShowSelected', data);
+  const { data: dataI, error: errorI, loading: loadingI } = useQuery(
+    GET_USERINFO,
+    {
+      fetchPolicy: 'network-only',
+    },
+  );
 
   const subjects: string[] = questionList.map((elm) => elm.subject);
 
   // 해당 받아온 data의 값을 입력할 때와 같은 boolean array로 변경
   const getSelectedBooleans = (subj: string): boolean[] | undefined => {
-    if (data && data.me) {
+    if (dataI && dataI.me) {
       const oneQ = questionList![subjects.indexOf(subj)];
       let selectedArray;
       if (oneQ.isMeQueryAvailable && oneQ.isCheckbox) {
         if (!oneQ.isMultiple) {
-          selectedArray = [data.me[subj]];
+          selectedArray = [dataI.me[subj]];
         } else {
-          selectedArray = data.me[subj].map((elm) => elm[subj.slice(0, -1)]);
+          selectedArray = dataI.me[subj].map((elm) => elm[subj.slice(0, -1)]);
         }
 
         return oneQ.value.map((elm) => {
@@ -52,20 +50,20 @@ const useShowSelected = () => {
   };
 
   useEffect(() => {
-    if (data) {
+    if (dataI) {
       setTotalCheckArr(subjects.map((subj) => getSelectedBooleans(subj)));
     }
     // eslint-disable-next-line
-  }, [data]);
+  }, [dataI]);
 
   return {
     setIntroduction,
     setPlaces,
     totalCheckArr,
     setTotalCheckArr,
-    data,
-    error,
-    loading,
+    dataI,
+    errorI,
+    loadingI,
     places,
     submitVariable,
     submitMotivation,

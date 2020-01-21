@@ -16,17 +16,14 @@ type CardsProps = {
 
 function Cards({ history, match }: CardsProps) {
   const client = useApolloClient();
-  const [setChatFriend] = useMutation(SET_CHAT_FRIEND);
-
   const { data: loginData } = useQuery(IS_LOGGED_IN);
-  const {
-    loading: loadingFR,
-    error: errorFR,
-    data: dataFR,
-    refetch: refetchFR,
-  } = useQuery(GET_FRIENDS, {
-    fetchPolicy: 'network-only',
-  });
+  const { loading: loadingFR, error: errorFR, data: dataFR } = useQuery(
+    GET_FRIENDS,
+    {
+      fetchPolicy: 'network-only',
+    },
+  );
+  const [setChatFriend] = useMutation(SET_CHAT_FRIEND);
   const { state } = match.params;
 
   useSubscript(history);
@@ -50,7 +47,6 @@ function Cards({ history, match }: CardsProps) {
               history,
               client,
               state,
-              refetchFR,
               setChatFriend,
             }}
           />

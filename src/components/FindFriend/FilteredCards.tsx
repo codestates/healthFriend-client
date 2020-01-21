@@ -4,7 +4,7 @@ import { Row } from 'antd';
 
 import Loading from '../Shared/Loading';
 import sortByDate from '../../utils/sortByDate';
-import MakeCard from '../Cards/MakeCard';
+import MadeCard from '../Shared/MadeCard';
 
 const marginFilterdCards = css`
   margin-top: 40px;
@@ -14,14 +14,12 @@ type FilteredCardsProps = {
   loadingFU: boolean | undefined;
   dataFU: any;
   dataMe: any;
-  refetch: Function;
 };
 
 export default function FilteredCards({
   loadingFU,
   dataFU,
   dataMe,
-  refetch,
 }: FilteredCardsProps) {
   if (loadingFU) return <Loading />;
   return (
@@ -38,9 +36,7 @@ export default function FilteredCards({
                 .map((one) => one.id);
               return array.indexOf(user.id) === -1;
             })
-            .map((oneData) =>
-              MakeCard(oneData, 'unknown', refetch, () => null, true),
-            )
+            .map((oneData) => MadeCard(oneData, 'unknown', () => null, true))
         : null}
     </Row>
   );

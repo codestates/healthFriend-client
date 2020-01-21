@@ -6,7 +6,7 @@ import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import ProgressBar from '../components/Register/ProgressBar';
 import RegisterImage from '../static/registerImage.jpg';
 import explanation from '../config/Message';
-import RegisterInput from '../components/Register/RegisterInput';
+import RegisterInput from '../components/Shared/RegisterInput';
 import useProcessSelected from '../hooks/Register/useProcessSelected';
 // import Loading from '../components/Shared/Loading';
 import useLazyMe from '../hooks/Shared/useLazyMe';

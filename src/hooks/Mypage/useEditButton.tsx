@@ -64,9 +64,6 @@ const useEditButton = ({
   // mutation시 error도 콜백으로 만들어줘야 함. onError, onComplete 등이 있는듯.
 
   useEffect(() => {
-    console.log('submitVariable', submitVariable);
-    console.log('submitExerciseDays', submitExerciseDays);
-    console.log('submitMotivation', submitMotivation);
     // 왜 dataMe와 errorMe가 둘다 동시에 값을 가지고 있을 수 있는지 모르겠음.
     // 더하여 그 grphaql 에러의 빨간 화면 뜨는 건 어느 상황에서 발생하는건지.
     if (errorMe) {

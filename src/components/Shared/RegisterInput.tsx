@@ -3,7 +3,7 @@ import { Input } from 'antd';
 import { css, jsx } from '@emotion/core';
 
 import useRegisterInput from '../../hooks/Register/useRegisterInput';
-import SelectPlace from '../FindFriend/SelectPlace';
+import SelectPlace from './SelectPlace';
 
 const wrapper = css`
   margin-bottom: 20px;
