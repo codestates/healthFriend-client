@@ -228,6 +228,26 @@ export const DELETE_FRIEND = gql`
   ${BASE_INFO}
 `;
 
+// check userCard ==============================
+
+export const CHECK_FOLLOWERS = gql`
+  mutation CheckFollowers($userIds: [String]!) {
+    checkFollowers(userIds: $userIds) {
+      ...BaseInfo
+    }
+  }
+  ${BASE_INFO}
+`;
+
+export const CHECK_FRIENDS = gql`
+  mutation CheckFriends($userIds: [String]!) {
+    checkFriends(userIds: $userIds) {
+      ...BaseInfo
+    }
+  }
+  ${BASE_INFO}
+`;
+
 // local mutation =============================
 
 export const SET_CHAT_FRIEND = gql`

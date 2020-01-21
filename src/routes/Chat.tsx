@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Col } from 'antd';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 
-import Chatting from '../components/Cards/Chatting';
+import Chatting from '../components/Chat/Chatting';
 import useSubscript from '../hooks/Shared/useSubscript';
 import useMakeChatRoom from '../hooks/Chat/useMakeChatRoom';
 import { SET_CHAT_FRIEND, GET_CHAT_FRIEND } from '../graphql/queries';

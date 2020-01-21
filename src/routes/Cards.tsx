@@ -5,7 +5,7 @@ import { useQuery, useApolloClient, useMutation } from '@apollo/react-hooks';
 import { IS_LOGGED_IN, GET_FRIENDS, SET_CHAT_FRIEND } from '../graphql/queries';
 import useSubscript from '../hooks/Shared/useSubscript';
 import Nav from '../components/Cards/Nav';
-import FriendList from '../components/Cards/FriendList';
+import CardList from '../components/Cards/CardList';
 import redirectWhenError from '../utils/redirectWhenError';
 
 type CardsProps = {
@@ -39,7 +39,7 @@ function Cards({ history, match }: CardsProps) {
         <br />
         <br />
         <Col xs={24} md={20}>
-          <FriendList
+          <CardList
             {...{
               loadingFR,
               errorFR,

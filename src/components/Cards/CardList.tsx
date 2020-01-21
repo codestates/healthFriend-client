@@ -6,7 +6,7 @@ import message from '../../config/Message';
 import MadeCard from '../Shared/MadeCard';
 import sortByDate from '../../utils/sortByDate';
 
-type FriendListProps = {
+type CardListProps = {
   loadingFR: boolean | undefined;
   errorFR: any;
   dataFR: any;
@@ -16,7 +16,7 @@ type FriendListProps = {
   setChatFriend: Function;
 };
 
-export default function FriendList({
+export default function CardList({
   loadingFR,
   errorFR,
   dataFR,
@@ -24,7 +24,7 @@ export default function FriendList({
   client,
   state,
   setChatFriend,
-}: FriendListProps) {
+}: CardListProps) {
   if (loadingFR) return <Loading />;
   if (errorFR) redirectWhenError({ history, client });
   if (dataFR && dataFR.me) {
@@ -44,7 +44,7 @@ export default function FriendList({
       if (followers.length > 0) {
         return followers
           .sort(sortByDate)
-          .sort((a, b) => b.checked - a.checked)
+          .sort((a, b) => a.checked - b.checked)
           .map((oneData) =>
             makeCard(oneData.follower, () => null, oneData.checked),
           );
@@ -55,9 +55,10 @@ export default function FriendList({
       if (friends.length > 0) {
         return friends
           .sort(sortByDate)
-          .sort((a, b) => b.checked - a.checked)
-          .map((el) => el.friend)
-          .map((oneData) => makeCard(oneData, setChatFriend, oneData.checked));
+          .sort((a, b) => a.checked - b.checked)
+          .map((oneData) =>
+            makeCard(oneData.friend, setChatFriend, oneData.checked),
+          );
       }
       return <p>{message.friendsEmpty}</p>;
     }

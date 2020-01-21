@@ -65,6 +65,8 @@ function Home({ history }: HomeProps) {
     client.writeData({ data: { isLoggedIn: true } });
   }
 
+  // errorMe!.graphQLErrors[0]!.extensions!.code ----> errorMe에 값들이 잘 들어오므로 분기처리 하기.
+
   // 일부러 로그아웃을 하지는 않았는데 token이 만료됐을 때
   if (
     loginData.isLoggedIn &&

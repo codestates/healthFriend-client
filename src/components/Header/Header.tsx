@@ -55,9 +55,6 @@ export default function Header() {
   });
   // home에서 불리는 순서랑 얘가 cache data 낚아오는 순서랑... 로직을 생각해봐야 할듯. 얘도 데이터 들어옴에 따라 re-render되나? 값 바뀌면 redux처럼 re-render되는 듯 함.
 
-  // console.log('로그인 상태 in header', loginData.isLoggedIn);
-  // console.log('data in header', data);
-
   let unreadCount;
   if (dataMe && dataMe.me) {
     unreadCount =

@@ -99,11 +99,7 @@ function UserModal({
       <Button
         key={buttonText}
         type="primary"
-        onClick={() =>
-          func({
-            variables: { userId: id },
-          })
-        }
+        onClick={() => func({ variables: { userId: id } })}
       >
         {buttonText}
       </Button>,

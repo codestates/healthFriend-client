@@ -33,6 +33,7 @@
   "rules": {
     "react/jsx-filename-extension": 0,
     "array-callback-return": "off",
+    "react/jsx-props-no-spreading": "off",
     "import/no-unresolved": "off",
     "import/extensions": [
       "error",

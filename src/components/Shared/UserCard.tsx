@@ -15,6 +15,8 @@ import {
   DELETE_FOLLOWER,
   GET_USERINFO,
   GET_FRIENDS,
+  CHECK_FOLLOWERS,
+  CHECK_FRIENDS,
 } from '../../graphql/queries';
 import Loading from './Loading';
 import redirectWhenError from '../../utils/redirectWhenError';
@@ -117,6 +119,15 @@ function UserCard({
       onError: () => redirectWhenError({ history, client }),
     },
   );
+  const [checkFollowers] = useMutation(CHECK_FOLLOWERS, {
+    refetchQueries: [{ query: GET_FRIENDS }],
+    onError: () => redirectWhenError({ history, client }),
+  });
+
+  const [checkFriends] = useMutation(CHECK_FRIENDS, {
+    refetchQueries: [{ query: GET_FRIENDS }],
+    onError: () => redirectWhenError({ history, client }),
+  });
 
   // 나중에 loading 같은 것 붙이기. 그리고 완료시 완료됐다는 문구. z-index같은 것 줘서 투명도 조절해서 친구 목록들 위에 띄워주면 좋을듯.
 
@@ -142,12 +153,14 @@ function UserCard({
   };
 
   const getPossibleDays = (weekdays) => {
-    const daysStr = weekdays
+    const days = weekdays
       .map((elm) => changeToKorean({ weekdays: elm.weekday }))
       .sort(makeOrder({ weekdays }))
       .join('');
+    const SatIndex = days.indexOf('토');
+    const SunIndex = days.indexOf('일');
 
-    switch (daysStr) {
+    switch (days) {
       case '월화수목금토일':
         return '매일 가능';
       case '월화수목금':
@@ -156,23 +169,39 @@ function UserCard({
         return '주말만 가능';
       default:
         // 토, 일요일 구분선
-        const indexOfSaturday = daysStr.indexOf('토');
-        const indexOfSunday = daysStr.indexOf('일');
-        if (indexOfSaturday !== -1) {
-          const temp = daysStr.split('');
-          temp.splice(indexOfSaturday, 0, ' | ');
+        if (SatIndex !== -1) {
+          const temp = days.split('');
+          temp.splice(SatIndex, 0, ' | ');
           return temp.join('');
         }
-        if (indexOfSaturday === -1 && indexOfSunday !== -1) {
-          const temp = daysStr.split('');
-          temp.splice(indexOfSunday, 0, ' | ');
+        if (SatIndex === -1 && SunIndex !== -1) {
+          const temp = days.split('');
+          temp.splice(SunIndex, 0, ' | ');
           return temp.join('');
         }
-        return daysStr;
+        return days;
     }
   };
 
-  const cardActions = [<span onClick={() => setVisible(true)}>상세 보기</span>];
+  const checkCard = () => {
+    if (type === 'friends') {
+      checkFriends({ variables: { userIds: [id] } });
+    }
+    if (type === 'followers') {
+      checkFollowers({ variables: { userIds: [id] } });
+    }
+  };
+
+  const cardActions = [
+    <span
+      onClick={() => {
+        setVisible(true);
+        checkCard();
+      }}
+    >
+      상세 보기
+    </span>,
+  ];
 
   const makeButton = (func, buttonText) => {
     if (buttonText === '채팅하기') {
@@ -184,15 +213,7 @@ function UserCard({
       // 채팅 연결 성공후 성공했다는 알림 및 채팅창 불 들어오는 noti 같은 것.
     }
     return cardActions.push(
-      <span
-        onClick={
-          () =>
-            func({
-              variables: { userId: id },
-            })
-          // 여기다가 바로 붙이면 Unhandled Rejection (Error): GraphQL error: Cannot read property 'id' of null 그런게 안나는데 useEffect로 해서 위에다가 분기 붙이면 문제 생기는 이유가 뭘까???
-        }
-      >
+      <span onClick={() => func({ variables: { userId: id } })}>
         <b>{buttonText}</b>
       </span>,
     );
