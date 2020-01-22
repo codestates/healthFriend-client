@@ -121,6 +121,11 @@ function UserCard({
             unread:
               data.addFriend.followers.filter((elm) => !elm.checked).length +
               data.addFriend.friends.filter((elm) => !elm.checked).length,
+            unreadFollowers: data.addFriend.followers.filter(
+              (elm) => !elm.checked,
+            ).length,
+            unreadFriends: data.addFriend.friends.filter((elm) => !elm.checked)
+              .length,
           },
         });
       }
@@ -140,6 +145,12 @@ function UserCard({
             unread:
               data.deleteFriend.followers.filter((elm) => !elm.checked).length +
               data.deleteFriend.friends.filter((elm) => !elm.checked).length,
+            unreadFollowers: data.deleteFriend.followers.filter(
+              (elm) => !elm.checked,
+            ).length,
+            unreadFriends: data.deleteFriend.friends.filter(
+              (elm) => !elm.checked,
+            ).length,
           },
         });
       }
@@ -163,6 +174,12 @@ function UserCard({
                   .length +
                 data.deleteFollower.friends.filter((elm) => !elm.checked)
                   .length,
+              unreadFollowers: data.deleteFollower.followers.filter(
+                (elm) => !elm.checked,
+              ).length,
+              unreadFriends: data.deleteFollower.friends.filter(
+                (elm) => !elm.checked,
+              ).length,
             },
           });
         }
@@ -183,6 +200,12 @@ function UserCard({
               data.checkFollowers.followers.filter((elm) => !elm.checked)
                 .length +
               data.checkFollowers.friends.filter((elm) => !elm.checked).length,
+            unreadFollowers: data.checkFollowers.followers.filter(
+              (elm) => !elm.checked,
+            ).length,
+            unreadFriends: data.checkFollowers.friends.filter(
+              (elm) => !elm.checked,
+            ).length,
           },
         });
       }
@@ -202,6 +225,12 @@ function UserCard({
             unread:
               data.checkFriends.followers.filter((elm) => !elm.checked).length +
               data.checkFriends.friends.filter((elm) => !elm.checked).length,
+            unreadFollowers: data.checkFriends.followers.filter(
+              (elm) => !elm.checked,
+            ).length,
+            unreadFriends: data.checkFriends.friends.filter(
+              (elm) => !elm.checked,
+            ).length,
           },
         });
       }

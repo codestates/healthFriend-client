@@ -94,6 +94,9 @@ export default function Header() {
         unread:
           dataMe.me.followers.filter((elm) => !elm.checked).length +
           dataMe.me.friends.filter((elm) => !elm.checked).length,
+        unreadFollowers: dataMe.me.followers.filter((elm) => !elm.checked)
+          .length,
+        unreadFriends: dataMe.me.friends.filter((elm) => !elm.checked).length,
       },
     });
   }

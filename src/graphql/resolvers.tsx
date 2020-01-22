@@ -5,6 +5,8 @@ export const typeDefs = gql`
     isLoggedIn: Boolean!
     chatFriend: ChatFriend!
     unread: Number!
+    unreadFriends: Number!
+    unreadFollowers: Number!
   }
 
   extend type ChatFriend {

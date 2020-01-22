@@ -129,6 +129,18 @@ export const GET_UNREAD = gql`
   }
 `;
 
+export const GET_UNREAD_FRIENDS = gql`
+  query UnreadFriends {
+    unreadFriends @client
+  }
+`;
+
+export const GET_UNREAD_FOLLOWERS = gql`
+  query UnreadFollowers {
+    unreadFollowers @client
+  }
+`;
+
 // mutation===========================================================
 
 // user =============================
