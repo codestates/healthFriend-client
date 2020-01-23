@@ -40,7 +40,7 @@ function Chatting({
   setChatFriend,
 }: ChattingProps) {
   console.log('chatFriend in chatting', chatFriend);
-  const { chatClient, filters, sort, newChannel } = useMakeChatRoom(
+  const { chatClient, filters, sort, channel } = useMakeChatRoom(
     chatFriend.chatFriend,
   );
 
@@ -54,8 +54,8 @@ function Chatting({
         sort={sort}
         // Preview={MyMessageComponent}
       />
-      {newChannel && chatFriend.chatFriend.id.length !== 0 ? (
-        <Channel channel={newChannel}>
+      {channel && chatFriend.chatFriend.id.length !== 0 ? (
+        <Channel channel={channel}>
           <div style={{ height: '80%', width: '100%' }}>
             <Window>
               {/* <ChannelHeader
@@ -67,7 +67,7 @@ function Chatting({
             <button
               type="button"
               onClick={() => {
-                newChannel.delete();
+                channel.delete();
                 setChatFriend({ variables: { id: '', nickname: '' } });
               }}
             >
@@ -76,6 +76,7 @@ function Chatting({
           </div>
         </Channel>
       ) : null}
+
       <Channel>
         <div style={{ height: '80%', width: '100%' }}>
           <Window>

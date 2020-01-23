@@ -322,6 +322,7 @@ function UserCard({
           onClick={() => {
             func();
             checkCard();
+            alert('채팅창이 생성되었습니다');
           }}
         >
           <b>{buttonText}</b>

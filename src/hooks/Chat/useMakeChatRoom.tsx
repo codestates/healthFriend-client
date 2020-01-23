@@ -26,10 +26,10 @@ const useMakeChatRoom = /* async */ (hf) => {
   console.log('user in useMakeChatRoom', user);
   console.log('hf in useMakeChatRoom', hf.id);
 
-  let newChannel;
+  let channel;
 
   if (hf.id.length !== 0) {
-    newChannel = chatClient.channel(
+    channel = chatClient.channel(
       'messaging',
       (dataMe.me.id + hf.id).slice(0, 20),
       {
@@ -37,9 +37,9 @@ const useMakeChatRoom = /* async */ (hf) => {
         // invites: [hf.id],
       },
     );
-    newChannel.create();
+    channel.create();
     // const state = newChannel.watch();
-    newChannel.on('message.new', (event) => {
+    channel.on('message.new', (event) => {
       console.log('메세지 왔어');
     });
   }
@@ -68,10 +68,10 @@ const useMakeChatRoom = /* async */ (hf) => {
   );
   // .then((chans) => chans.push(newChannel));
 
-  console.log('newChannel in chat', newChannel);
+  console.log('newChannel in chat', channel);
   console.log('channels in chnnels,', channels);
 
-  return { chatClient, filters, sort, newChannel };
+  return { chatClient, filters, sort, channel };
   // }
   // 여기 아래 IF 문에 ErrorLoginFirst를 줄지? 아니면 저기 항목들 받아가니까 저기 항목에 '' 빈 값이라도 넣어줄지?
 };
