@@ -160,7 +160,7 @@ function Register({ history }: RegisterProps) {
                   // .then((data) => console.log('data is...', data)); then 붙이려니 typescript 문제 발생. mutation 함수는 promise return하는데 useLazyQuery랑 refetch는 promise return 아닌 듯.
                   // await 안 먹는 이유가 뭐지? promise return 하는 것 아니면 안 먹음.
 
-                  disabled={isNextButtonDisable()}
+                  // disabled={isNextButtonDisable()}
                 >
                   {order === questionList.length ? '완료' : '다음'}
                 </Button>

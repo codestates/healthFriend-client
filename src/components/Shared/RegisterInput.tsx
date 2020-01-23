@@ -2,8 +2,11 @@
 import { Input } from 'antd';
 import { css, jsx } from '@emotion/core';
 
+import { useMutation } from '@apollo/react-hooks';
 import useRegisterInput from '../../hooks/Register/useRegisterInput';
 import SelectPlace from './SelectPlace';
+import ImageForm from './ImageForm';
+import { UPLOAD_FILE_STREAM } from '../../graphql/queries';
 
 const wrapper = css`
   margin-bottom: 20px;
@@ -42,9 +45,20 @@ export default function RegisterInput({
     setTotalCheckArr,
   });
 
+  const [
+    profileImageUpload,
+    { data: dataImg, loading: loadingImg },
+  ] = useMutation(UPLOAD_FILE_STREAM);
+
   return (
     <div css={wrapper}>
       <h2>{question}</h2>
+      {subject === 'openImageChoice' ? (
+        <div>
+          사진을 올려주세요
+          <ImageForm {...{ profileImageUpload, dataImg, loadingImg }} />
+        </div>
+      ) : null}
       {['ableDistricts', 'messageToFriend'].indexOf(subject) === -1 && (
         <div css={checkboxDiv}>{questionCheckboxes}</div>
       )}

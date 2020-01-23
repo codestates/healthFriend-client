@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Checkbox } from 'antd';
 import { css, jsx } from '@emotion/core';
 
@@ -80,15 +80,16 @@ const useRegisterInput = ({
 
   const questionCheckboxes = answer.map((ele, idx) => {
     return (
-      <Checkbox
-        value={ele}
-        key={ele}
-        css={checkboxDesign}
-        checked={oneCheckArr[idx]}
-        onChange={onCheck}
-      >
-        {ele}
-      </Checkbox>
+      <React.Fragment key={ele}>
+        <Checkbox
+          value={ele}
+          css={checkboxDesign}
+          checked={oneCheckArr[idx]}
+          onChange={onCheck}
+        >
+          {ele}
+        </Checkbox>
+      </React.Fragment>
     );
   });
 

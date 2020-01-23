@@ -201,6 +201,17 @@ export const SET_ABLE_DISTRICT = gql`
   }
 `;
 
+export const UPLOAD_FILE_STREAM = gql`
+  mutation profileImageUpload($file: Upload!) {
+    profileImageUpload(file: $file) {
+      ETag
+      Location
+      Key
+      Bucket
+    }
+  }
+`;
+
 // friend =============================
 
 export const FOLLOW_USER = gql`
