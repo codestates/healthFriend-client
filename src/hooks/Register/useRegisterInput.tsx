@@ -45,10 +45,20 @@ const useRegisterInput = ({
     if (isCheckbox && isMeMutateAvailable && oneCheckArr.length === 0) {
       setTotalCheckArr(
         totalCheckArr.map((elm, idx) =>
-          idx + 1 === order ? Array(answer.length).fill(false) : elm,
+          // idx + 1 === order ? Array(answer.length).fill(false) : elm,
+          {
+            if (subject === 'openImageChoice' && idx + 1 === order) {
+              return [false, false, true];
+            }
+            if (idx + 1 === order) {
+              return Array(answer.length).fill(false);
+            }
+            return elm;
+          },
         ),
       );
     }
+    // eslint-disable-next-line
   }, [
     answer.length,
     oneCheckArr,
@@ -59,6 +69,7 @@ const useRegisterInput = ({
     isCheckbox,
   ]);
 
+  // multiple이 가능한지 여부에 따라 다른 체크박스 항목 클릭시 반응 다르게
   const onCheck = (e) => {
     // 여기도 e에 : MouseEvent 같은거 붙여줘야 함.
     let array: any[];

@@ -48,20 +48,32 @@ export default function RegisterInput({
   const [
     profileImageUpload,
     { data: dataImg, loading: loadingImg },
-  ] = useMutation(UPLOAD_FILE_STREAM);
+  ] = useMutation(UPLOAD_FILE_STREAM, {
+    // image 올린 후엔 default로 선택해놓은 '비공개'상태를 무선택 상태로 바꿔줌.
+    onCompleted: (data) => {
+      if (data) {
+        setTotalCheckArr(
+          totalCheckArr.map((elm, idx) =>
+            idx + 1 === order ? [false, false, false] : elm,
+          ),
+        );
+      }
+    },
+  });
 
   return (
     <div css={wrapper}>
       <h2>{question}</h2>
       {subject === 'openImageChoice' ? (
         <div>
-          사진을 올려주세요
           <ImageForm {...{ profileImageUpload, dataImg, loadingImg }} />
+          <br />
+          {dataImg ? <div css={checkboxDiv}>{questionCheckboxes}</div> : null}
         </div>
       ) : null}
-      {['ableDistricts', 'messageToFriend'].indexOf(subject) === -1 && (
-        <div css={checkboxDiv}>{questionCheckboxes}</div>
-      )}
+      {['ableDistricts', 'messageToFriend', 'openImageChoice'].indexOf(
+        subject,
+      ) === -1 && <div css={checkboxDiv}>{questionCheckboxes}</div>}
       {subject === 'ableDistricts' ? (
         <SelectPlace
           setPlaces={setPlaces}

@@ -81,7 +81,7 @@ const questionList = [
   {
     number: 6,
     subject: 'openImageChoice',
-    question: '사진을 올리고 공개여부를 선택해주세요',
+    question: '사진을 올려주세요 (올린 후 공개여부를 선택할 수 있습니다)',
     answer: ['전체 공개', '친구 공개', '비공개'],
     value: ['OPEN', 'FRIEND', 'CLOSE'],
     isMultiple: false,
