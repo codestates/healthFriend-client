@@ -20,6 +20,8 @@ import {
 } from '../../graphql/queries';
 import Loading from './Loading';
 import redirectWhenError from '../../utils/redirectWhenError';
+import male from '../../static/male.svg';
+import female from '../../static/female.svg';
 
 const { Title } = Typography;
 
@@ -400,8 +402,12 @@ function UserCard({
         />
         <br />
         <p style={{ position: 'absolute', top: 20, right: 20, color }}>
-          {changeToKorean({ levelOf3Dae }).match(/\((.*?)\)/g)}
-          {/* {changeToKorean({ gender })} */}
+          {/* {changeToKorean({ levelOf3Dae }).match(/\((.*?)\)/g)} */}
+          {changeToKorean({ gender }) === '남자' ? (
+            <img src={male} height="30" width="30" alt="" />
+          ) : (
+            <img src={female} height="30" width="30" alt="" />
+          )}
         </p>
 
         {loadingFU || loadingDFo || loadingDF || loadingAF || loadingCF ? (
@@ -409,19 +415,30 @@ function UserCard({
         ) : (
           <React.Fragment>
             <Title level={4} css={titleCSS}>
-              {motivations
+              {changeToKorean({ levelOf3Dae })
+                .match(/\((.*?)\)/g)![0]
+                .slice(1, -1)}
+              {/* {motivations
                 .map((elm) => changeToKorean({ motivations: elm.motivation }))
-                .join(', ')}
+                .join(', ')} */}
             </Title>
             <p>
               <span>{getPossibleDays(weekdays)}</span>
             </p>
             <p>
-              {ableDistricts.map((elm) => (
+              {/* {ableDistricts.map((elm) => (
                 <span css={districtCSS} key={elm.district.nameOfDong}>
                   {elm.district.nameOfDong}
                 </span>
-              ))}
+              ))} */}
+              {ableDistricts
+                .map((elm) => (
+                  <span css={districtCSS} key={elm.district.nameOfDong}>
+                    {elm.district.nameOfDong}
+                  </span>
+                ))
+                .filter((el, idx) => idx < 3)}
+              {ableDistricts.length > 3 ? '.......' : null}
             </p>
           </React.Fragment>
         )}
