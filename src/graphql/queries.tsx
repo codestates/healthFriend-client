@@ -202,13 +202,19 @@ export const SET_ABLE_DISTRICT = gql`
 `;
 
 export const UPLOAD_FILE_STREAM = gql`
-  mutation profileImageUpload($file: Upload!) {
+  mutation ProfileImageUpload($file: Upload!) {
     profileImageUpload(file: $file) {
       ETag
       Location
       Key
       Bucket
     }
+  }
+`;
+
+export const DELETE_PROFILE_IMAGE = gql`
+  mutation DeleteProfileImage($url: String!) {
+    deleteProfileImage(url: $url)
   }
 `;
 

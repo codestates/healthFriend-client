@@ -8,7 +8,6 @@ import RegisterImage from '../static/registerImage.jpg';
 import explanation from '../config/Message';
 import RegisterInput from '../components/Shared/RegisterInput';
 import useProcessSelected from '../hooks/Register/useProcessSelected';
-// import Loading from '../components/Shared/Loading';
 import useLazyMe from '../hooks/Shared/useLazyMe';
 import {
   IS_LOGGED_IN,
@@ -95,7 +94,6 @@ function Register({ history }: RegisterProps) {
   //   return <Redirect to="/" />;
   // }
 
-  // 중간에 loading이 답변간에 이어지긴 하는데 어디서 이어지는 것인지??
   return (
     <Row type="flex" justify="center">
       <Col xs={24} md={24}>

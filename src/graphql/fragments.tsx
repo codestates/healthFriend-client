@@ -60,6 +60,10 @@ export const ALL_INFO = gql`
       }
       checked
     }
+    profileImage {
+      id
+      filename
+    }
   }
   ${USERS_INFO}
   ${BASE_INFO}

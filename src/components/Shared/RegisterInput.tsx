@@ -1,12 +1,13 @@
 /** @jsx jsx */
-import { Input } from 'antd';
+import React, { useState } from 'react';
+import { Input, message } from 'antd';
 import { css, jsx } from '@emotion/core';
 
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import useRegisterInput from '../../hooks/Register/useRegisterInput';
 import SelectPlace from './SelectPlace';
 import ImageForm from './ImageForm';
-import { UPLOAD_FILE_STREAM } from '../../graphql/queries';
+import { UPLOAD_FILE_STREAM, GET_USERINFO } from '../../graphql/queries';
 
 const wrapper = css`
   margin-bottom: 20px;
@@ -45,30 +46,66 @@ export default function RegisterInput({
     setTotalCheckArr,
   });
 
+  const { data: dataI } = useQuery(GET_USERINFO, {
+    fetchPolicy: 'network-only',
+  });
+  const [visible, setVisible] = useState<boolean>(true);
   const [
     profileImageUpload,
     { data: dataImg, loading: loadingImg },
   ] = useMutation(UPLOAD_FILE_STREAM, {
-    // image 올린 후엔 default로 선택해놓은 '비공개'상태를 무선택 상태로 바꿔줌.
+    // image 올린 후엔 default로 선택해놓은 '비공개'상태를 무선택 상태로 바꿔줌. 단, 이전 이미지 올린적있다면 그 상태로.
     onCompleted: (data) => {
       if (data) {
         setTotalCheckArr(
           totalCheckArr.map((elm, idx) =>
-            idx + 1 === order ? [false, false, false] : elm,
+            idx + 1 === order &&
+            subject === 'openImageChoice' &&
+            !(dataI && dataI.me && dataI.me.profileImage)
+              ? [false, false, false]
+              : elm,
           ),
         );
       }
+      message.success('처리되었습니다');
+      setVisible(true);
     },
+    onError: (error) => console.log(error),
   });
+
+  console.log('visible', visible);
 
   return (
     <div css={wrapper}>
       <h2>{question}</h2>
       {subject === 'openImageChoice' ? (
         <div>
-          <ImageForm {...{ profileImageUpload, dataImg, loadingImg }} />
+          <ImageForm
+            {...{
+              profileImageUpload,
+              dataImg,
+              loadingImg,
+              dataI,
+              visible,
+              setVisible,
+              totalCheckArr,
+              setTotalCheckArr,
+              order,
+              subject,
+            }}
+          />
           <br />
-          {dataImg ? <div css={checkboxDiv}>{questionCheckboxes}</div> : null}
+          {(visible && (dataImg && dataImg.profileImageUpload)) ||
+          (visible &&
+            dataI &&
+            dataI.me &&
+            dataI.me.profileImage &&
+            dataI.me.profileImage.length > 0) ? (
+            <React.Fragment>
+              <h2>사진 공개 여부를 선택해주세요</h2>
+              <div css={checkboxDiv}>{questionCheckboxes}</div>
+            </React.Fragment>
+          ) : null}
         </div>
       ) : null}
       {['ableDistricts', 'messageToFriend', 'openImageChoice'].indexOf(
