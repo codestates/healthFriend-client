@@ -4,7 +4,7 @@ import { Row, Col, Button, Result, Tooltip } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
 
-import RegisterInput from '../components/Shared/RegisterInput';
+import InfoInput from '../components/Shared/InfoInput';
 import questionList from '../config/questions';
 import useShowSelected from '../hooks/Mypage/useShowSelected';
 import useLazyMe from '../hooks/Shared/useLazyMe';
@@ -118,7 +118,7 @@ function MyPage({ history }: MyPageProps) {
                 {questionList.map((oneQ, idx) =>
                   oneQ.subject === 'gender' ? null : (
                     <React.Fragment key={oneQ.question}>
-                      <RegisterInput
+                      <InfoInput
                         order={idx + 1}
                         totalCheckArr={totalCheckArr}
                         setTotalCheckArr={setTotalCheckArr}

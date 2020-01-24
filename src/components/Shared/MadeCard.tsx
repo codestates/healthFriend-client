@@ -23,6 +23,11 @@ export default function MadeCard(oneData, type, setChatFriend, checked) {
       levelOf3Dae={oneData.levelOf3Dae}
       weekdays={oneData.weekdays}
       ableDistricts={oneData.ableDistricts}
+      profileImage={
+        oneData.profileImage.length > 0
+          ? oneData.profileImage[0].filename
+          : undefined
+      }
       type={type}
       setChatFriend={setChatFriend}
       checked={checked}

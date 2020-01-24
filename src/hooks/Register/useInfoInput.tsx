@@ -17,18 +17,18 @@ const checkboxDesign = css`
   }
 `;
 
-type useRegisterInputProps = {
+type useInfoInputProps = {
   order: number;
   totalCheckArr: [][];
   setTotalCheckArr: (...args: any[]) => void;
   // 왜 뒤에가 void고 앞에는 boolean[]가 안되는지 모르겠음.
 };
 
-const useRegisterInput = ({
+const useInfoInput = ({
   order,
   totalCheckArr,
   setTotalCheckArr,
-}: useRegisterInputProps) => {
+}: useInfoInputProps) => {
   const {
     question,
     answer,
@@ -107,4 +107,4 @@ const useRegisterInput = ({
   return { questionCheckboxes, question, answer, subject };
 };
 
-export default useRegisterInput;
+export default useInfoInput;

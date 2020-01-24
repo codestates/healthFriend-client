@@ -4,7 +4,7 @@ import { Input, message } from 'antd';
 import { css, jsx } from '@emotion/core';
 
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import useRegisterInput from '../../hooks/Register/useRegisterInput';
+import useInfoInput from '../../hooks/Register/useInfoInput';
 import SelectPlace from './SelectPlace';
 import ImageForm from './ImageForm';
 import { UPLOAD_FILE_STREAM, GET_USERINFO } from '../../graphql/queries';
@@ -21,7 +21,7 @@ const checkboxDiv = css`
 
 const { TextArea } = Input;
 
-type RegisterInputProps = {
+type InfoInputProps = {
   order: number;
   totalCheckArr: [][];
   introduction: string;
@@ -31,7 +31,7 @@ type RegisterInputProps = {
   selectedPlaces: any[];
 };
 
-export default function RegisterInput({
+export default function InfoInput({
   order,
   totalCheckArr,
   introduction,
@@ -39,8 +39,8 @@ export default function RegisterInput({
   setIntroduction,
   setPlaces,
   selectedPlaces,
-}: RegisterInputProps) {
-  const { questionCheckboxes, question, subject } = useRegisterInput({
+}: InfoInputProps) {
+  const { questionCheckboxes, question, subject } = useInfoInput({
     order,
     totalCheckArr,
     setTotalCheckArr,

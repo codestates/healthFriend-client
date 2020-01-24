@@ -1,4 +1,5 @@
 /** @jsx jsx */
+import React from 'react';
 import { Modal, Button, message } from 'antd';
 import { jsx, css } from '@emotion/core';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
@@ -37,6 +38,7 @@ type UserModalProps = {
   motivations: any[];
   openImageChoice: string;
   messageToFriend: string;
+  profileImage: string | undefined;
   type: string;
   history: any;
 };
@@ -55,6 +57,7 @@ function UserModal({
   motivations,
   openImageChoice,
   messageToFriend,
+  profileImage,
   type,
   history,
 }: UserModalProps) {
@@ -184,53 +187,58 @@ function UserModal({
         {loadingFU || loadingDFo || loadingDF || loadingAF || loadingCF ? (
           <Loading />
         ) : (
-          <table css={tableCSS}>
-            <tbody>
-              <tr>
-                <th css={tableTH}>성별</th>
-                <td>{changeToKorean({ gender })}</td>
-              </tr>
-              <tr>
-                <th css={tableTH}>3대 중량</th>
-                <td>{changeToKorean({ levelOf3Dae })}</td>
-              </tr>
-              <tr>
-                <th css={tableTH}>사진 공개</th>
-                <td>{changeToKorean({ openImageChoice })}</td>
-              </tr>
-              <tr>
-                <th css={tableTH}>운동 가능 지역</th>
-                <td>
-                  {ableDistricts
-                    .map((elm) => elm.district.nameOfDong)
-                    .join(', ')}
-                </td>
-              </tr>
-              <tr>
-                <th css={tableTH}>운동 가능 요일</th>
-                <td>
-                  {weekdays
-                    .map((elm) => changeToKorean({ weekdays: elm.weekday }))
-                    .sort(makeOrder({ weekdays }))
-                    .join(', ')}
-                </td>
-              </tr>
-              <tr>
-                <th css={tableTH}>헬친을 찾는 이유</th>
-                <td>
-                  {motivations
-                    .map((elm) =>
-                      changeToKorean({ motivations: elm.motivation }),
-                    )
-                    .join(', ')}
-                </td>
-              </tr>
-              <tr>
-                <th css={tableTH}>인사말</th>
-                <td>{messageToFriend}</td>
-              </tr>
-            </tbody>
-          </table>
+          <React.Fragment>
+            {profileImage ? (
+              <img src={profileImage} height="200" width="200" alt="" />
+            ) : null}
+            <table css={tableCSS}>
+              <tbody>
+                <tr>
+                  <th css={tableTH}>성별</th>
+                  <td>{changeToKorean({ gender })}</td>
+                </tr>
+                <tr>
+                  <th css={tableTH}>3대 중량</th>
+                  <td>{changeToKorean({ levelOf3Dae })}</td>
+                </tr>
+                <tr>
+                  <th css={tableTH}>사진 공개</th>
+                  <td>{changeToKorean({ openImageChoice })}</td>
+                </tr>
+                <tr>
+                  <th css={tableTH}>운동 가능 지역</th>
+                  <td>
+                    {ableDistricts
+                      .map((elm) => elm.district.nameOfDong)
+                      .join(', ')}
+                  </td>
+                </tr>
+                <tr>
+                  <th css={tableTH}>운동 가능 요일</th>
+                  <td>
+                    {weekdays
+                      .map((elm) => changeToKorean({ weekdays: elm.weekday }))
+                      .sort(makeOrder({ weekdays }))
+                      .join(', ')}
+                  </td>
+                </tr>
+                <tr>
+                  <th css={tableTH}>헬친을 찾는 이유</th>
+                  <td>
+                    {motivations
+                      .map((elm) =>
+                        changeToKorean({ motivations: elm.motivation }),
+                      )
+                      .join(', ')}
+                  </td>
+                </tr>
+                <tr>
+                  <th css={tableTH}>인사말</th>
+                  <td>{messageToFriend}</td>
+                </tr>
+              </tbody>
+            </table>
+          </React.Fragment>
         )}
       </Modal>
     </div>

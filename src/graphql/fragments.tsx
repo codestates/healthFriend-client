@@ -26,6 +26,10 @@ export const USERS_INFO = gql`
       }
     }
     createdAt
+    profileImage {
+      id
+      filename
+    }
   }
 `;
 

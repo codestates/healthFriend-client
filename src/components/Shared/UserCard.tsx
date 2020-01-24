@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import React, { useState } from 'react';
-import { Col, Card, Typography, Avatar, message } from 'antd';
+import { Col, Card, Typography, Avatar, message, Popover } from 'antd';
 import { jsx, css } from '@emotion/core';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
 
@@ -64,6 +64,7 @@ type UserCardProps = {
   motivations: any[];
   openImageChoice: string;
   messageToFriend: string;
+  profileImage: string | undefined;
   type: string;
   history: any;
   location: any;
@@ -82,6 +83,7 @@ function UserCard({
   motivations,
   openImageChoice,
   messageToFriend,
+  profileImage,
   type,
   history,
   checked,
@@ -375,10 +377,27 @@ function UserCard({
           motivations={motivations}
           openImageChoice={openImageChoice}
           messageToFriend={messageToFriend}
+          profileImage={profileImage}
           type={type}
           history={history}
         />
-        <Card.Meta avatar={<Avatar icon="user" />} title={nickname} />
+        <Card.Meta
+          avatar={
+            profileImage ? (
+              <Popover
+                content={
+                  <img src={profileImage} height="200" width="200" alt="" />
+                }
+                title={nickname}
+              >
+                <Avatar src={profileImage} />
+              </Popover>
+            ) : (
+              <Avatar icon="user" />
+            )
+          }
+          title={nickname}
+        />
         <br />
         <p style={{ position: 'absolute', top: 20, right: 20, color }}>
           {changeToKorean({ levelOf3Dae }).match(/\((.*?)\)/g)}

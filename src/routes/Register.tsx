@@ -6,7 +6,7 @@ import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import ProgressBar from '../components/Register/ProgressBar';
 import RegisterImage from '../static/registerImage.jpg';
 import explanation from '../config/Message';
-import RegisterInput from '../components/Shared/RegisterInput';
+import InfoInput from '../components/Shared/InfoInput';
 import useProcessSelected from '../hooks/Register/useProcessSelected';
 import useLazyMe from '../hooks/Shared/useLazyMe';
 import {
@@ -123,7 +123,7 @@ function Register({ history }: RegisterProps) {
               <ProgressBar order={order} />
             </div>
 
-            <RegisterInput
+            <InfoInput
               order={order}
               totalCheckArr={totalCheckArr}
               setTotalCheckArr={setTotalCheckArr}
