@@ -89,11 +89,3 @@ export const BADGE_INFO = gql`
   }
   ${BASE_INFO}
 `;
-
-// export const FOLLOW_INFO = gql`
-//   fragment FollowInfo on Follow {
-//     checked
-//     createdAt
-//     updatedAt
-//   }
-// `;

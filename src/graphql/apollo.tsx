@@ -17,7 +17,6 @@ const uploadLink = createUploadLink({
       : 'https://api.healthfriend.club/graphql',
   headers: {
     'keep-alive': 'true',
-    //   Authorization: `Bearer ${Cookies.get('access-token')}`,
   },
 });
 
@@ -49,17 +48,13 @@ const wsLink = new WebSocketLink({
   },
 });
 
-const wsHttplink = split(
-  ({ query }) => {
-    const definition = getMainDefinition(query);
-    return (
-      definition.kind === 'OperationDefinition' &&
-      definition.operation === 'subscription'
-    );
-  },
-  wsLink,
-  // httpLink,
-);
+const wsHttplink = split(({ query }) => {
+  const definition = getMainDefinition(query);
+  return (
+    definition.kind === 'OperationDefinition' &&
+    definition.operation === 'subscription'
+  );
+}, wsLink);
 
 const link = ApolloLink.from([errorLink, wsHttplink, uploadLink]);
 

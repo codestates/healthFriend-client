@@ -157,7 +157,7 @@ export default function Header() {
               </Menu.Item>
             )}
             <Menu.Item>
-              <NavLink to="/chat" className="item" css={navLinkItem}>
+              <NavLink to="/chat2" className="item" css={navLinkItem}>
                 채팅
               </NavLink>
             </Menu.Item>

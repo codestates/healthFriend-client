@@ -30,3 +30,4 @@ todo.md
 
 /src/config/firebaseConfig.js
 /src/config/sendbirdConfig.tsx
+/src/config/chatkitConfig.js

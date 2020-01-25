@@ -35,20 +35,4 @@ export const resolvers = {
       return newFriend;
     },
   },
-  // Mutation: {
-  //   logoutMe: (_, { id }, { cache, getCacheKey }) => {
-  //     const meId = cache.config.dataIdFromObject({ __typename: 'User', id });
-  //     const meInfo = cache.readFragment({ fragment: USERS_INFO, id: meId });
-  //     const updatedMe = {
-  //       ...meInfo,
-  //       nickname: 'fool',
-  //     };
-  //     cache.writeFragment({
-  //       id: meId,
-  //       fragment: USERS_INFO,
-  //       data: updatedMe,
-  //     });
-  //     return updatedMe;
-  //   },
-  // },
 };

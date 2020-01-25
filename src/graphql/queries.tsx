@@ -1,10 +1,5 @@
 import gql from 'graphql-tag';
-import {
-  ALL_INFO,
-  USERS_INFO,
-  BASE_INFO /* FOLLOW_INFO */,
-  BADGE_INFO,
-} from './fragments';
+import { ALL_INFO, USERS_INFO, BASE_INFO, BADGE_INFO } from './fragments';
 
 export const GET_USERINFO = gql`
   {
