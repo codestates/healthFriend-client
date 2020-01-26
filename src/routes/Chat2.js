@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { graphql } from 'react-apollo';
 import {
   handleInput,
   connectToChatkit,
@@ -9,16 +10,14 @@ import {
 import RoomList from '../components/Chat2/RoomList';
 import ChatSession from '../components/Chat2/ChatSession';
 import RoomUsers from '../components/Chat2/RoomUsers';
-import Dialog from '../components/Chat2/Dialog';
 import '../css/Chat2/chat2.css';
+import { GET_USERINFO } from '../graphql/queries';
 
 class Chat2 extends Component {
   constructor() {
     super();
     this.state = {
       userId: '',
-      showLogin: true,
-      isLoading: false,
       currentUser: null,
       currentRoom: null,
       rooms: [],
@@ -35,12 +34,24 @@ class Chat2 extends Component {
     this.sendDM = sendDM.bind(this);
   }
 
-  componentDidMount() {}
+  // 왜 나갔다가 들어오면 state 날라가고, 다시 didMount때 값을 넣어줘야하는지 모르겠음.
+  componentDidMount() {
+    if (this.props.data.me) {
+      connectToChatkit.call(this);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      !prevProps.data.me ||
+      this.props.data.me.nickname !== prevProps.data.me.nickname
+    ) {
+      connectToChatkit.call(this);
+    }
+  }
 
   render() {
     const {
-      userId,
-      showLogin,
       rooms,
       currentRoom,
       currentUser,
@@ -49,6 +60,8 @@ class Chat2 extends Component {
       roomUsers,
       roomName,
     } = this.state;
+
+    console.log('state를 보여줘', this.state);
 
     return (
       <div className="chat-wrapper">
@@ -97,16 +110,13 @@ class Chat2 extends Component {
             />
           ) : null}
         </aside>
-        {showLogin ? (
-          <Dialog
-            userId={userId}
-            handleInput={this.handleInput}
-            connectToChatkit={this.connectToChatkit}
-          />
-        ) : null}
       </div>
     );
   }
 }
 
-export default Chat2;
+const query = graphql(GET_USERINFO);
+
+const Chat2WithApollo = query(Chat2);
+
+export default Chat2WithApollo;
