@@ -73,22 +73,15 @@ function connectToRoom(id = '92c49eb7-fe76-42bf-a85b-37e30a31cabb') {
     .catch(console.error);
 }
 
-function connectToChatkit(event) {
-  event.preventDefault();
-
-  const { userId } = this.state;
-
-  if (userId === null || userId.trim() === '') {
-    alert('Invalid userId');
-    return;
-  }
-
+function connectToChatkit() {
   this.setState({
-    isLoading: true,
+    userId: this.props.data.me.nickname,
   });
 
   axios
-    .post('http://localhost:5200/users', { userId })
+    .post('http://localhost:5200/users', {
+      userId: this.props.data.me.nickname,
+    })
     .then(() => {
       const tokenProvider = new Chatkit.TokenProvider({
         url: 'http://localhost:5200/authenticate',
@@ -96,7 +89,7 @@ function connectToChatkit(event) {
 
       const chatManager = new Chatkit.ChatManager({
         instanceLocator: CHATKIT_INSTANCE_LOCATOR,
-        userId,
+        userId: this.props.data.me.nickname,
         tokenProvider,
       });
 
