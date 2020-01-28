@@ -61,6 +61,10 @@ export const ALL_INFO = gql`
       id
       friend {
         ...BaseInfo
+        profileImage {
+          id
+          filename
+        }
       }
       checked
     }

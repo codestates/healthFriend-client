@@ -1,6 +1,8 @@
 import Chatkit from '@pusher/chatkit-client';
 import axios from 'axios';
-import { CHATKIT_INSTANCE_LOCATOR } from '../../config/chatkitConfig';
+import { CHATKIT_INSTANCE_LOCATOR } from '../config/chatkitConfig';
+
+// typescript로 바꾸기
 
 function sendMessage(event) {
   event.preventDefault();
@@ -24,97 +26,6 @@ function handleInput(event) {
   this.setState({
     [name]: value,
   });
-}
-
-function connectToRoom(id = '92c49eb7-fe76-42bf-a85b-37e30a31cabb') {
-  const { currentUser } = this.state;
-
-  this.setState({
-    messages: [],
-  });
-
-  return currentUser
-    .subscribeToRoom({
-      roomId: `${id}`,
-      messageLimit: 100,
-      hooks: {
-        onMessage: (message) => {
-          this.setState({
-            messages: [...this.state.messages, message],
-          });
-        },
-        onPresenceChanged: () => {
-          const { currentRoom } = this.state;
-          this.setState({
-            roomUsers: currentRoom.users.sort((a) => {
-              if (a.presence.state === 'online') return -1;
-
-              return 1;
-            }),
-          });
-        },
-      },
-    })
-    .then((currentRoom) => {
-      const roomName =
-        currentRoom.customData && currentRoom.customData.isDirectMessage
-          ? currentRoom.customData.userIds.filter(
-              (id) => id !== currentUser.id,
-            )[0]
-          : currentRoom.name;
-
-      this.setState({
-        currentRoom,
-        roomUsers: currentRoom.users,
-        rooms: currentUser.rooms,
-        roomName,
-      });
-    })
-    .catch(console.error);
-}
-
-function connectToChatkit() {
-  this.setState({
-    userId: this.props.data.me.nickname,
-  });
-
-  axios
-    .post('http://localhost:5200/users', {
-      userId: this.props.data.me.nickname,
-    })
-    .then(() => {
-      const tokenProvider = new Chatkit.TokenProvider({
-        url: 'http://localhost:5200/authenticate',
-      });
-
-      const chatManager = new Chatkit.ChatManager({
-        instanceLocator: CHATKIT_INSTANCE_LOCATOR,
-        userId: this.props.data.me.nickname,
-        tokenProvider,
-      });
-
-      return chatManager
-        .connect({
-          onAddedToRoom: (room) => {
-            const { rooms } = this.state;
-            this.setState({
-              rooms: [...rooms, room],
-            });
-          },
-        })
-        .then((currentUser) => {
-          this.setState(
-            {
-              currentUser,
-              showLogin: false,
-              isLoading: false,
-              rooms: currentUser.rooms,
-            },
-            () => connectToRoom.call(this),
-          );
-        });
-    })
-    .catch(console.error);
 }
 
 function createPrivateRoom(id) {
@@ -151,10 +62,127 @@ function createPrivateRoom(id) {
   });
 }
 
+function connectToRoom(id = '92c49eb7-fe76-42bf-a85b-37e30a31cabb') {
+  const { currentUser } = this.state;
+
+  this.setState({
+    messages: [],
+  });
+
+  return currentUser
+    .subscribeToRoom({
+      roomId: `${id}`,
+      messageLimit: 100,
+      hooks: {
+        onMessage: (message) => {
+          this.setState({
+            messages: [...this.state.messages, message],
+          });
+        },
+        onPresenceChanged: () => {
+          const { currentRoom } = this.state;
+          this.setState({
+            roomUsers: currentRoom.users.sort((a) => {
+              if (a.presence.state === 'online') return -1;
+              return 1;
+            }),
+          });
+        },
+      },
+    })
+    .then((currentRoom) => {
+      const roomName =
+        currentRoom.customData && currentRoom.customData.isDirectMessage
+          ? currentRoom.customData.userIds.filter(
+              (id) => id !== currentUser.id,
+            )[0]
+          : currentRoom.name;
+
+      this.setState({
+        currentRoom,
+        isLoading: false,
+        roomUsers: currentRoom.users,
+        rooms: currentUser.rooms,
+        roomName,
+      });
+    })
+    .then(() => {
+      if (
+        this.props.chatFriend.chatFriend.nickname !== '' &&
+        id === '92c49eb7-fe76-42bf-a85b-37e30a31cabb'
+      ) {
+        createPrivateRoom
+          .call(this, this.props.chatFriend.chatFriend.nickname)
+          .then((room) => {
+            connectToRoom.call(this, room.id);
+          });
+      }
+    })
+    .catch(console.error);
+}
+
 function sendDM(id) {
   createPrivateRoom.call(this, id).then((room) => {
     connectToRoom.call(this, room.id);
   });
+}
+
+function connectToChatkit() {
+  this.setState({
+    userId: this.props.me.me.nickname,
+  });
+
+  axios
+    .post('http://localhost:5200/users', {
+      userId: this.props.me.me.nickname,
+    })
+    .then(() => {
+      const tokenProvider = new Chatkit.TokenProvider({
+        url: 'http://localhost:5200/authenticate',
+      });
+
+      const chatManager = new Chatkit.ChatManager({
+        instanceLocator: CHATKIT_INSTANCE_LOCATOR,
+        userId: this.props.me.me.nickname,
+        tokenProvider,
+      });
+
+      return chatManager
+        .connect({
+          onAddedToRoom: (room) => {
+            const { rooms } = this.state;
+            this.setState({
+              rooms: [...rooms, room],
+            });
+          },
+        })
+        .then((currentUser) => {
+          this.setState(
+            {
+              currentUser,
+              rooms: currentUser.rooms,
+            },
+            () => {
+              if (this.props.chatFriend.chatFriend.nickname !== '') {
+                const chatRoom = this.state.rooms.filter((room) => {
+                  return (
+                    room.customData &&
+                    room.customData.userIds.indexOf(
+                      this.props.chatFriend.chatFriend.nickname,
+                    ) !== -1
+                  );
+                });
+                if (chatRoom.length > 0) {
+                  return connectToRoom.call(this, chatRoom[0].id);
+                }
+                connectToRoom.call(this);
+              }
+              connectToRoom.call(this);
+            },
+          );
+        });
+    })
+    .catch(console.error);
 }
 
 export { sendMessage, handleInput, connectToRoom, connectToChatkit, sendDM };

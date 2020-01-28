@@ -324,15 +324,15 @@ function UserCard({
       return cardActions.push(
         <span
           onClick={() => {
-            func();
             checkCard();
-            alert('채팅창이 생성되었습니다');
+            setChatFriend({ variables: { id, nickname } });
+            message.success('채팅창으로 이동합니다');
+            func();
           }}
         >
           <b>{buttonText}</b>
         </span>,
       );
-      // 채팅 연결 성공후 성공했다는 알림 및 채팅창 불 들어오는 noti 같은 것.
     }
     return cardActions.push(
       <span
@@ -347,10 +347,7 @@ function UserCard({
 
   if (type === 'friends') {
     makeButton(deleteFriend, '친구 끊기');
-    makeButton(
-      () => setChatFriend({ variables: { id, nickname } }),
-      '채팅하기',
-    );
+    makeButton(() => history.push('/Chat'), '채팅하기');
   } else if (type === 'followers') {
     makeButton(deleteFollower, '친구신청 거절');
     makeButton(addFriend, '친구신청 수락');
@@ -382,6 +379,7 @@ function UserCard({
           profileImage={profileImage}
           type={type}
           history={history}
+          setChatFriend={setChatFriend}
         />
         <Card.Meta
           avatar={
@@ -401,8 +399,7 @@ function UserCard({
           title={nickname}
         />
         <br />
-        <p style={{ position: 'absolute', top: 20, right: 20, color }}>
-          {/* {changeToKorean({ levelOf3Dae }).match(/\((.*?)\)/g)} */}
+        <p style={{ position: 'absolute', top: 20, right: 20 }}>
           {changeToKorean({ gender }) === '남자' ? (
             <img src={male} height="30" width="30" alt="" />
           ) : (
@@ -414,23 +411,15 @@ function UserCard({
           <Loading />
         ) : (
           <React.Fragment>
-            <Title level={4} css={titleCSS}>
+            <Title level={4} css={titleCSS} style={{ color }}>
               {changeToKorean({ levelOf3Dae })
                 .match(/\((.*?)\)/g)![0]
                 .slice(1, -1)}
-              {/* {motivations
-                .map((elm) => changeToKorean({ motivations: elm.motivation }))
-                .join(', ')} */}
             </Title>
             <p>
               <span>{getPossibleDays(weekdays)}</span>
             </p>
             <p>
-              {/* {ableDistricts.map((elm) => (
-                <span css={districtCSS} key={elm.district.nameOfDong}>
-                  {elm.district.nameOfDong}
-                </span>
-              ))} */}
               {ableDistricts
                 .map((elm) => (
                   <span css={districtCSS} key={elm.district.nameOfDong}>

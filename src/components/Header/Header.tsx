@@ -157,12 +157,12 @@ export default function Header() {
               </Menu.Item>
             )}
             <Menu.Item>
-              <NavLink to="/chat2" className="item" css={navLinkItem}>
+              <NavLink to="/Chat" className="item" css={navLinkItem}>
                 채팅
               </NavLink>
             </Menu.Item>
             <Menu.Item>
-              <MypageDropdown name={dataMe.me.nickname} meId={dataMe.me.id} />
+              <MypageDropdown name={dataMe.me.nickname} />
             </Menu.Item>
           </Menu>
         </React.Fragment>

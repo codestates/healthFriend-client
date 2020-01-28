@@ -41,6 +41,7 @@ type UserModalProps = {
   profileImage: string | undefined;
   type: string;
   history: any;
+  setChatFriend: Function;
 };
 
 function UserModal({
@@ -60,6 +61,7 @@ function UserModal({
   profileImage,
   type,
   history,
+  setChatFriend,
 }: UserModalProps) {
   const client = useApolloClient();
   // userCard와 userModal의 아래 mutation들 다 완전 중복인데 중복 제거하는 법 있나?
@@ -153,7 +155,21 @@ function UserModal({
     </Button>,
   ];
 
-  const makeButton = (func, buttonText) =>
+  const makeButton = (func, buttonText) => {
+    if (buttonText === '채팅하기') {
+      return modalFooter.push(
+        <span
+          onClick={() => {
+            setChatFriend({ variables: { id, nickname } });
+            message.success('채팅창으로 이동합니다');
+            func();
+          }}
+        >
+          <b>{buttonText}</b>
+        </span>,
+      );
+      // 채팅 연결 성공후 성공했다는 알림 및 채팅창 불 들어오는 noti 같은 것.
+    }
     modalFooter.push(
       <Button
         key={buttonText}
@@ -163,10 +179,11 @@ function UserModal({
         {buttonText}
       </Button>,
     );
+  };
 
   if (type === 'friends') {
     makeButton(deleteFriend, '친구 끊기');
-    makeButton(() => console.log('친구야 채팅하자'), '채팅하기');
+    makeButton(() => history.push('/Chat'), '채팅하기');
   } else if (type === 'followers') {
     makeButton(deleteFollower, '친구신청 거절');
     makeButton(addFriend, '친구신청 수락');
