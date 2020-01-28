@@ -19,7 +19,7 @@ import useSubscript from '../hooks/Shared/useSubscript';
 import redirectWhenError from '../utils/redirectWhenError';
 import MadeCard from '../components/Shared/MadeCard';
 import { CHATKIT_INSTANCE_LOCATOR } from '../config/chatkitConfig';
-
+import Chatbot from '../components/Chatbot/Chatbot';
 const { Title } = Typography;
 
 const renderingImage = css`
@@ -164,6 +164,7 @@ function Home({ history }: HomeProps) {
               </Row>
             </Col>
           </Row>
+          <Chatbot />
         </Col>
       ) : (
         <IfLoginUSeeFriend />
