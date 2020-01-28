@@ -7,7 +7,7 @@ import Home from './routes/Home';
 import Register from './routes/Register';
 import FindFriend from './routes/FindFriend';
 import Cards from './routes/Cards';
-import Chat2 from './routes/Chat2';
+import Chat from './routes/Chat';
 import Login from './routes/Login';
 import Mypage from './routes/MyPage';
 import NotFound from './routes/NotFound';
@@ -25,7 +25,7 @@ function App() {
             <Route path="/register" component={Register} />
             <Route path="/find" component={FindFriend} />
             <Route path="/cards/:state" component={Cards} />
-            <Route path="/chat2" component={Chat2} />
+            <Route path="/Chat" component={Chat} />
             <Route path="/login" component={Login} />
             <Route path="/mypage" component={Mypage} />
             <Route component={NotFound} />
