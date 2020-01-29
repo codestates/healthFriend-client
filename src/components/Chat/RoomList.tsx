@@ -30,7 +30,7 @@ const RoomList = (props: RoomListProps) => {
       )[0].friend.profileImage;
 
       const isRoomActive = room.id === currentRoom.id ? 'active' : '';
-
+      console.log('unReadCount', room.unreadCount);
       return (
         <li
           className={isRoomActive}
@@ -50,6 +50,9 @@ const RoomList = (props: RoomListProps) => {
           ) : (
             <span className="room-name">{room.name}</span>
           )}
+          {/* {room.unreadCount > 0 ? (
+            <span className="room-unread">{room.unreadCount}</span>
+          ) : null} */}
         </li>
       );
     });
