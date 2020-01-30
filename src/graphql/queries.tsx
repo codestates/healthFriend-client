@@ -37,6 +37,7 @@ export const GET_FILTERED_USERS = gql`
     $motivations: [MotivationEnum]
     $weekdays: [WeekdayEnum]
     $districts: [String]
+    $gender: [GenderEnum]
   ) {
     filterUsers(
       openImageChoice: $openImageChoice
@@ -44,6 +45,7 @@ export const GET_FILTERED_USERS = gql`
       motivations: $motivations
       weekdays: $weekdays
       districts: $districts
+      gender: $gender
     ) {
       ...UsersInfo
     }

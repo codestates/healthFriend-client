@@ -19,7 +19,7 @@ type FindFriendProps = {
 function FindFriend({ history }: FindFriendProps) {
   const client = useApolloClient();
   const [filter, setFilter] = useState<any>({
-    openImageChoice: [],
+    gender: [],
     levelOf3Dae: [],
     motivations: [],
     weekdays: [],
@@ -62,7 +62,7 @@ function FindFriend({ history }: FindFriendProps) {
             <Divider>친구 필터</Divider>
             <Row gutter={24} justify="center">
               <FilterLists
-                {...{ getFilteredUsers, filter, places, setPlaces, setFilter }}
+                {...{ getFilteredUsers, filter, setFilter, places, setPlaces }}
               />
               <Col xs={24} md={{ span: 4, offset: 20 }} />
             </Row>

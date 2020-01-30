@@ -10,7 +10,13 @@ import UserCard from './UserCard';
 //   checked: boolean;
 // };
 
-export default function MadeCard(oneData, type, setChatFriend, checked) {
+export default function MadeCard(
+  oneData,
+  type,
+  setChatFriend,
+  checked,
+  isFriend,
+) {
   return (
     <UserCard
       id={oneData.id}
@@ -31,6 +37,7 @@ export default function MadeCard(oneData, type, setChatFriend, checked) {
       type={type}
       setChatFriend={setChatFriend}
       checked={checked}
+      isFriend={isFriend}
     />
   );
 }
