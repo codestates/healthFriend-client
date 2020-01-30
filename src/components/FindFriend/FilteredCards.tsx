@@ -36,7 +36,9 @@ export default function FilteredCards({
                 .map((one) => one.id);
               return array.indexOf(user.id) === -1;
             })
-            .map((oneData) => MadeCard(oneData, 'unknown', () => null, true))
+            .map((oneData) =>
+              MadeCard(oneData, 'unknown', () => null, true, false),
+            )
         : null}
     </Row>
   );

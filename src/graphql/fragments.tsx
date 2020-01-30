@@ -65,6 +65,7 @@ export const ALL_INFO = gql`
           id
           filename
         }
+        openImageChoice
       }
       checked
     }

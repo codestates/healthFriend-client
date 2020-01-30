@@ -119,13 +119,13 @@ export default function Header() {
         <React.Fragment>
           <Menu mode="horizontal" css={navMenu}>
             <Menu.Item>
-              {/* {data.me.levelOf3Dae &&
-              data.me.gender &&
-              data.me.openImageChoice ? null : ( */}
-              <NavLink to="/register" className="item" css={navLinkItem}>
-                등록
-              </NavLink>
-              {/* )} */}
+              {dataMe.me.motivations.length > 0 &&
+              dataMe.me.weekdays.length > 0 &&
+              dataMe.me.ableDistricts.length > 0 ? null : (
+                <NavLink to="/register" className="item" css={navLinkItem}>
+                  내 정보등록
+                </NavLink>
+              )}
             </Menu.Item>
             <Menu.Item>
               <NavLink to="/find" className="item" css={navLinkItem}>

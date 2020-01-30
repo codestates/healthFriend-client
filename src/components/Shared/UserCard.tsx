@@ -73,6 +73,7 @@ type UserCardProps = {
   match: any;
   checked: boolean;
   setChatFriend: Function;
+  isFriend: boolean;
 };
 
 function UserCard({
@@ -90,6 +91,7 @@ function UserCard({
   history,
   checked,
   setChatFriend,
+  isFriend,
 }: UserCardProps) {
   const client = useApolloClient();
   const [visible, setVisible] = useState<boolean>(false);
@@ -380,10 +382,13 @@ function UserCard({
           type={type}
           history={history}
           setChatFriend={setChatFriend}
+          isFriend={isFriend}
         />
         <Card.Meta
           avatar={
-            profileImage ? (
+            profileImage &&
+            (openImageChoice === 'OPEN' ||
+              (openImageChoice === 'FRIEND' && isFriend)) ? (
               <Popover
                 content={
                   <img src={profileImage} height="200" width="200" alt="" />

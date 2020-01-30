@@ -28,15 +28,17 @@ export default function CardList({
   if (loadingFR) return <Loading />;
   if (errorFR) redirectWhenError({ history, client });
   if (dataFR && dataFR.me) {
-    const makeCard = (oneData, func, checked) =>
-      MadeCard(oneData, state, func, checked);
+    const makeCard = (oneData, func, checked, isFriend) =>
+      MadeCard(oneData, state, func, checked, isFriend);
     const { following, followers, friends } = dataFR.me;
 
     if (state === 'following') {
       if (following.length > 0) {
         return following
           .sort(sortByDate)
-          .map((oneData) => makeCard(oneData.following, () => null, true));
+          .map((oneData) =>
+            makeCard(oneData.following, () => null, true, false),
+          );
       }
       return <div>{message.followingEmpty}</div>;
     }
@@ -46,7 +48,7 @@ export default function CardList({
           .sort(sortByDate)
           .sort((a, b) => a.checked - b.checked)
           .map((oneData) =>
-            makeCard(oneData.follower, () => null, oneData.checked),
+            makeCard(oneData.follower, () => null, oneData.checked, false),
           );
       }
       return <div>{message.followersEmpty}</div>;
@@ -57,7 +59,7 @@ export default function CardList({
           .sort(sortByDate)
           .sort((a, b) => a.checked - b.checked)
           .map((oneData) =>
-            makeCard(oneData.friend, setChatFriend, oneData.checked),
+            makeCard(oneData.friend, setChatFriend, oneData.checked, true),
           );
       }
       return <p>{message.friendsEmpty}</p>;

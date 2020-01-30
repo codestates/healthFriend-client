@@ -158,9 +158,11 @@ function Home({ history }: HomeProps) {
           <Row type="flex" justify="center" style={{ marginTop: 20 }}>
             <Col xs={24}>
               <Row gutter={24}>
-                {dataUsers.users.map((oneData) =>
-                  MadeCard(oneData, 'unknown', () => null, true),
-                )}
+                {dataUsers.users
+                  .filter((_, idx) => idx < 6)
+                  .map((oneData) =>
+                    MadeCard(oneData, 'unknown', () => null, true, false),
+                  )}
               </Row>
             </Col>
           </Row>

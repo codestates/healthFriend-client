@@ -40,14 +40,15 @@ function sendMessage(event) {
   //
 
   this.setState({
+    ...this.state,
     newMessage: '',
   });
 }
 
 function handleInput(event) {
   const { value, name } = event.target;
-
   this.setState({
+    ...this.state,
     [name]: value,
   });
 }
@@ -153,6 +154,8 @@ function connectToRoom(id = '92c49eb7-fe76-42bf-a85b-37e30a31cabb') {
                 (id) => id !== currentUser.id,
               )[0]
             : currentRoom.name;
+
+        console.log('rooms, ', currentUser.rooms);
 
         this.setState({
           currentRoom,

@@ -42,6 +42,7 @@ type UserModalProps = {
   type: string;
   history: any;
   setChatFriend: Function;
+  isFriend: boolean;
 };
 
 function UserModal({
@@ -62,6 +63,7 @@ function UserModal({
   type,
   history,
   setChatFriend,
+  isFriend,
 }: UserModalProps) {
   const client = useApolloClient();
   // userCard와 userModal의 아래 mutation들 다 완전 중복인데 중복 제거하는 법 있나?
@@ -205,7 +207,9 @@ function UserModal({
           <Loading />
         ) : (
           <React.Fragment>
-            {profileImage ? (
+            {profileImage &&
+            (openImageChoice === 'OPEN' ||
+              (openImageChoice === 'FRIEND' && isFriend)) ? (
               <img src={profileImage} height="200" width="200" alt="" />
             ) : null}
             <table css={tableCSS}>
