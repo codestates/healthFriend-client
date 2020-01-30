@@ -11,12 +11,11 @@ import { MessageList, MessageInput } from 'stream-chat-react';
 import { StreamChat } from 'stream-chat';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_USERS, GET_USERINFO } from '../../graphql/queries';
+import { Icon } from 'antd';
 import 'antd/dist/antd.css';
-
 import 'stream-chat-react/dist/css/index.css';
-import Cookies from 'js-cookie';
 
-import 'antd/dist/antd.css';
+import Cookies from 'js-cookie';
 
 export const Chatbot = () => {
   const chatClient = new StreamChat(API_KEY);
@@ -63,30 +62,51 @@ export const Chatbot = () => {
   return (
     <div>
       {isOpen ? (
-        <Chat client={chatClient}>
-          <Channel channel={channel}>
-            <div
-              style={{
-                position: 'fixed',
-                right: '20px',
-                bottom: '50px',
-                height: '400px',
-                width: '380px',
-              }}
-            >
-              <Window>
-                <ChannelHeader />
-                <MessageList />
-                <MessageInput />
-              </Window>
-              <Thread />
-            </div>
-          </Channel>
-        </Chat>
+        <div style={{ height: '0px', width: '0px' }}>
+          <Chat client={chatClient}>
+            <Channel channel={channel}>
+              <div
+                style={{
+                  position: 'fixed',
+                  right: '30px',
+                  bottom: '80px',
+                  height: '400px',
+                  width: '380px',
+                }}
+              >
+                <Window>
+                  <ChannelHeader />
+                  <MessageList />
+                  <MessageInput />
+                </Window>
+                <Thread />
+              </div>
+            </Channel>
+          </Chat>
+        </div>
       ) : null}
 
-      <div style={{ position: 'fixed', right: '20px', bottom: '20px' }}>
-        <button onClick={() => setIsOpen(!isOpen)}>챗봇</button>
+      <div
+        style={{
+          position: 'fixed',
+          right: '30px',
+          bottom: '25px',
+          fontSize: '2.3rem',
+        }}
+      >
+        {isOpen ? (
+          <Icon
+            type="close-circle"
+            theme="twoTone"
+            onClick={() => setIsOpen(!isOpen)}
+          />
+        ) : (
+          <Icon
+            type="message"
+            theme="twoTone"
+            onClick={() => setIsOpen(!isOpen)}
+          />
+        )}
       </div>
     </div>
   );
