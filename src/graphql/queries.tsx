@@ -19,6 +19,15 @@ export const GET_USERS = gql`
   ${USERS_INFO}
 `;
 
+export const GET_RANDOM_USERS = gql`
+  {
+    randomUsers {
+      ...UsersInfo
+    }
+  }
+  ${USERS_INFO}
+`;
+
 export const GET_PLACES = gql`
   {
     allDistricts {

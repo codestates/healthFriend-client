@@ -9,10 +9,11 @@ import axios from 'axios';
 import renderImage from '../static/renderImage.jpg';
 import IfLoginUSeeFriend from '../components/Home/IfLoginUSeeFriend';
 import MainButton from '../components/Home/MainButton';
+import ButtonToFindFriends from '../components/Home/ButtonToFindFriends';
 import {
   GET_USERINFO,
   IS_LOGGED_IN,
-  GET_USERS,
+  GET_RANDOM_USERS,
   GET_USER_COUNT,
 } from '../graphql/queries';
 import useSubscript from '../hooks/Shared/useSubscript';
@@ -25,7 +26,7 @@ const { Title } = Typography;
 const renderingImage = css`
   width: 100%;
   object-fit: cover;
-  height: 100vh;
+  height: 82vh;
   filter: grayscale(20%);
 `;
 
@@ -56,7 +57,7 @@ function Home({ history }: HomeProps) {
   const { data: dataCount } = useQuery(GET_USER_COUNT, {
     fetchPolicy: 'network-only',
   });
-  const { data: dataUsers } = useQuery(GET_USERS);
+  const { data: dataUsers } = useQuery(GET_RANDOM_USERS);
   const { data: loginData } = useQuery(IS_LOGGED_IN);
 
   // 채팅창 때문에 여기 인증하는 부분 최악인듯... 코드 뜯어고쳐야....
@@ -146,7 +147,7 @@ function Home({ history }: HomeProps) {
         <img src={renderImage} alt="" css={renderingImage} />
         <div css={renderingMessage}>
           <Title level={1}>
-            {dataCount ? dataCount.userCount : 1000} 명의 헬스 친구들이
+            {dataCount ? dataCount.userCount : 1000} 명의 친구들이
             <br />
             당신을 기다리고 있어요
           </Title>
@@ -158,11 +159,12 @@ function Home({ history }: HomeProps) {
           <Row type="flex" justify="center" style={{ marginTop: 20 }}>
             <Col xs={24}>
               <Row gutter={24}>
-                {dataUsers.users.map((oneData) =>
+                {dataUsers.randomUsers.map((oneData) =>
                   MadeCard(oneData, 'unknown', () => null, true),
                 )}
               </Row>
             </Col>
+            <ButtonToFindFriends {...{ history }} />
           </Row>
         </Col>
       ) : (
