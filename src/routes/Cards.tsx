@@ -1,4 +1,6 @@
-import React, { useEffect } from 'react';
+/** @jsx jsx */
+import { useEffect } from 'react';
+import { jsx, css } from '@emotion/core';
 import { Row, Col } from 'antd';
 import { useQuery, useApolloClient, useMutation } from '@apollo/react-hooks';
 
@@ -13,6 +15,24 @@ import useSubscript from '../hooks/Shared/useSubscript';
 import Nav from '../components/Cards/Nav';
 import CardList from '../components/Cards/CardList';
 import redirectWhenError from '../utils/redirectWhenError';
+
+const wrapper = css`
+  text-align: center;
+  margin-top: 30px;
+`;
+
+const window = css`
+  padding: 10px;
+  border: 1px solid #ccc;
+  width: 80vw;
+  height: 80vh;
+  margin: 0 auto;
+`;
+
+const cardListCss = css`
+  background-color: #999999;
+  height: 70vh;
+`;
 
 type CardsProps = {
   history: any; // match, location을 같이 쓰니 안되고, 얘만 쓰니 되네... withRouter로 붙인 애들은 다 써줘야 하는 것 같고, 아닌 애들은 아닌 듯.
@@ -59,25 +79,29 @@ function Cards({ history, match }: CardsProps) {
 
   return (
     <div>
-      <br />
-      <Row type="flex" justify="center">
-        <Nav history={history} state={state} />
-        <br />
-        <br />
-        <Col xs={24} md={20}>
-          <CardList
-            {...{
-              loadingFR,
-              errorFR,
-              dataFR,
-              history,
-              client,
-              state,
-              setChatFriend,
-            }}
-          />
-        </Col>
-      </Row>
+      <div css={wrapper}>
+        <div css={window}>
+          <br />
+          <Row type="flex" justify="center">
+            <Nav history={history} state={state} />
+            <Col xs={24} md={24}>
+              <div css={cardListCss}>
+                <CardList
+                  {...{
+                    loadingFR,
+                    errorFR,
+                    dataFR,
+                    history,
+                    client,
+                    state,
+                    setChatFriend,
+                  }}
+                />
+              </div>
+            </Col>
+          </Row>
+        </div>
+      </div>
     </div>
   );
 }
