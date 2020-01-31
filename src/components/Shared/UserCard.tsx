@@ -1,8 +1,10 @@
 /** @jsx jsx */
 import React, { useState } from 'react';
-import { Col, Card, Typography, Avatar, message, Popover } from 'antd';
+import { Col, Card, Avatar, message, Popover } from 'antd';
 import { jsx, css } from '@emotion/core';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDumbbell, faChild } from '@fortawesome/free-solid-svg-icons';
 
 import { withRouter } from 'react-router-dom';
 import questionList from '../../config/questions';
@@ -20,26 +22,44 @@ import {
 } from '../../graphql/queries';
 import Loading from './Loading';
 import redirectWhenError from '../../utils/redirectWhenError';
-import male from '../../static/male.svg';
-import female from '../../static/female.svg';
-
-const { Title } = Typography;
 
 const margin = css`
-  margin-bottom: 20px;
+  padding: 10px;
+  margin: 0 auto;
+  text-align: center;
 `;
 
 const cardCSS = css`
   border-radius: 4px;
+  width: 80%;
+  display: inline-block;
+
+  .ant-card-head-title {
+    padding: 0;
+  }
 
   .ant-card-body {
-    height: 220px;
+    height: 200px;
     overflow: auto;
+    padding: 20px;
   }
 
   .ant-card-actions {
     border-radius: 0 0 4px 4px;
   }
+
+  .ant-card-meta-avatar {
+    padding-right: 10px;
+  }
+
+  .ant-card-meta-title {
+    font-size: 24px;
+    width: 60%;
+  }
+`;
+
+const iconWrapper = css`
+  text-align: center;
 `;
 
 const districtCSS = css`
@@ -52,8 +72,22 @@ const districtCSS = css`
   white-space: nowrap;
 `;
 
-const titleCSS = css`
-  word-break: keep-all;
+const profileImageCss = css`
+  width: 100px;
+  height: 100px;
+`;
+
+const placesCss = css`
+  overflow: hidden;
+  white-space: nowrap;
+`;
+
+const cardWrapper = css`
+  text-align: left;
+`;
+
+const tableStyle = css`
+  padding: 2px;
 `;
 
 type UserCardProps = {
@@ -250,7 +284,7 @@ function UserCard({
   // 나중에 loading 같은 것 붙이기. 그리고 완료시 완료됐다는 문구. z-index같은 것 줘서 투명도 조절해서 친구 목록들 위에 띄워주면 좋을듯.
 
   // 일단 이렇게 해놨는데 수정 필요할듯. 도장표시 같은 걸로.
-  const color = checked ? 'black' : 'red';
+  const color = checked ? '#ccc' : 'red';
 
   const changeToKorean = (data) => {
     const questionIndex: number = questionList
@@ -270,44 +304,40 @@ function UserCard({
     return (one: string, two: string): number => getOrder(one) - getOrder(two);
   };
 
-  const getPossibleDays = (weekdays) => {
+  const getTableDays = (weekdays) => {
     const days = weekdays
       .map((elm) => changeToKorean({ weekdays: elm.weekday }))
-      .sort(makeOrder({ weekdays }))
-      .join('');
-    const SatIndex = days.indexOf('토');
-    const SunIndex = days.indexOf('일');
-
-    switch (days) {
-      case '월화수목금토일':
-        return '매일 가능';
-      case '월화수목금':
-        return '주중만 가능';
-      case '토일':
-        return '주말만 가능';
-      default:
-        // 토, 일요일 구분선
-        if (SatIndex !== -1) {
-          const temp = days.split('');
-          temp.splice(SatIndex, 0, ' | ');
-          return temp.join('');
-        }
-        if (SatIndex === -1 && SunIndex !== -1) {
-          const temp = days.split('');
-          temp.splice(SunIndex, 0, ' | ');
-          return temp.join('');
-        }
-        return days;
-    }
+      .sort(makeOrder({ weekdays }));
+    return days;
   };
 
+  const DayTable = () => (
+    <table style={{ padding: '2px' }}>
+      <tbody>
+        <tr>
+          {['월', '화', '수', '목', '금', '토', '일'].map((elm) => {
+            const [textColor, backColor] =
+              getTableDays(weekdays).indexOf(elm) !== -1
+                ? ['black', '#fbc531']
+                : ['#ccc', '#CCC'];
+            return (
+              <td
+                css={tableStyle}
+                style={{ background: backColor, color: textColor }}
+                key={elm}
+              >
+                {elm}
+              </td>
+            );
+          })}
+        </tr>
+      </tbody>
+    </table>
+  );
+
   const checkCard = () => {
-    if (type === 'friends') {
-      checkFriends({ variables: { userIds: [id] } });
-    }
-    if (type === 'followers') {
-      checkFollowers({ variables: { userIds: [id] } });
-    }
+    if (type === 'friends') checkFriends({ variables: { userIds: [id] } });
+    if (type === 'followers') checkFollowers({ variables: { userIds: [id] } });
   };
 
   const cardActions = [
@@ -347,23 +377,61 @@ function UserCard({
     );
   };
 
-  if (type === 'friends') {
-    makeButton(deleteFriend, '친구 끊기');
-    makeButton(() => history.push('/Chat'), '채팅하기');
-  } else if (type === 'followers') {
-    makeButton(deleteFollower, '친구신청 거절');
-    makeButton(addFriend, '친구신청 수락');
-  } else if (type === 'unknown') {
-    makeButton(followUser, '친구 신청하기');
-  } else if (type === 'following') {
-    makeButton(cancelFollow, '친구신청 취소');
+  switch (type) {
+    case 'friends':
+      makeButton(deleteFriend, '친구 끊기');
+      makeButton(() => history.push('/Chat'), '채팅하기');
+      break;
+    case 'followers':
+      makeButton(deleteFollower, '친구신청 거절');
+      makeButton(addFriend, '친구신청 수락');
+      break;
+    case 'unknown':
+      makeButton(followUser, '친구 신청하기');
+      break;
+    case 'following':
+      makeButton(cancelFollow, '친구신청 취소');
+      break;
+    default:
+      break;
   }
-  // find 메뉴에서 친구 신청하기 버튼 누르면 아래 경고창 뜸.
-  // Render methods should be a pure function of props and state; triggering nested component updates from render is not allowed.If necessary, trigger nested updates in componentDidUpdate.
 
+  let healthLevel;
+  switch (
+    changeToKorean({ levelOf3Dae })
+      .match(/\((.*?)\)/g)![0]
+      .slice(1, -1)
+  ) {
+    case '생초보':
+      healthLevel = 'lg';
+      break;
+    case '초보':
+      healthLevel = '2x';
+      break;
+    case '중수':
+      healthLevel = '3x';
+      break;
+    case '고수':
+      healthLevel = '4x';
+      break;
+    case '괴물':
+      healthLevel = '5x';
+      break;
+    default:
+      break;
+  }
+
+  let iconColor = 'red';
+  if (changeToKorean({ gender }) === '남자') iconColor = 'blue';
+
+  // 아래 userModal 부분 축약해서 쓰는 법??
   return (
-    <Col xs={24} sm={12} lg={8} css={margin}>
-      <Card actions={cardActions} css={cardCSS}>
+    <Col xs={24} sm={12} lg={6} css={margin}>
+      <Card
+        actions={cardActions}
+        css={cardCSS}
+        style={{ border: `1px solid ${color}` }}
+      >
         <UserModal
           id={id}
           changeToKorean={changeToKorean}
@@ -384,58 +452,75 @@ function UserCard({
           setChatFriend={setChatFriend}
           isFriend={isFriend}
         />
-        <Card.Meta
-          avatar={
-            profileImage &&
-            (openImageChoice === 'OPEN' ||
-              (openImageChoice === 'FRIEND' && isFriend)) ? (
-              <Popover
-                content={
-                  <img src={profileImage} height="200" width="200" alt="" />
-                }
-                title={nickname}
-              >
-                <Avatar src={profileImage} />
-              </Popover>
-            ) : (
-              <Avatar icon="user" />
-            )
-          }
-          title={nickname}
-        />
-        <br />
-        <p style={{ position: 'absolute', top: 20, right: 20 }}>
-          {changeToKorean({ gender }) === '남자' ? (
-            <img src={male} height="30" width="30" alt="" />
-          ) : (
-            <img src={female} height="30" width="30" alt="" />
-          )}
-        </p>
+        <div css={cardWrapper}>
+          <Card.Meta
+            avatar={
+              profileImage &&
+              (openImageChoice === 'OPEN' ||
+                (openImageChoice === 'FRIEND' && isFriend)) ? (
+                <Popover
+                  content={
+                    <img
+                      src={profileImage}
+                      css={profileImageCss}
+                      height="50px"
+                      width="50px"
+                      alt=""
+                    />
+                  }
+                  title={nickname}
+                >
+                  <Avatar src={profileImage} />
+                </Popover>
+              ) : (
+                <Avatar icon="user" />
+              )
+            }
+            title={nickname}
+          />
 
-        {loadingFU || loadingDFo || loadingDF || loadingAF || loadingCF ? (
-          <Loading />
-        ) : (
-          <React.Fragment>
-            <Title level={4} css={titleCSS} style={{ color }}>
-              {changeToKorean({ levelOf3Dae })
-                .match(/\((.*?)\)/g)![0]
-                .slice(1, -1)}
-            </Title>
-            <p>
-              <span>{getPossibleDays(weekdays)}</span>
-            </p>
-            <p>
-              {ableDistricts
-                .map((elm) => (
-                  <span css={districtCSS} key={elm.district.nameOfDong}>
-                    {elm.district.nameOfDong}
-                  </span>
-                ))
-                .filter((el, idx) => idx < 3)}
-              {ableDistricts.length > 3 ? '.......' : null}
-            </p>
-          </React.Fragment>
-        )}
+          {/* <br /> */}
+          <div
+            style={{
+              position: 'absolute',
+              top: 20,
+              right: 20,
+              overflow: 'hidden',
+            }}
+            css={iconWrapper}
+          >
+            <div>
+              <FontAwesomeIcon icon={faDumbbell} size={healthLevel} />
+            </div>
+            <FontAwesomeIcon
+              icon={faChild}
+              size="2x"
+              style={{ color: iconColor }}
+            />
+          </div>
+          <br />
+          <div />
+          {loadingFU || loadingDFo || loadingDF || loadingAF || loadingCF ? (
+            <Loading />
+          ) : (
+            <React.Fragment>
+              <br />
+              <DayTable />
+              {/* <div>{getPossibleDays(weekdays)}</div> */}
+              <br />
+              <div css={placesCss}>
+                {ableDistricts
+                  .map((elm) => (
+                    <span css={districtCSS} key={elm.district.nameOfDong}>
+                      {elm.district.nameOfDong}
+                    </span>
+                  ))
+                  .filter((el, idx) => idx < 3)}
+                {ableDistricts.length > 3 ? '.......' : null}
+              </div>
+            </React.Fragment>
+          )}
+        </div>
       </Card>
     </Col>
   );

@@ -1,10 +1,39 @@
-import React from 'react';
+/** @jsx jsx */
+// import React from 'react';
+import { css, jsx } from '@emotion/core';
 
 import Loading from '../Shared/Loading';
 import redirectWhenError from '../../utils/redirectWhenError';
 import message from '../../config/Message';
 import MadeCard from '../Shared/MadeCard';
 import sortByDate from '../../utils/sortByDate';
+import emptyImage from '../../static/chat-main.jpg';
+
+const wrapperDivCss = css`
+  background-color: #999999;
+  height: 60vh;
+  margin-bottom: 0;
+  padding: 20px;
+`;
+
+const emptyMessageCss = css`
+  position: absolute;
+  top: 20%;
+  left: 35%;
+  font-size: 1rem;
+  line-height: 2rem;
+`;
+
+const emptyImgCss = css`
+  filter: grayscale(100%);
+  border-radius: 50%;
+  height: 20%;
+  width: 20%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
 
 type CardListProps = {
   loadingFR: boolean | undefined;
@@ -40,7 +69,15 @@ export default function CardList({
             makeCard(oneData.following, () => null, true, false),
           );
       }
-      return <div>{message.followingEmpty}</div>;
+      return (
+        <div css={wrapperDivCss}>
+          <img src={emptyImage} css={emptyImgCss} alt="" />
+          <div css={emptyMessageCss}>
+            <div>{message.followingEmpty1}</div>
+            <div>{message.followingEmpty2}</div>
+          </div>
+        </div>
+      );
     }
     if (state === 'followers') {
       if (followers.length > 0) {
@@ -51,7 +88,15 @@ export default function CardList({
             makeCard(oneData.follower, () => null, oneData.checked, false),
           );
       }
-      return <div>{message.followersEmpty}</div>;
+      return (
+        <div css={wrapperDivCss}>
+          <img src={emptyImage} css={emptyImgCss} alt="" />
+          <div css={emptyMessageCss}>
+            <div>{message.followersEmpty1}</div>
+            <div>{message.followersEmpty2}</div>
+          </div>
+        </div>
+      );
     }
     if (state === 'friends') {
       if (friends.length > 0) {
@@ -62,7 +107,15 @@ export default function CardList({
             makeCard(oneData.friend, setChatFriend, oneData.checked, true),
           );
       }
-      return <p>{message.friendsEmpty}</p>;
+      return (
+        <div css={wrapperDivCss}>
+          <img src={emptyImage} css={emptyImgCss} alt="" />
+          <div css={emptyMessageCss}>
+            <div>{message.friendsEmpty1}</div>
+            <div>{message.friendsEmpty2}</div>
+          </div>
+        </div>
+      );
     }
   }
 }

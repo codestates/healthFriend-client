@@ -7,11 +7,13 @@ const message = {
 
   // src/routes/FindFriend
   chatRoomWelcome: '여기는 채팅방 입니다',
-  friendsEmpty: '아직 친구가 없네요. 친구 찾기로 가서 먼저 친구신청을 해보세요',
-  followersEmpty:
-    '아직 사람들이 친구신청을 안 했네요. 마이페이지에서 정보를 상세하게 입력해서 친구들이 나를 잘 찾을 수 있게 해보세요',
-  followingEmpty:
-    '아직 아무에게도 친구신청을 안 하셨네요.친구 찾기로 이동하셔서 한번 해보세요',
+  friendsEmpty1: `아직 친구가 없네요`,
+  friendsEmpty2: '친구 찾기로 가서 먼저 친구신청을 해보세요',
+  followersEmpty1: `아직 사람들이 친구신청을 안 했네요`,
+  followersEmpty2:
+    '마이페이지에서 정보를 상세하게 입력해서 친구들이 나를 잘 찾을 수 있게 해보세요',
+  followingEmpty1: `아직 아무에게도 친구신청을 안 하셨네요`,
+  followingEmpty2: '친구 찾기로 이동하셔서 한번 해보세요',
 };
 
 export default message;

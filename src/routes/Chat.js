@@ -28,18 +28,15 @@ const chatMainImgCss = css`
   height: 20%;
   width: 20%;
   position: absolute;
-  margin: auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 50%;
+  left: 60%;
+  transform: translate(-50%, -50%);
 `;
 
 const chatMainCss = css`
   background-color: #d2d2d2;
   height: 100%;
   margin-bottom: 0;
-  text-align: center;
 `;
 
 class Chat extends Component {
@@ -101,8 +98,8 @@ class Chat extends Component {
 
     if (isLoading) return <Loading />;
 
-    console.log('data', this.props);
-    console.log('state를 보여줘', this.state);
+    // console.log('data', this.props);
+    // console.log('state를 보여줘', this.state);
 
     const {
       me: { me },

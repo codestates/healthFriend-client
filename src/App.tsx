@@ -25,7 +25,7 @@ function App() {
             <Route path="/register" component={Register} />
             <Route path="/find" component={FindFriend} />
             <Route path="/cards/:state" component={Cards} />
-            <Route path="/Chat" component={Chat} />
+            <Route path="/chat" component={Chat} />
             <Route path="/login" component={Login} />
             <Route path="/mypage" component={Mypage} />
             <Route component={NotFound} />
