@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { useState, useEffect } from 'react';
-import { Row, Col, Typography } from 'antd';
+import { Row, Col, Typography, Carousel } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
 import Chatkit from '@pusher/chatkit-client';
@@ -58,6 +58,7 @@ function Home({ history }: HomeProps) {
     fetchPolicy: 'network-only',
   });
   const { data: dataUsers } = useQuery(GET_RANDOM_USERS);
+  console.log(dataUsers);
   const { data: loginData } = useQuery(IS_LOGGED_IN);
 
   // 채팅창 때문에 여기 인증하는 부분 최악인듯... 코드 뜯어고쳐야....
@@ -140,6 +141,9 @@ function Home({ history }: HomeProps) {
   }
 
   // 아래 카드를 남길지, 아니면 다른 걸 보여주는게 좋을지도 좀 더 궁리. 이왕 보여줄거면 FindFriend 창처럼 필터해서 보여줘야 할듯. 아니면 예시 카드들만 callosel로 보여주든가.. 아니면 tutorail 처럼 등록하는 사진, 친구 찾는 사진, 찾아서 채팅하는 사진, 같이 헬스하는 사진까지 쭉 이어지게 tutorial로 보여주든가...
+  function onChange(currentSlide: number) {
+    console.log(currentSlide);
+  }
 
   return (
     <Row type="flex" justify="center">
@@ -154,21 +158,19 @@ function Home({ history }: HomeProps) {
         </div>
         <MainButton {...{ dataMe, history, loginData }} />
       </Col>
-      {loginData.isLoggedIn && dataUsers ? (
+      {dataUsers && (
         <Col xs={20}>
           <Row type="flex" justify="center" style={{ marginTop: 20 }}>
             <Col xs={24}>
               <Row gutter={24}>
                 {dataUsers.randomUsers.map((oneData) =>
-                  MadeCard(oneData, 'unknown', () => null, true),
+                  MadeCard(oneData, 'unknown', () => null, true, false),
                 )}
               </Row>
             </Col>
             <ButtonToFindFriends {...{ history }} />
           </Row>
         </Col>
-      ) : (
-        <IfLoginUSeeFriend />
       )}
     </Row>
   );
