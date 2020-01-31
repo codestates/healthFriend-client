@@ -1,13 +1,13 @@
 /** @jsx jsx */
 import { useState, useEffect } from 'react';
-import { Row, Col, Typography, Carousel } from 'antd';
+import { Row, Col, Typography } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
 import Chatkit from '@pusher/chatkit-client';
 import axios from 'axios';
 
 import renderImage from '../static/renderImage.jpg';
-import IfLoginUSeeFriend from '../components/Home/IfLoginUSeeFriend';
+// import IfLoginUSeeFriend from '../components/Home/IfLoginUSeeFriend';
 import MainButton from '../components/Home/MainButton';
 import ButtonToFindFriends from '../components/Home/ButtonToFindFriends';
 import {
@@ -141,10 +141,6 @@ function Home({ history }: HomeProps) {
   }
 
   // 아래 카드를 남길지, 아니면 다른 걸 보여주는게 좋을지도 좀 더 궁리. 이왕 보여줄거면 FindFriend 창처럼 필터해서 보여줘야 할듯. 아니면 예시 카드들만 callosel로 보여주든가.. 아니면 tutorail 처럼 등록하는 사진, 친구 찾는 사진, 찾아서 채팅하는 사진, 같이 헬스하는 사진까지 쭉 이어지게 tutorial로 보여주든가...
-  function onChange(currentSlide: number) {
-    console.log(currentSlide);
-  }
-
   return (
     <Row type="flex" justify="center">
       <Col xs={24}>

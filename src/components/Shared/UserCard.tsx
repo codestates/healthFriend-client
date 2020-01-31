@@ -452,31 +452,6 @@ function UserCard({
           setChatFriend={setChatFriend}
           isFriend={isFriend}
         />
-<<<<<<< HEAD
-        <Card.Meta
-          avatar={
-            profileImage &&
-            (openImageChoice === 'OPEN' ||
-              (openImageChoice === 'FRIEND' && isFriend)) ? (
-              <Popover
-                content={
-                  <img src={profileImage} height="200" width="200" alt="" />
-                }
-                title={nickname}
-              >
-                <Avatar src={profileImage} />
-              </Popover>
-            ) : (
-              <Avatar icon="user" />
-            )
-          }
-          title={nickname}
-        />
-        <br />
-        <p style={{ position: 'absolute', top: 20, right: 20 }}>
-          {changeToKorean({ gender }) === '남자' ? (
-            <img src={male} height="30" width="30" alt="" />
-=======
         <div css={cardWrapper}>
           <Card.Meta
             avatar={
@@ -527,7 +502,6 @@ function UserCard({
           <div />
           {loadingFU || loadingDFo || loadingDF || loadingAF || loadingCF ? (
             <Loading />
->>>>>>> 5da54bf06f879dcf2da3aca92818340759d2e32b
           ) : (
             <React.Fragment>
               <br />
