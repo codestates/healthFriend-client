@@ -1,6 +1,4 @@
-/** @jsx jsx */
 import React from 'react';
-import { jsx, css } from '@emotion/core';
 import { Col, Badge } from 'antd';
 import { useQuery } from '@apollo/react-hooks';
 import NavButton from './NavButton';
@@ -9,14 +7,6 @@ import {
   GET_UNREAD_FOLLOWERS,
   GET_UNREAD_FRIENDS,
 } from '../../graphql/queries';
-
-const trapezoid = css`
-  width: 250px;
-  height: 20px;
-  background: #999999;
-  transform: perspective(10px) rotateX(3deg);
-  margin: 0 auto;
-`;
 
 type NavProps = {
   history: any;
@@ -43,7 +33,7 @@ export default function Nav({ history, state }: NavProps) {
   );
 
   return (
-    <React.Fragment>
+    <>
       <Col xs={8} md={8}>
         {unreadFriends && unreadFriends.unreadFriends > 0 ? (
           <Badge count={unreadFriends.unreadFriends} overflowCount={999}>
@@ -52,11 +42,9 @@ export default function Nav({ history, state }: NavProps) {
         ) : (
           <NavButtonMade relation="friends" subject="헬스 친구" />
         )}
-        {state === 'friends' ? <div css={trapezoid} /> : null}
       </Col>
       <Col xs={8} md={8}>
         <NavButtonMade relation="following" subject="보낸 요청" />
-        {state === 'following' ? <div css={trapezoid} /> : null}
       </Col>
       <Col xs={8} md={8}>
         {unreadFollowers && unreadFollowers.unreadFollowers > 0 ? (
@@ -66,8 +54,7 @@ export default function Nav({ history, state }: NavProps) {
         ) : (
           <NavButtonMade relation="followers" subject="받은 요청" />
         )}
-        {state === 'followers' ? <div css={trapezoid} /> : null}
       </Col>
-    </React.Fragment>
+    </>
   );
 }

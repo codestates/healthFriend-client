@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Col, Card, Avatar, message, Popover } from 'antd';
 import { jsx, css } from '@emotion/core';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
@@ -45,10 +45,12 @@ const cardCSS = css`
     height: 200px;
     overflow: auto;
     padding: 0px;
+    background-color: #ededed;
   }
 
   .ant-card-actions {
     border-radius: 0 0 4px 4px;
+    background-color: #e9e2d0;
   }
 
   .ant-card-meta {
@@ -336,8 +338,8 @@ function UserCard({
           {['월', '화', '수', '목', '금', '토', '일'].map((elm) => {
             const [textColor, backColor] =
               getTableDays(weekdays).indexOf(elm) !== -1
-                ? ['black', '#e9e2d0']
-                : ['#CCC', '#e9e2d0'];
+                ? ['black', '#fafafa']
+                : ['#CCC', '#fafafa'];
             return (
               <td
                 css={tableStyle}
@@ -401,14 +403,14 @@ function UserCard({
       makeButton(() => history.push('/Chat'), '채팅하기');
       break;
     case 'followers':
-      makeButton(deleteFollower, '친구신청 거절');
-      makeButton(addFriend, '친구신청 수락');
+      makeButton(deleteFollower, '요청 거절');
+      makeButton(addFriend, '요청 수락');
       break;
     case 'unknown':
-      makeButton(followUser, '친구 신청하기');
+      makeButton(followUser, '친구 신청');
       break;
     case 'following':
-      makeButton(cancelFollow, '친구신청 취소');
+      makeButton(cancelFollow, '신청 취소');
       break;
     default:
       break;
@@ -499,7 +501,7 @@ function UserCard({
             {loadingFU || loadingDFo || loadingDF || loadingAF || loadingCF ? (
               <Loading />
             ) : (
-              <React.Fragment>
+              <div>
                 <div css={iconWrapper}>
                   <div>
                     <img
@@ -528,7 +530,7 @@ function UserCard({
                     .filter((el, idx) => idx < 3)}
                   {ableDistricts.length > 3 ? '.......' : null}
                 </div>
-              </React.Fragment>
+              </div>
             )}
           </div>
         </div>

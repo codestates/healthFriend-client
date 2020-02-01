@@ -18,28 +18,17 @@ import redirectWhenError from '../utils/redirectWhenError';
 
 const wrapper = css`
   text-align: center;
-  margin-top: 30px;
+  margin-top: 20px;
 `;
 
 const window = css`
   padding: 10px;
-  border: 1px solid #ccc;
-  width: 80vw;
-  height: 80vh;
+  width: 90vw;
   margin: 0 auto;
 `;
 
 const cardListCss = css`
-  background-color: #999999;
-  height: 70vh;
-`;
-
-const backdrop = css`
-  position: absolute;
-  height: 180px;
-  width: 100%;
-  background: #300d4f;
-  z-index: -1;
+  margin-top: 20px;
 `;
 
 type CardsProps = {
@@ -89,7 +78,6 @@ function Cards({ history, match }: CardsProps) {
     <div>
       <div css={wrapper}>
         <div css={window}>
-          <br />
           <Row type="flex" justify="center">
             <Nav history={history} state={state} />
             <Col xs={24} md={24}>
@@ -109,9 +97,6 @@ function Cards({ history, match }: CardsProps) {
             </Col>
           </Row>
         </div>
-      </div>
-      <div css={backdrop}>
-        <div />
       </div>
     </div>
   );
