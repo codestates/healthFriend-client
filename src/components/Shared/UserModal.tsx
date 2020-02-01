@@ -3,8 +3,8 @@ import React from 'react';
 import { Modal, Button, message, Avatar } from 'antd';
 import { jsx, css } from '@emotion/core';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDumbbell } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faDumbbell } from '@fortawesome/free-solid-svg-icons';
 
 import {
   FOLLOW_USER,
@@ -18,13 +18,20 @@ import {
 import Loading from './Loading';
 import redirectWhenError from '../../utils/redirectWhenError';
 
+import './UserModal.css';
+
 const modalHeader = css`
   text-align: center;
+  /* background: linear-gradient(to bottom, rgb(241, 156,. 165) 65%, white 35%)
+    no-repeat; */
+  background: linear-gradient(to bottom, rgb(167, 216, 251) 65%, white 35%)
+    no-repeat;
+  padding: 24px;
 `;
 
 const modalImage = css`
-  height: 100px;
-  width: 100px;
+  height: 150px;
+  width: 150px;
   border-radius: 50%;
   border: 2px solid black;
 `;
@@ -219,6 +226,7 @@ function UserModal({
     <Modal
       visible={visible}
       footer={modalFooter}
+      className="ant-modal-body"
       onCancel={() => setVisible(false)}
     >
       {loadingFU || loadingDFo || loadingDF || loadingAF || loadingCF ? (
@@ -231,29 +239,20 @@ function UserModal({
               (openImageChoice === 'FRIEND' && isFriend)) ? (
               <img src={profileImage} css={modalImage} alt="" />
             ) : (
-              <Avatar size={100} icon="user" />
+              <Avatar size={150} icon="user" />
             )}
           </div>
           <div css={modalNickname}>{nickname}</div>
 
-          <div>
-            <div style={{ fontSize: '1rem', marginBottom: '10px' }}>
-              <div>성별</div>
-              <div css={modalAnswer}>{changeToKorean({ gender })}</div>
-            </div>
+          <div style={{ padding: '24px' }}>
             <div style={{ fontSize: '1rem', marginBottom: '10px' }}>
               <div>3대 중량</div>
               <div css={modalAnswer}>{changeToKorean({ levelOf3Dae })}</div>
-              <FontAwesomeIcon
-                icon={faDumbbell}
-                size="lg"
-                style={{ color: 'blue' }}
-              />
             </div>
-            <div style={{ fontSize: '1rem', marginBottom: '10px' }}>
+            {/* <div style={{ fontSize: '1rem', marginBottom: '10px' }}>
               <div>사진 공개</div>
               <div css={modalAnswer}>{changeToKorean({ openImageChoice })}</div>
-            </div>
+            </div> */}
             <div style={{ fontSize: '1rem', marginBottom: '10px' }}>
               <div>운동 가능 지역</div>
               <div css={modalAnswer}>
