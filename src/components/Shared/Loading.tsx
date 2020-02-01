@@ -6,14 +6,23 @@ const loading = css`
   font-size: 6rem;
 `;
 
+const loadingDiv = css`
+  position: absolute;
+  top: 50%;
+  left: 46%;
+  transform: translate(-50%, -50%);
+`;
+
 function Loading() {
   const loadingIcon = <Icon type="loading" css={loading} spin />;
   return (
-    <Row type="flex" justify="center">
-      <Col xs={3}>
-        <Spin indicator={loadingIcon} />
-      </Col>
-    </Row>
+    <div css={loadingDiv}>
+      <Row type="flex" justify="center">
+        <Col xs={3}>
+          <Spin indicator={loadingIcon} />
+        </Col>
+      </Row>
+    </div>
   );
 }
 
