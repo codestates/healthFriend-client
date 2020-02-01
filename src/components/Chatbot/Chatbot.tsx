@@ -10,7 +10,7 @@ import { API_KEY } from '../../config/streamConfig';
 import { MessageList, MessageInput } from 'stream-chat-react';
 import { StreamChat } from 'stream-chat';
 import { useQuery } from '@apollo/react-hooks';
-import { GET_USERS, GET_USERINFO } from '../../graphql/queries';
+import { GET_USERINFO } from '../../graphql/queries';
 import { Icon } from 'antd';
 import 'antd/dist/antd.css';
 import 'stream-chat-react/dist/css/index.css';
