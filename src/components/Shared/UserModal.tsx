@@ -1,8 +1,10 @@
 /** @jsx jsx */
 import React from 'react';
-import { Modal, Button, message } from 'antd';
+import { Modal, Button, message, Avatar } from 'antd';
 import { jsx, css } from '@emotion/core';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faDumbbell } from '@fortawesome/free-solid-svg-icons';
 
 import {
   FOLLOW_USER,
@@ -16,12 +18,39 @@ import {
 import Loading from './Loading';
 import redirectWhenError from '../../utils/redirectWhenError';
 
-const tableCSS = css`
-  width: 100%;
+import './UserModal.css';
+
+const modalHeaderMan = css`
+  text-align: center;
+  background: linear-gradient(to bottom, rgb(70, 135, 216) 65%, white 35%)
+    no-repeat;
+  padding: 24px 0 0 0x;
+`;
+const modalHeaderWoman = css`
+  text-align: center;
+  background: linear-gradient(to bottom, rgb(209, 88, 84) 65%, white 35%)
+    no-repeat;
+  padding: 24px 0 0 0;
 `;
 
-const tableTH = css`
-  width: 100px;
+const modalImage = css`
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  border: 2px solid black;
+`;
+
+const modalNickname = css`
+  text-align: center;
+  font-size: 1.5rem;
+`;
+
+const modalAnswer = css`
+  font-size: 0.8rem;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: lightgray;
+  display: inline-block;
 `;
 
 type UserModalProps = {
@@ -196,73 +225,64 @@ function UserModal({
   }
 
   return (
-    <div>
-      <Modal
-        visible={visible}
-        title={nickname}
-        footer={modalFooter}
-        onCancel={() => setVisible(false)}
-      >
-        {loadingFU || loadingDFo || loadingDF || loadingAF || loadingCF ? (
-          <Loading />
-        ) : (
-          <React.Fragment>
+    <Modal
+      visible={visible}
+      footer={modalFooter}
+      className="ant-modal-body"
+      onCancel={() => setVisible(false)}
+    >
+      {loadingFU || loadingDFo || loadingDF || loadingAF || loadingCF ? (
+        <Loading />
+      ) : (
+        <React.Fragment>
+          <div css={gender === 'MALE' ? modalHeaderMan : modalHeaderWoman}>
             {profileImage &&
             (openImageChoice === 'OPEN' ||
               (openImageChoice === 'FRIEND' && isFriend)) ? (
-              <img src={profileImage} height="200" width="200" alt="" />
-            ) : null}
-            <table css={tableCSS}>
-              <tbody>
-                <tr>
-                  <th css={tableTH}>성별</th>
-                  <td>{changeToKorean({ gender })}</td>
-                </tr>
-                <tr>
-                  <th css={tableTH}>3대 중량</th>
-                  <td>{changeToKorean({ levelOf3Dae })}</td>
-                </tr>
-                <tr>
-                  <th css={tableTH}>사진 공개</th>
-                  <td>{changeToKorean({ openImageChoice })}</td>
-                </tr>
-                <tr>
-                  <th css={tableTH}>운동 가능 지역</th>
-                  <td>
-                    {ableDistricts
-                      .map((elm) => elm.district.nameOfDong)
-                      .join(', ')}
-                  </td>
-                </tr>
-                <tr>
-                  <th css={tableTH}>운동 가능 요일</th>
-                  <td>
-                    {weekdays
-                      .map((elm) => changeToKorean({ weekdays: elm.weekday }))
-                      .sort(makeOrder({ weekdays }))
-                      .join(', ')}
-                  </td>
-                </tr>
-                <tr>
-                  <th css={tableTH}>헬친을 찾는 이유</th>
-                  <td>
-                    {motivations
-                      .map((elm) =>
-                        changeToKorean({ motivations: elm.motivation }),
-                      )
-                      .join(', ')}
-                  </td>
-                </tr>
-                <tr>
-                  <th css={tableTH}>인사말</th>
-                  <td>{messageToFriend}</td>
-                </tr>
-              </tbody>
-            </table>
-          </React.Fragment>
-        )}
-      </Modal>
-    </div>
+              <img src={profileImage} css={modalImage} alt="" />
+            ) : (
+              <Avatar size={150} icon="user" />
+            )}
+            <div css={modalNickname}>{nickname}</div>
+          </div>
+
+          <div style={{ padding: '0 24px' }}>
+            <div style={{ fontSize: '1rem', marginBottom: '10px' }}>
+              <div>3대 중량</div>
+              <div css={modalAnswer}>{changeToKorean({ levelOf3Dae })}</div>
+            </div>
+
+            <div style={{ fontSize: '1rem', marginBottom: '10px' }}>
+              <div>운동 가능 지역</div>
+              <div css={modalAnswer}>
+                {ableDistricts.map((elm) => elm.district.nameOfDong).join(', ')}
+              </div>
+            </div>
+            <div style={{ fontSize: '1rem', marginBottom: '10px' }}>
+              <div>운동 가능 요일</div>
+              <div css={modalAnswer}>
+                {weekdays
+                  .map((elm) => changeToKorean({ weekdays: elm.weekday }))
+                  .sort(makeOrder({ weekdays }))
+                  .join(', ')}
+              </div>
+            </div>
+            <div style={{ fontSize: '1rem', marginBottom: '10px' }}>
+              <div>헬친을 찾는 이유</div>
+              <div css={modalAnswer}>
+                {motivations
+                  .map((elm) => changeToKorean({ motivations: elm.motivation }))
+                  .join(', ')}
+              </div>
+            </div>
+            <div style={{ fontSize: '1rem', marginBottom: '10px' }}>
+              <div>자기소개</div>
+              <div>{messageToFriend}</div>
+            </div>
+          </div>
+        </React.Fragment>
+      )}
+    </Modal>
   );
 }
 
