@@ -75,28 +75,26 @@ function Cards({ history, match }: CardsProps) {
   if (!loginData.isLoggedIn) redirectWhenError({ history, client });
 
   return (
-    <div>
-      <div css={wrapper}>
-        <div css={window}>
-          <Row type="flex" justify="center">
-            <Nav history={history} state={state} />
-            <Col xs={24} md={24}>
-              <div css={cardListCss}>
-                <CardList
-                  {...{
-                    loadingFR,
-                    errorFR,
-                    dataFR,
-                    history,
-                    client,
-                    state,
-                    setChatFriend,
-                  }}
-                />
-              </div>
-            </Col>
-          </Row>
-        </div>
+    <div css={wrapper}>
+      <div css={window}>
+        <Row type="flex" justify="center">
+          <Nav history={history} state={state} />
+          <Col xs={24} md={24}>
+            <div css={cardListCss}>
+              <CardList
+                {...{
+                  loadingFR,
+                  errorFR,
+                  dataFR,
+                  history,
+                  client,
+                  state,
+                  setChatFriend,
+                }}
+              />
+            </div>
+          </Col>
+        </Row>
       </div>
     </div>
   );
