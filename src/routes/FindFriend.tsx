@@ -28,7 +28,9 @@ function FindFriend({ history }: FindFriendProps) {
   const [
     getFilteredUsers,
     { loading: loadingFU, data: dataFU, error: errorFU },
-  ] = useLazyQuery(GET_FILTERED_USERS);
+  ] = useLazyQuery(GET_FILTERED_USERS, {
+    fetchPolicy: 'network-only',
+  });
   const { data: loginData } = useQuery(IS_LOGGED_IN);
   const { data: dataMe, error: errorMe } = useQuery(GET_USERINFO, {
     fetchPolicy: 'network-only',
@@ -50,8 +52,12 @@ function FindFriend({ history }: FindFriendProps) {
 
   if (!loginData.isLoggedIn) redirectWhenError({ history, client });
 
+  const style = loadingFU
+    ? { background: '#fff', height: '80vh' }
+    : { background: '#fff' }
+
   return (
-    <Layout style={{ background: '#fff', height: '100vh' }}>
+    <Layout style={style}>
       <Layout.Content>
         <Row
           type="flex"
