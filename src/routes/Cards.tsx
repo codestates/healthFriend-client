@@ -34,6 +34,14 @@ const cardListCss = css`
   height: 70vh;
 `;
 
+const backdrop = css`
+  position: absolute;
+  height: 180px;
+  width: 100%;
+  background: #300d4f;
+  z-index: -1;
+`;
+
 type CardsProps = {
   history: any; // match, location을 같이 쓰니 안되고, 얘만 쓰니 되네... withRouter로 붙인 애들은 다 써줘야 하는 것 같고, 아닌 애들은 아닌 듯.
   // 이것처럼 쓰는 것도 좀 아닌것 같고
@@ -101,6 +109,9 @@ function Cards({ history, match }: CardsProps) {
             </Col>
           </Row>
         </div>
+      </div>
+      <div css={backdrop}>
+        <div />
       </div>
     </div>
   );

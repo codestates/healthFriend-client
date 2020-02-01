@@ -87,6 +87,11 @@ function Home({ history }: HomeProps) {
 
   useSubscript(history);
 
+  const uri =
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost:5200'
+      : 'https://api.healthfriend.club';
+
   if (
     dataMe &&
     dataMe.me &&
@@ -96,12 +101,12 @@ function Home({ history }: HomeProps) {
     client.writeData({ data: { isLoggedIn: true } });
     if (!chatState.currentUser) {
       axios
-        .post('http://localhost:5200/users', {
+        .post(`${uri}/users`, {
           userId: dataMe.me.nickname,
         })
         .then(() => {
           const tokenProvider = new Chatkit.TokenProvider({
-            url: 'http://localhost:5200/authenticate',
+            url: `${uri}/authenticate`,
           });
 
           const chatManager = new Chatkit.ChatManager({
@@ -132,13 +137,10 @@ function Home({ history }: HomeProps) {
     loginData.isLoggedIn &&
     errorMe
     //  &&  errorMe.extensions.code === 'NO_TOKEN'
-    // 문제2. erroMe의 key의 value값 안들이 비어있어서 에러 분기 처리가 안 됨. Object.keys(errorMe) ...... errorMe.extensions.code가 안 불려서.
   ) {
     client.writeData({ data: { isLoggedIn: false } });
     redirectWhenError({ history, client });
   }
-
-  // 아래 카드를 남길지, 아니면 다른 걸 보여주는게 좋을지도 좀 더 궁리. 이왕 보여줄거면 FindFriend 창처럼 필터해서 보여줘야 할듯. 아니면 예시 카드들만 callosel로 보여주든가.. 아니면 tutorail 처럼 등록하는 사진, 친구 찾는 사진, 찾아서 채팅하는 사진, 같이 헬스하는 사진까지 쭉 이어지게 tutorial로 보여주든가...
 
   return (
     <Row type="flex" justify="center">

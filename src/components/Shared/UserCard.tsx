@@ -31,8 +31,10 @@ const margin = css`
 
 const cardCSS = css`
   border-radius: 4px;
-  width: 80%;
+  width: 100%;
   display: inline-block;
+  border: none;
+  border-style: none;
 
   .ant-card-head-title {
     padding: 0;
@@ -41,20 +43,26 @@ const cardCSS = css`
   .ant-card-body {
     height: 200px;
     overflow: auto;
-    padding: 20px;
+    padding: 0px;
   }
 
   .ant-card-actions {
     border-radius: 0 0 4px 4px;
   }
 
+  .ant-card-meta {
+    padding: 10px;
+  }
+
   .ant-card-meta-avatar {
-    padding-right: 10px;
+    padding: 2px;
   }
 
   .ant-card-meta-title {
     font-size: 24px;
-    width: 60%;
+    width: 100%;
+    padding-left: 5px;
+    color: white;
   }
 `;
 
@@ -284,7 +292,7 @@ function UserCard({
   // 나중에 loading 같은 것 붙이기. 그리고 완료시 완료됐다는 문구. z-index같은 것 줘서 투명도 조절해서 친구 목록들 위에 띄워주면 좋을듯.
 
   // 일단 이렇게 해놨는데 수정 필요할듯. 도장표시 같은 걸로.
-  const color = checked ? '#ccc' : 'red';
+  const color = checked ? '#243241' : '#ee5253';
 
   const changeToKorean = (data) => {
     const questionIndex: number = questionList
@@ -318,8 +326,8 @@ function UserCard({
           {['월', '화', '수', '목', '금', '토', '일'].map((elm) => {
             const [textColor, backColor] =
               getTableDays(weekdays).indexOf(elm) !== -1
-                ? ['black', '#fbc531']
-                : ['#ccc', '#CCC'];
+                ? ['black', '#f8c291']
+                : ['#CCC', '#CCC'];
             return (
               <td
                 css={tableStyle}
@@ -421,70 +429,67 @@ function UserCard({
       break;
   }
 
-  let iconColor = 'red';
-  if (changeToKorean({ gender }) === '남자') iconColor = 'blue';
+  let iconColor = '#ee5253';
+  if (changeToKorean({ gender }) === '남자') iconColor = '#2e86de';
 
-  // 아래 userModal 부분 축약해서 쓰는 법??
   return (
-    <Col xs={24} sm={12} lg={6} css={margin}>
-      <Card
-        actions={cardActions}
-        css={cardCSS}
-        style={{ border: `1px solid ${color}` }}
-      >
+    <Col xs={24} md={12} lg={6} css={margin}>
+      <Card actions={cardActions} css={cardCSS}>
         <UserModal
-          id={id}
-          changeToKorean={changeToKorean}
-          makeOrder={makeOrder}
-          visible={visible}
-          setVisible={setVisible}
-          nickname={nickname}
-          levelOf3Dae={levelOf3Dae}
-          gender={gender}
-          weekdays={weekdays}
-          ableDistricts={ableDistricts}
-          motivations={motivations}
-          openImageChoice={openImageChoice}
-          messageToFriend={messageToFriend}
-          profileImage={profileImage}
-          type={type}
-          history={history}
-          setChatFriend={setChatFriend}
-          isFriend={isFriend}
+          {...{
+            id,
+            changeToKorean,
+            makeOrder,
+            visible,
+            setVisible,
+            nickname,
+            levelOf3Dae,
+            gender,
+            weekdays,
+            ableDistricts,
+            motivations,
+            openImageChoice,
+            messageToFriend,
+            profileImage,
+            type,
+            history,
+            setChatFriend,
+            isFriend,
+          }}
         />
         <div css={cardWrapper}>
-          <Card.Meta
-            avatar={
-              profileImage &&
-              (openImageChoice === 'OPEN' ||
-                (openImageChoice === 'FRIEND' && isFriend)) ? (
-                <Popover
-                  content={
-                    <img
-                      src={profileImage}
-                      css={profileImageCss}
-                      height="50px"
-                      width="50px"
-                      alt=""
-                    />
-                  }
-                  title={nickname}
-                >
-                  <Avatar src={profileImage} />
-                </Popover>
-              ) : (
-                <Avatar icon="user" />
-              )
-            }
-            title={nickname}
-          />
-
-          {/* <br /> */}
+          <div style={{ backgroundColor: color }}>
+            <Card.Meta
+              avatar={
+                profileImage &&
+                (openImageChoice === 'OPEN' ||
+                  (openImageChoice === 'FRIEND' && isFriend)) ? (
+                  <Popover
+                    content={
+                      <img
+                        src={profileImage}
+                        css={profileImageCss}
+                        height="50px"
+                        width="50px"
+                        alt=""
+                      />
+                    }
+                    title={nickname}
+                  >
+                    <Avatar src={profileImage} />
+                  </Popover>
+                ) : (
+                  <Avatar icon="user" />
+                )
+              }
+              title={nickname}
+            />
+          </div>
           <div
             style={{
               position: 'absolute',
-              top: 20,
-              right: 20,
+              top: 60,
+              left: 150,
               overflow: 'hidden',
             }}
             css={iconWrapper}
@@ -498,28 +503,28 @@ function UserCard({
               style={{ color: iconColor }}
             />
           </div>
-          <br />
-          <div />
-          {loadingFU || loadingDFo || loadingDF || loadingAF || loadingCF ? (
-            <Loading />
-          ) : (
-            <React.Fragment>
-              <br />
-              <DayTable />
-              {/* <div>{getPossibleDays(weekdays)}</div> */}
-              <br />
-              <div css={placesCss}>
-                {ableDistricts
-                  .map((elm) => (
-                    <span css={districtCSS} key={elm.district.nameOfDong}>
-                      {elm.district.nameOfDong}
-                    </span>
-                  ))
-                  .filter((el, idx) => idx < 3)}
-                {ableDistricts.length > 3 ? '.......' : null}
-              </div>
-            </React.Fragment>
-          )}
+          <div>
+            {loadingFU || loadingDFo || loadingDF || loadingAF || loadingCF ? (
+              <Loading />
+            ) : (
+              <React.Fragment>
+                <br />
+                <br />
+                <DayTable />
+                <br />
+                <div css={placesCss}>
+                  {ableDistricts
+                    .map((elm) => (
+                      <span css={districtCSS} key={elm.district.nameOfDong}>
+                        {elm.district.nameOfDong}
+                      </span>
+                    ))
+                    .filter((el, idx) => idx < 3)}
+                  {ableDistricts.length > 3 ? '.......' : null}
+                </div>
+              </React.Fragment>
+            )}
+          </div>
         </div>
       </Card>
     </Col>

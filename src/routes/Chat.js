@@ -202,7 +202,6 @@ class Chat extends Component {
           </div>
         </div>
         <div className="App__backdrop">
-          hello
           <img
             className="App__backdrop__logo"
             src={avatar}
