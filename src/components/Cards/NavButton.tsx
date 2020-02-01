@@ -4,7 +4,7 @@ import { Button } from 'antd';
 
 const buttonCss = css`
   width: 200px;
-  &:hover {
+  &:focus {
     background-color: #6f5a7e;
   }
 `;
