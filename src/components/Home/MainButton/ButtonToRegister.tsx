@@ -10,10 +10,6 @@ const startButton = css`
   font-size: 3rem;
   background: #2c3e50;
   border-color: #2c3e50;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 `;
 
 type ButtonToRegisterProps = {
@@ -28,7 +24,7 @@ export default function ButtonToRegister({ history }: ButtonToRegisterProps) {
       css={startButton}
       onClick={() => history.push('/register')}
     >
-      정보등록 후 시작하기
+      정보등록을 해주세요.
     </Button>
   );
 }

@@ -6,10 +6,6 @@ import { jsx, css } from '@emotion/core';
 const startButton = css`
   background: #2c3e50;
   border-color: #2c3e50;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 `;
 
 export default function ButtonToSignup() {
