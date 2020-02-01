@@ -11,14 +11,14 @@ import {
   sendMessage,
   sendDM,
   // grantPermission,
-} from '../utils/chatMethods';
-import RoomList from '../components/Chat/RoomList';
-import ChatSession from '../components/Chat/ChatSession';
-import '../css/Chat/chat.css';
-import { GET_USERINFO, GET_CHAT_FRIEND } from '../graphql/queries';
-import Loading from '../components/Shared/Loading';
-import avatar from '../static/default-avatar.png';
-import chatMainImg from '../static/chat-main.jpg';
+} from '../../utils/chatMethods';
+import RoomList from './RoomList';
+import ChatSession from './ChatSession';
+import '../../css/Chat/chat.css';
+import { GET_USERINFO, GET_CHAT_FRIEND } from '../../graphql/queries';
+import Loading from '../Shared/Loading';
+import avatar from '../../static/default-avatar.png';
+import chatMainImg from '../../static/chat-main.jpg';
 
 // 여기 typescript로 바꾸기
 
@@ -42,7 +42,14 @@ const chatMainCss = css`
   text-align: center;
 `;
 
-class Chat extends Component {
+const chatDiv = css`
+.ant-row-flex-center
+  .ant-row-flex-center {
+    height: 80vh;
+  }
+`;
+
+class ChatComponent extends Component {
   constructor() {
     super();
     this.state = {
@@ -109,7 +116,7 @@ class Chat extends Component {
     } = this.props;
 
     return (
-      <div className="App">
+      <div className="App" css={chatDiv}>
         <div className="App__chatwindow">
           <div className="chat-wrapper">
             {/* {showNotificationToast ? (
@@ -223,4 +230,4 @@ export default compose(
   graphql(GET_CHAT_FRIEND, {
     name: 'chatFriend',
   }),
-)(Chat);
+)(ChatComponent);

@@ -7,9 +7,8 @@ import Chatkit from '@pusher/chatkit-client';
 import axios from 'axios';
 
 import renderImage from '../static/renderImage.jpg';
-// import IfLoginUSeeFriend from '../components/Home/IfLoginUSeeFriend';
+import IfLoginUSeeFriend from '../components/Home/IfLoginUSeeFriend';
 import MainButton from '../components/Home/MainButton';
-import ButtonToFindFriends from '../components/Home/ButtonToFindFriends';
 import {
   GET_USERINFO,
   IS_LOGGED_IN,
@@ -40,6 +39,13 @@ const renderingMessage = css`
   *.ant-typography {
     color: #fff;
   }
+`;
+
+const mainButtonCss = css`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 type HomeProps = {
@@ -155,8 +161,11 @@ function Home({ history }: HomeProps) {
             당신을 기다리고 있어요
           </Title>
         </div>
-        <MainButton {...{ dataMe, history, loginData }} />
+        <div css={mainButtonCss}>
+          <MainButton {...{ dataMe, history, loginData }} />
+        </div>
       </Col>
+      <IfLoginUSeeFriend {...{ dataMe, history, loginData }} />
       {dataUsers && (
         <Col xs={20}>
           <Row type="flex" justify="center" style={{ marginTop: 20 }}>
@@ -167,7 +176,7 @@ function Home({ history }: HomeProps) {
                 )}
               </Row>
             </Col>
-            <ButtonToFindFriends {...{ history }} />
+            <MainButton {...{ dataMe, history, loginData }} />
           </Row>
         </Col>
       )}
