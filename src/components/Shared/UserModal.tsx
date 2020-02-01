@@ -20,13 +20,17 @@ import redirectWhenError from '../../utils/redirectWhenError';
 
 import './UserModal.css';
 
-const modalHeader = css`
+const modalHeaderMan = css`
   text-align: center;
-  /* background: linear-gradient(to bottom, rgb(241, 156,. 165) 65%, white 35%)
-    no-repeat; */
-  background: linear-gradient(to bottom, rgb(167, 216, 251) 65%, white 35%)
+  background: linear-gradient(to bottom, rgb(70, 135, 216) 65%, white 35%)
     no-repeat;
-  padding: 24px;
+  padding: 24px 0 0 0x;
+`;
+const modalHeaderWoman = css`
+  text-align: center;
+  background: linear-gradient(to bottom, rgb(209, 88, 84) 65%, white 35%)
+    no-repeat;
+  padding: 24px 0 0 0;
 `;
 
 const modalImage = css`
@@ -39,8 +43,6 @@ const modalImage = css`
 const modalNickname = css`
   text-align: center;
   font-size: 1.5rem;
-  margin-bottom: 15px;
-  border-bottom: 1px solid black;
 `;
 
 const modalAnswer = css`
@@ -233,7 +235,7 @@ function UserModal({
         <Loading />
       ) : (
         <React.Fragment>
-          <div css={modalHeader}>
+          <div css={gender === 'MALE' ? modalHeaderMan : modalHeaderWoman}>
             {profileImage &&
             (openImageChoice === 'OPEN' ||
               (openImageChoice === 'FRIEND' && isFriend)) ? (
@@ -241,18 +243,15 @@ function UserModal({
             ) : (
               <Avatar size={150} icon="user" />
             )}
+            <div css={modalNickname}>{nickname}</div>
           </div>
-          <div css={modalNickname}>{nickname}</div>
 
-          <div style={{ padding: '24px' }}>
+          <div style={{ padding: '0 24px' }}>
             <div style={{ fontSize: '1rem', marginBottom: '10px' }}>
               <div>3대 중량</div>
               <div css={modalAnswer}>{changeToKorean({ levelOf3Dae })}</div>
             </div>
-            {/* <div style={{ fontSize: '1rem', marginBottom: '10px' }}>
-              <div>사진 공개</div>
-              <div css={modalAnswer}>{changeToKorean({ openImageChoice })}</div>
-            </div> */}
+
             <div style={{ fontSize: '1rem', marginBottom: '10px' }}>
               <div>운동 가능 지역</div>
               <div css={modalAnswer}>
