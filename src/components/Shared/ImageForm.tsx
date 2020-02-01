@@ -115,6 +115,7 @@ export default function ImageForm({
             dataI.me.profileImage.length > 0) ? (
             <Button
               type="primary"
+              className="button-fix"
               onClick={() => deleteProfileImg({ variables: { url } })}
             >
               {' '}
