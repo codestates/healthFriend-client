@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import React from 'react';
-import { Modal, Button, message } from 'antd';
+import { Modal, Button, message, Avatar } from 'antd';
 import { jsx, css } from '@emotion/core';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
 
@@ -16,12 +16,30 @@ import {
 import Loading from './Loading';
 import redirectWhenError from '../../utils/redirectWhenError';
 
-const tableCSS = css`
-  width: 100%;
+const modalHeader = css`
+  text-align: center;
+  margin: 30px 20px 0;
 `;
 
-const tableTH = css`
-  width: 100px;
+const modalImage = css`
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+`;
+
+const modalNickname = css`
+  text-align: center;
+  font-size: 1.7rem;
+  margin-bottom: 20px;
+  border-bottom: 1px solid black;
+`;
+
+const modalAnswer = css`
+  font-size: 0.8rem;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: lightgray;
+  display: inline-block;
 `;
 
 type UserModalProps = {
@@ -199,7 +217,6 @@ function UserModal({
     <div>
       <Modal
         visible={visible}
-        title={nickname}
         footer={modalFooter}
         onCancel={() => setVisible(false)}
       >
@@ -207,58 +224,71 @@ function UserModal({
           <Loading />
         ) : (
           <React.Fragment>
-            {profileImage &&
-            (openImageChoice === 'OPEN' ||
-              (openImageChoice === 'FRIEND' && isFriend)) ? (
-              <img src={profileImage} height="200" width="200" alt="" />
-            ) : null}
-            <table css={tableCSS}>
-              <tbody>
-                <tr>
-                  <th css={tableTH}>성별</th>
-                  <td>{changeToKorean({ gender })}</td>
-                </tr>
-                <tr>
-                  <th css={tableTH}>3대 중량</th>
-                  <td>{changeToKorean({ levelOf3Dae })}</td>
-                </tr>
-                <tr>
-                  <th css={tableTH}>사진 공개</th>
-                  <td>{changeToKorean({ openImageChoice })}</td>
-                </tr>
-                <tr>
-                  <th css={tableTH}>운동 가능 지역</th>
-                  <td>
-                    {ableDistricts
-                      .map((elm) => elm.district.nameOfDong)
-                      .join(', ')}
-                  </td>
-                </tr>
-                <tr>
-                  <th css={tableTH}>운동 가능 요일</th>
-                  <td>
-                    {weekdays
-                      .map((elm) => changeToKorean({ weekdays: elm.weekday }))
-                      .sort(makeOrder({ weekdays }))
-                      .join(', ')}
-                  </td>
-                </tr>
-                <tr>
-                  <th css={tableTH}>헬친을 찾는 이유</th>
-                  <td>
-                    {motivations
-                      .map((elm) =>
-                        changeToKorean({ motivations: elm.motivation }),
-                      )
-                      .join(', ')}
-                  </td>
-                </tr>
-                <tr>
-                  <th css={tableTH}>인사말</th>
-                  <td>{messageToFriend}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div css={modalHeader}>
+              {profileImage &&
+              (openImageChoice === 'OPEN' ||
+                (openImageChoice === 'FRIEND' && isFriend)) ? (
+                <img src={profileImage} css={modalImage} alt="" />
+              ) : (
+                <Avatar size={150} icon="user" />
+              )}
+            </div>
+            <div css={modalNickname}>{nickname}</div>
+            <div
+              style={{
+                fontSize: '1.3rem',
+                margin: '10px 0',
+              }}
+            >
+              헬스친구 정보
+            </div>
+            <div>
+              <div style={{ fontSize: '1.2rem', marginBottom: '10px' }}>
+                <div>성별</div>
+                <div css={modalAnswer}>{changeToKorean({ gender })}</div>
+              </div>
+              <div style={{ fontSize: '1.2rem', marginBottom: '10px' }}>
+                <div>3대 중량</div>
+                <div css={modalAnswer}>{changeToKorean({ levelOf3Dae })}</div>
+              </div>
+              <div style={{ fontSize: '1.2rem', marginBottom: '10px' }}>
+                <div>사진 공개</div>
+                <div css={modalAnswer}>
+                  {changeToKorean({ openImageChoice })}
+                </div>
+              </div>
+              <div style={{ fontSize: '1.2rem', marginBottom: '10px' }}>
+                <div>운동 가능 지역</div>
+                <div css={modalAnswer}>
+                  {ableDistricts
+                    .map((elm) => elm.district.nameOfDong)
+                    .join(', ')}
+                </div>
+              </div>
+              <div style={{ fontSize: '1.2rem', marginBottom: '10px' }}>
+                <div>운동 가능 요일</div>
+                <div css={modalAnswer}>
+                  {weekdays
+                    .map((elm) => changeToKorean({ weekdays: elm.weekday }))
+                    .sort(makeOrder({ weekdays }))
+                    .join(', ')}
+                </div>
+              </div>
+              <div style={{ fontSize: '1.2rem', marginBottom: '10px' }}>
+                <div>헬친을 찾는 이유</div>
+                <div css={modalAnswer}>
+                  {motivations
+                    .map((elm) =>
+                      changeToKorean({ motivations: elm.motivation }),
+                    )
+                    .join(', ')}
+                </div>
+              </div>
+              <div style={{ fontSize: '1.2rem', marginBottom: '10px' }}>
+                <div>자기소개</div>
+                <div>{messageToFriend}</div>
+              </div>
+            </div>
           </React.Fragment>
         )}
       </Modal>
