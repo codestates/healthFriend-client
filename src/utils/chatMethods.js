@@ -194,13 +194,18 @@ function connectToChatkit() {
     userId: me.nickname,
   });
 
+  const uri =
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost:5200'
+      : 'https://api.healthfriend.club';
+
   axios
-    .post('http://localhost:5200/users', {
+    .post(`${uri}/users`, {
       userId: me.nickname,
     })
     .then(() => {
       const tokenProvider = new Chatkit.TokenProvider({
-        url: 'http://localhost:5200/authenticate',
+        url: `${uri}/authenticate`,
       });
 
       const chatManager = new Chatkit.ChatManager({

@@ -28,27 +28,18 @@ const chatMainImgCss = css`
   height: 20%;
   width: 20%;
   position: absolute;
-<<<<<<< HEAD
   margin: auto;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-=======
-  top: 50%;
-  left: 60%;
-  transform: translate(-50%, -50%);
->>>>>>> 5da54bf06f879dcf2da3aca92818340759d2e32b
 `;
 
 const chatMainCss = css`
   background-color: #d2d2d2;
   height: 100%;
   margin-bottom: 0;
-<<<<<<< HEAD
   text-align: center;
-=======
->>>>>>> 5da54bf06f879dcf2da3aca92818340759d2e32b
 `;
 
 class Chat extends Component {
@@ -214,7 +205,6 @@ class Chat extends Component {
           </div>
         </div>
         <div className="App__backdrop">
-          hello
           <img
             className="App__backdrop__logo"
             src={avatar}
