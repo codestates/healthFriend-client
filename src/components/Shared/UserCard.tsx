@@ -4,7 +4,7 @@ import { Col, Card, Avatar, message, Popover } from 'antd';
 import { jsx, css } from '@emotion/core';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDumbbell, faChild } from '@fortawesome/free-solid-svg-icons';
+import { faChild } from '@fortawesome/free-solid-svg-icons';
 
 import { withRouter } from 'react-router-dom';
 import questionList from '../../config/questions';
@@ -86,8 +86,6 @@ const profileImageCss = css`
   width: 100px;
   height: 100px;
 `;
-
-// white-space: normal;
 
 const placesCss = css`
   margin-top: 10px;
@@ -510,7 +508,6 @@ function UserCard({
                       width={healthLevel}
                       height="20px"
                     />
-                    {/* <FontAwesomeIcon icon={faDumbbell} size={healthLevel} /> */}
                   </div>
                   <FontAwesomeIcon
                     icon={faChild}
