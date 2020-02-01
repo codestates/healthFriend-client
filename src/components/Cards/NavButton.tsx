@@ -4,8 +4,9 @@ import { Button } from 'antd';
 
 const buttonCss = css`
   width: 200px;
-  &:focus {
+  &:hover {
     background-color: #6f5a7e;
+    color: white;
   }
 `;
 
@@ -22,10 +23,12 @@ export default function NavButton({
   history,
   state,
 }: NavButtonProps) {
+  const [backgroundColor, textColor] =
+    state === relation ? ['#6f5a7e', 'white'] : ['white', 'black'];
   return (
     <Button
       css={buttonCss}
-      type={state === relation ? 'primary' : 'default'}
+      style={{ backgroundColor, color: textColor }}
       onClick={() => {
         history.push(`/cards/${relation}`);
       }}

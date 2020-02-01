@@ -42,7 +42,7 @@ const navMenu = css`
 `;
 
 const navHeader = css`
-  background: #1e272e;
+  background: #5075af;
 `;
 
 const navLinkItem = css`
