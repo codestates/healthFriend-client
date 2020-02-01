@@ -155,6 +155,8 @@ function connectToRoom(id = '92c49eb7-fe76-42bf-a85b-37e30a31cabb') {
               )[0]
             : currentRoom.name;
 
+        console.log('rooms, ', currentUser.rooms);
+
         this.setState({
           currentRoom,
           isLoading: false,

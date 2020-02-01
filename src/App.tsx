@@ -13,6 +13,7 @@ import Mypage from './routes/MyPage';
 import NotFound from './routes/NotFound';
 import Header from './components/Header/Header';
 import client from './graphql/apollo';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route path="/mypage" component={Mypage} />
             <Route component={NotFound} />
           </Switch>
+          <Footer />
         </Layout>
       </BrowserRouter>
     </ApolloProvider>

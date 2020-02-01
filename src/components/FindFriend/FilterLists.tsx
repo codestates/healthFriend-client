@@ -30,6 +30,7 @@ export default function FilterLists({
     .map((ele) => ele.subject);
 
   const search = () => {
+    console.log('filter', filter);
     getFilteredUsers({
       variables: { ...filter, districts: places },
     });

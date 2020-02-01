@@ -28,15 +28,18 @@ const chatMainImgCss = css`
   height: 20%;
   width: 20%;
   position: absolute;
-  top: 50%;
-  left: 60%;
-  transform: translate(-50%, -50%);
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 `;
 
 const chatMainCss = css`
   background-color: #d2d2d2;
   height: 100%;
   margin-bottom: 0;
+  text-align: center;
 `;
 
 class Chat extends Component {
