@@ -21,9 +21,7 @@ export const Chatbot = () => {
   const chatClient = new StreamChat(API_KEY);
 
   const [isOpen, setIsOpen] = useState(false);
-  const { loading, error } = useQuery(GET_USERS, {
-    fetchPolicy: 'network-only',
-  });
+
   const token: any = Cookies.get('stream-chat-token');
   const { error: errorR, loading: landingR, data: dataMe } = useQuery(
     GET_USERINFO,
@@ -32,8 +30,6 @@ export const Chatbot = () => {
     },
   );
 
-  if (loading) return <p>로딩 중...</p>;
-  if (error) return <p>오류 :(</p>;
   if (landingR) return <p>로딩 중...</p>;
   if (errorR) return <p>오류 :(</p>;
 
