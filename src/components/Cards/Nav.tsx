@@ -44,7 +44,7 @@ export default function Nav({ history, state }: NavProps) {
 
   return (
     <React.Fragment>
-      <Col xs={24} md={8}>
+      <Col xs={8} md={8}>
         {unreadFriends && unreadFriends.unreadFriends > 0 ? (
           <Badge count={unreadFriends.unreadFriends} overflowCount={999}>
             <NavButtonMade relation="friends" subject="헬스 친구" />
@@ -54,11 +54,11 @@ export default function Nav({ history, state }: NavProps) {
         )}
         {state === 'friends' ? <div css={trapezoid} /> : null}
       </Col>
-      <Col xs={24} md={8}>
+      <Col xs={8} md={8}>
         <NavButtonMade relation="following" subject="보낸 요청" />
         {state === 'following' ? <div css={trapezoid} /> : null}
       </Col>
-      <Col xs={24} md={8}>
+      <Col xs={8} md={8}>
         {unreadFollowers && unreadFollowers.unreadFollowers > 0 ? (
           <Badge count={unreadFollowers.unreadFollowers} overflowCount={999}>
             <NavButtonMade relation="followers" subject="받은 요청" />

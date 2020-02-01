@@ -97,7 +97,7 @@ function Home({ history }: HomeProps) {
 
   const uri =
     process.env.NODE_ENV === 'development'
-      ? 'http://localhost:5200'
+      ? 'http://localhost:4000'
       : 'https://api.healthfriend.club';
 
   if (

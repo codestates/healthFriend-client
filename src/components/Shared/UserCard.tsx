@@ -4,7 +4,7 @@ import { Col, Card, Avatar, message, Popover } from 'antd';
 import { jsx, css } from '@emotion/core';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDumbbell, faChild } from '@fortawesome/free-solid-svg-icons';
+import { faChild } from '@fortawesome/free-solid-svg-icons';
 
 import { withRouter } from 'react-router-dom';
 import questionList from '../../config/questions';
@@ -22,6 +22,7 @@ import {
 } from '../../graphql/queries';
 import Loading from './Loading';
 import redirectWhenError from '../../utils/redirectWhenError';
+import barbell from '../../static/barbell.png';
 
 const margin = css`
   padding: 10px;
@@ -34,7 +35,7 @@ const cardCSS = css`
   width: 100%;
   display: inline-block;
   border: none;
-  border-style: none;
+  border-radius: none;
 
   .ant-card-head-title {
     padding: 0;
@@ -61,13 +62,14 @@ const cardCSS = css`
   .ant-card-meta-title {
     font-size: 24px;
     width: 100%;
-    padding-left: 5px;
+    padding-left: 10px;
     color: white;
   }
 `;
 
 const iconWrapper = css`
   text-align: center;
+  margin-top: 5px;
 `;
 
 const districtCSS = css`
@@ -86,8 +88,16 @@ const profileImageCss = css`
 `;
 
 const placesCss = css`
+  margin-top: 10px;
+  margin-left: 10px;
   overflow: hidden;
   white-space: nowrap;
+`;
+
+const daysTableCss = css`
+  padding: 2px;
+  margin-top: 10px;
+  margin-left: 10px;
 `;
 
 const cardWrapper = css`
@@ -292,7 +302,7 @@ function UserCard({
   // 나중에 loading 같은 것 붙이기. 그리고 완료시 완료됐다는 문구. z-index같은 것 줘서 투명도 조절해서 친구 목록들 위에 띄워주면 좋을듯.
 
   // 일단 이렇게 해놨는데 수정 필요할듯. 도장표시 같은 걸로.
-  const color = checked ? '#243241' : '#ee5253';
+  const color = checked ? '#6f5a7e' : '#d45d79';
 
   const changeToKorean = (data) => {
     const questionIndex: number = questionList
@@ -320,14 +330,14 @@ function UserCard({
   };
 
   const DayTable = () => (
-    <table style={{ padding: '2px' }}>
+    <table css={daysTableCss}>
       <tbody>
         <tr>
           {['월', '화', '수', '목', '금', '토', '일'].map((elm) => {
             const [textColor, backColor] =
               getTableDays(weekdays).indexOf(elm) !== -1
-                ? ['black', '#f8c291']
-                : ['#CCC', '#CCC'];
+                ? ['black', '#e9e2d0']
+                : ['#CCC', '#e9e2d0'];
             return (
               <td
                 css={tableStyle}
@@ -411,19 +421,19 @@ function UserCard({
       .slice(1, -1)
   ) {
     case '생초보':
-      healthLevel = 'lg';
+      healthLevel = '20%';
       break;
     case '초보':
-      healthLevel = '2x';
+      healthLevel = '40%';
       break;
     case '중수':
-      healthLevel = '3x';
+      healthLevel = '60%';
       break;
     case '고수':
-      healthLevel = '4x';
+      healthLevel = '80%';
       break;
     case '괴물':
-      healthLevel = '5x';
+      healthLevel = '100%';
       break;
     default:
       break;
@@ -485,33 +495,29 @@ function UserCard({
               title={nickname}
             />
           </div>
-          <div
-            style={{
-              position: 'absolute',
-              top: 60,
-              left: 150,
-              overflow: 'hidden',
-            }}
-            css={iconWrapper}
-          >
-            <div>
-              <FontAwesomeIcon icon={faDumbbell} size={healthLevel} />
-            </div>
-            <FontAwesomeIcon
-              icon={faChild}
-              size="2x"
-              style={{ color: iconColor }}
-            />
-          </div>
           <div>
             {loadingFU || loadingDFo || loadingDF || loadingAF || loadingCF ? (
               <Loading />
             ) : (
               <React.Fragment>
-                <br />
-                <br />
-                <DayTable />
-                <br />
+                <div css={iconWrapper}>
+                  <div>
+                    <img
+                      src={barbell}
+                      alt=""
+                      width={healthLevel}
+                      height="20px"
+                    />
+                  </div>
+                  <FontAwesomeIcon
+                    icon={faChild}
+                    size="2x"
+                    style={{ color: iconColor }}
+                  />
+                </div>
+                <div>
+                  <DayTable />
+                </div>
                 <div css={placesCss}>
                   {ableDistricts
                     .map((elm) => (

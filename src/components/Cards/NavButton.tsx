@@ -3,9 +3,13 @@
 import { jsx, css } from '@emotion/core';
 import { Button } from 'antd';
 
+// const buttonCss = css`
+//   display: inline-block;
+//   width: 60%;
+// `;
+
 const buttonCss = css`
-  display: inline-block;
-  width: 90%;
+  width: 200px;
 `;
 
 type NavButtonProps = {
