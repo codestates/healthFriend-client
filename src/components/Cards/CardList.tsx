@@ -10,10 +10,11 @@ import sortByDate from '../../utils/sortByDate';
 import emptyImage from '../../static/chat-main.jpg';
 
 const wrapperDivCss = css`
-  background-color: #999999;
+  background-color: #e9e2d0;
   height: 60vh;
   margin-bottom: 0;
   padding: 20px;
+  border-radius: 10px;
 `;
 
 const emptyMessageCss = css`
