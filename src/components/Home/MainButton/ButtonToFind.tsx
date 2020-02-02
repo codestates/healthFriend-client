@@ -6,6 +6,11 @@ import { jsx, css } from '@emotion/core';
 const startButton = css`
   background: #ed9364;
   border-color: #ed9364;
+  &:hover {
+    background-color: #ffbe76;
+    border-color: #ffbe76;
+    color: black;
+  }
 `;
 
 type ButtonToFindProps = {
@@ -15,7 +20,7 @@ type ButtonToFindProps = {
 export default function ButtonToFind({ history }: ButtonToFindProps) {
   return (
     <Button
-      type="primary"
+      // type="primary"
       size="large"
       css={startButton}
       onClick={() => history.push('/find')}

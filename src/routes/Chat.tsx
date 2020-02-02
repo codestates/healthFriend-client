@@ -3,7 +3,7 @@ import { jsx, css } from '@emotion/core';
 import ChatComponent from '../components/Chat';
 
 const chatDiv = css`
-  height: 80vh;
+  height: 81vh;
 `;
 
 function Chat() {

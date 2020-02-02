@@ -18,9 +18,7 @@ const wrapperDivCss = css`
 `;
 
 const emptyMessageCss = css`
-  position: absolute;
-  top: 20%;
-  left: 35%;
+  margin-top: 20px;
   font-size: 1rem;
   line-height: 2rem;
 `;
@@ -28,12 +26,12 @@ const emptyMessageCss = css`
 const emptyImgCss = css`
   filter: grayscale(100%);
   border-radius: 50%;
-  height: 20%;
-  width: 20%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  height: 10%;
+  width: 10%;
+`;
+
+const emptyImageWrapper = css`
+  margin-top: 40px;
 `;
 
 type CardListProps = {
@@ -72,10 +70,12 @@ export default function CardList({
       }
       return (
         <div css={wrapperDivCss}>
-          <img src={emptyImage} css={emptyImgCss} alt="" />
           <div css={emptyMessageCss}>
             <div>{message.followingEmpty1}</div>
             <div>{message.followingEmpty2}</div>
+          </div>
+          <div css={emptyImageWrapper}>
+            <img src={emptyImage} css={emptyImgCss} alt="" />
           </div>
         </div>
       );
@@ -91,10 +91,12 @@ export default function CardList({
       }
       return (
         <div css={wrapperDivCss}>
-          <img src={emptyImage} css={emptyImgCss} alt="" />
           <div css={emptyMessageCss}>
             <div>{message.followersEmpty1}</div>
             <div>{message.followersEmpty2}</div>
+          </div>
+          <div css={emptyImageWrapper}>
+            <img src={emptyImage} css={emptyImgCss} alt="" />
           </div>
         </div>
       );
@@ -110,10 +112,12 @@ export default function CardList({
       }
       return (
         <div css={wrapperDivCss}>
-          <img src={emptyImage} css={emptyImgCss} alt="" />
           <div css={emptyMessageCss}>
             <div>{message.friendsEmpty1}</div>
             <div>{message.friendsEmpty2}</div>
+          </div>
+          <div css={emptyImageWrapper}>
+            <img src={emptyImage} css={emptyImgCss} alt="" />
           </div>
         </div>
       );

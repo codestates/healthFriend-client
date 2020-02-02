@@ -6,10 +6,13 @@ import { jsx, css } from '@emotion/core';
 
 // 이거 유저가 이 행동 먼저 할 수 있게 불깜빡깜빡 거리게 만드는 애니매이션 같은 것 넣고 싶음.
 const startButton = css`
-  height: 5rem;
-  font-size: 3rem;
-  background: #2c3e50;
-  border-color: #2c3e50;
+  background: #ed9364;
+  border-color: #ed9364;
+  &:hover {
+    background-color: #ffbe76;
+    border-color: #ffbe76;
+    color: black;
+  }
 `;
 
 type ButtonToRegisterProps = {

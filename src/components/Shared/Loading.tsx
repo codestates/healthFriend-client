@@ -8,7 +8,8 @@ const loading = css`
 
 const loadingDiv = css`
   text-align: center;
-  margin-top: 100px;
+  margin-top: 70px;
+  margin-bottom: 70px;
 `;
 
 function Loading() {

@@ -5,7 +5,7 @@ import { Button } from 'antd';
 const buttonCss = css`
   width: 200px;
   &:hover {
-    background-color: #6f5a7e;
+    background-color: #5075af;
     color: white;
   }
 `;
@@ -24,11 +24,15 @@ export default function NavButton({
   state,
 }: NavButtonProps) {
   const [backgroundColor, textColor] =
-    state === relation ? ['#6f5a7e', 'white'] : ['white', 'black'];
+    state === relation ? ['#5075af', 'white'] : ['white', 'black'];
   return (
     <Button
       css={buttonCss}
-      style={{ backgroundColor, color: textColor }}
+      style={{
+        backgroundColor,
+        color: textColor,
+        border: state === relation ? 'none' : '1px solid #cccå',
+      }}
       onClick={() => {
         history.push(`/cards/${relation}`);
       }}

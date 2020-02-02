@@ -36,7 +36,11 @@ export default function Nav({ history, state }: NavProps) {
     <>
       <Col xs={8} md={8}>
         {unreadFriends && unreadFriends.unreadFriends > 0 ? (
-          <Badge count={unreadFriends.unreadFriends} overflowCount={999}>
+          <Badge
+            count={unreadFriends.unreadFriends}
+            overflowCount={999}
+            style={{ backgroundColor: '#ED9364' }}
+          >
             <NavButtonMade relation="friends" subject="헬스 친구" />
           </Badge>
         ) : (
@@ -48,7 +52,11 @@ export default function Nav({ history, state }: NavProps) {
       </Col>
       <Col xs={8} md={8}>
         {unreadFollowers && unreadFollowers.unreadFollowers > 0 ? (
-          <Badge count={unreadFollowers.unreadFollowers} overflowCount={999}>
+          <Badge
+            count={unreadFollowers.unreadFollowers}
+            overflowCount={999}
+            style={{ backgroundColor: '#ED9364' }}
+          >
             <NavButtonMade relation="followers" subject="받은 요청" />
           </Badge>
         ) : (

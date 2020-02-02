@@ -50,7 +50,7 @@
   content: '';
   position: absolute;
   border: 0 solid transparent;
-  border-top: 9px solid #ffffff;
+  border-top: 9px solid #d68a60;
   border-radius: 0 20px 0;
   width: 15px;
   height: 30px;
@@ -59,15 +59,15 @@
 
 .Chat__messages__message__arrow.alt:after {
   transform: rotate(45deg) scaleY(-1);
-  border-top: 9px solid #213242;
+  border-top: 9px solid #5075af;
 }
 
 .Chat__messages__message--other {
-  background: #fefefe;
+  background: #d68a60;
 }
 
 .Chat__messages__message--self {
-  background: #213242;
+  background: #5075af;
   color: #ffffff;
 }
 
@@ -80,7 +80,7 @@
 .Chat__compose {
   box-sizing: border-box;
   padding: 1rem;
-  background: #ededed;
+  background: #cccccc;
   display: flex;
 }
 
@@ -94,8 +94,7 @@
 }
 
 .Chat__compose__button {
-  border: 1px solid #c5c5c5;
-  background: none;
+  background: #b3b3b3;
   margin-left: 1rem;
   padding: 0rem 1rem;
   border-radius: 0.3rem;
@@ -103,9 +102,8 @@
 }
 
 .Chat__compose__button__ready {
-  border: 1px solid #c5c5c5;
-  background: #213242;
-  color: #c5c5c5;
+  background: #5075af;
+  color: white;
   margin-left: 1rem;
   padding: 0rem 1rem;
   border-radius: 0.3rem;
@@ -118,4 +116,6 @@
 
 .Chat__compose__button:hover {
   cursor: pointer;
+  background: #5075af;
+  color: white;
 }
