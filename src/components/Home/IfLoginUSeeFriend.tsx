@@ -7,12 +7,12 @@ const wrapper = css`
 `;
 
 const lineText = css`
-  background: #1e272e;
+  background: #e9e2d0;
   padding: 20px;
   opacity: 0.75;
 
   .ant-typography {
-    color: #fff;
+    color: black;
     margin: 0;
     text-align: center;
   }

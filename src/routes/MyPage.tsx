@@ -71,19 +71,6 @@ function MyPage({ history }: MyPageProps) {
 
   return (
     <div>
-      <Button type="primary">
-        <a
-          href={
-            process.env.NODE_ENV === 'development'
-              ? 'http://localhost:4000/graphql'
-              : 'https://api.healthfriend.club/graphql'
-          }
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          graphql playground로 ㄱ
-        </a>
-      </Button>
       <Row type="flex" justify="center">
         <Col xs={12}>
           <div css={wrapper}>

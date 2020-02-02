@@ -8,14 +8,18 @@ const copyright = css`
   vertical-align: middle;
 `;
 
+// bottom: 0;
+// position: absolute;
+
 const footerStyle = css`
   margin-top: 10px;
+  width: 100%;
 `;
 
 export default function Footer() {
   return (
     <Layout.Footer css={footerStyle}>
-      <p css={copyright}> &copy; HealthFriend.com </p>
+      <p css={copyright}> &copy; HealthFriend.club </p>
     </Layout.Footer>
   );
-};
+}

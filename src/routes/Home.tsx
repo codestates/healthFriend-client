@@ -42,6 +42,7 @@ const renderingMessage = css`
 `;
 
 const mainButtonCss = css`
+  margin: 10px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -64,7 +65,6 @@ function Home({ history }: HomeProps) {
     fetchPolicy: 'network-only',
   });
   const { data: dataUsers } = useQuery(GET_RANDOM_USERS);
-  console.log(dataUsers);
   const { data: loginData } = useQuery(IS_LOGGED_IN);
 
   // 채팅창 때문에 여기 인증하는 부분 최악인듯... 코드 뜯어고쳐야....
@@ -176,7 +176,9 @@ function Home({ history }: HomeProps) {
                 )}
               </Row>
             </Col>
-            <MainButton {...{ dataMe, history, loginData }} />
+            <div style={{ margin: '10px' }}>
+              <MainButton {...{ dataMe, history, loginData }} />
+            </div>
           </Row>
         </Col>
       )}

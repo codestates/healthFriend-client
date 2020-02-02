@@ -17,7 +17,6 @@ import ChatSession from './ChatSession';
 import '../../css/Chat/chat.css';
 import { GET_USERINFO, GET_CHAT_FRIEND } from '../../graphql/queries';
 import Loading from '../Shared/Loading';
-import avatar from '../../static/default-avatar.png';
 import chatMainImg from '../../static/chat-main.jpg';
 
 // 여기 typescript로 바꾸기
@@ -27,26 +26,41 @@ const chatMainImgCss = css`
   border-radius: 50%;
   height: 20%;
   width: 20%;
-  position: absolute;
-  margin: auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
 `;
 
+// position: absolute;
+// margin: auto;
+// top: 0;
+// left: 0;
+// right: 0;
+// bottom: 0;
+
 const chatMainCss = css`
-  background-color: #d2d2d2;
+  background-color: #e9e2d0;
   height: 100%;
   margin-bottom: 0;
   text-align: center;
+  border-radius: 0px 0px 10px 0px;
 `;
 
 const chatDiv = css`
-.ant-row-flex-center
-  .ant-row-flex-center {
+  .ant-row-flex-center .ant-row-flex-center {
     height: 80vh;
   }
+`;
+
+const noFriendMsg = css`
+  margin-top: 20px;
+  margin-left: 20px;
+
+  font-size: 1rem;
+  line-height: 2rem;
+`;
+
+const noSelectedRoomMsg = css`
+  font-size: 1rem;
+  line-height: 2rem;
+  margin-top: 40px;
 `;
 
 class ChatComponent extends Component {
@@ -126,7 +140,13 @@ class ChatComponent extends Component {
           </div>
         ) : null} */}
             <aside className="sidebar left-sidebar">
-              <header className="chat-header">
+              <header
+                className="chat-header"
+                style={{
+                  backgroundColor: '#CCC',
+                  borderRadius: '10px 0px 0px 0px',
+                }}
+              >
                 <h3>채팅방</h3>
               </header>
               {currentRoom && rooms.length > 1 ? (
@@ -144,14 +164,20 @@ class ChatComponent extends Component {
                   </ul>
                 </div>
               ) : (
-                <p>
-                  아직 채팅하는 친구가 없어요. 헬스 친구를 만들고, 채팅 시작을
-                  해보세요!
-                </p>
+                <div css={noFriendMsg}>
+                  아직 채팅하는 친구가 없어요.
+                  <br />
+                  친구를 만들고, 대화를 해보세요!
+                </div>
               )}
             </aside>
             <section className="chat-screen">
-              <header className="chat-header">
+              <header
+                className="chat-header"
+                style={{
+                  borderRadius: '0px 10px 0px 0px',
+                }}
+              >
                 {currentRoom.id !== '92c49eb7-fe76-42bf-a85b-37e30a31cabb' ? (
                   <h3>{roomName}님과의 대화</h3>
                 ) : (
@@ -174,10 +200,12 @@ class ChatComponent extends Component {
                 </>
               ) : (
                 <div css={chatMainCss}>
-                  <img src={chatMainImg} css={chatMainImgCss} alt="" />
+                  <div css={noSelectedRoomMsg}>선택된 채팅방이 없습니다</div>
                   <br />
                   <br />
-                  <div>선택된 채팅방이 없습니다</div>
+                  <div>
+                    <img src={chatMainImg} css={chatMainImgCss} alt="" />
+                  </div>
                 </div>
               )}
               {currentRoom.id !== '92c49eb7-fe76-42bf-a85b-37e30a31cabb' ? (
@@ -210,13 +238,6 @@ class ChatComponent extends Component {
               ) : null}
             </section>
           </div>
-        </div>
-        <div className="App__backdrop">
-          <img
-            className="App__backdrop__logo"
-            src={avatar}
-            alt="Chatkit logo"
-          />
         </div>
       </div>
     );
