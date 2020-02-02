@@ -5,16 +5,19 @@
   font-size: inherit;
   line-height: normal;
   vertical-align: middle;
-  background-color: #5ea4e6;
+  background-color: rgb(79, 118, 175);
   cursor: pointer;
-  border: 1px solid #5ea4e6;
+  border: 1px solid rgb(79, 118, 175);
+  width: 68.33px;
+  height: 32px;
+  text-align: center;
   border-radius: 0.25em;
   -webkit-transition: background-color 0.2s;
   transition: background-color 0.2s;
 }
 
 .filebox label:hover {
-  background-color: #5ea4e6;
+  background-color: rgb(79, 118, 175);
 }
 
 .filebox label:active {
@@ -30,4 +33,11 @@
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
+}
+
+.button-fix {
+  position: relative;
+  top: 1.3px;
+  background: rgb(79, 118, 175);
+  border: 1px solid rgb(79, 118, 175);
 }

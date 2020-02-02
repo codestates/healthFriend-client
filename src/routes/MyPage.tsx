@@ -28,7 +28,6 @@ type MyPageProps = {
   history: any;
 };
 
-// 불필요하게 render가 여러번 되는 문제!!!
 function MyPage({ history }: MyPageProps) {
   const client = useApolloClient();
 
