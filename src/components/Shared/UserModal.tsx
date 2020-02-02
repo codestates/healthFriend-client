@@ -15,7 +15,6 @@ import {
 } from '../../graphql/queries';
 import Loading from './Loading';
 import redirectWhenError from '../../utils/redirectWhenError';
-import '../../css/Shared/UserModal.css';
 
 const modalHeaderMan = css`
   text-align: center;
