@@ -20,7 +20,8 @@ function App() {
     <ApolloProvider client={client}>
       <BrowserRouter>
         <Layout style={{ background: '#fff' }}>
-          <Header />
+          <Header/>
+          <div id='content'>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/register" component={Register} />
@@ -31,7 +32,8 @@ function App() {
             <Route path="/mypage" component={Mypage} />
             <Route component={NotFound} />
           </Switch>
-          <Footer />
+          </div>
+          <Footer/>
         </Layout>
       </BrowserRouter>
     </ApolloProvider>

@@ -304,7 +304,7 @@ function UserCard({
   // 나중에 loading 같은 것 붙이기. 그리고 완료시 완료됐다는 문구. z-index같은 것 줘서 투명도 조절해서 친구 목록들 위에 띄워주면 좋을듯.
 
   // 일단 이렇게 해놨는데 수정 필요할듯. 도장표시 같은 걸로.
-  const color = checked ? '#6f5a7e' : '#d45d79';
+  const color = checked ? '#5075AF' : '#ED9364';
 
   const changeToKorean = (data) => {
     const questionIndex: number = questionList
@@ -441,8 +441,8 @@ function UserCard({
       break;
   }
 
-  let iconColor = '#ee5253';
-  if (changeToKorean({ gender }) === '남자') iconColor = '#2e86de';
+  let iconColor = '#ff6b6b';
+  if (changeToKorean({ gender }) === '남자') iconColor = '#5075AF';
 
   return (
     <Col xs={24} md={12} lg={6} css={margin}>

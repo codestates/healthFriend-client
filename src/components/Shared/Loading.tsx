@@ -7,10 +7,9 @@ const loading = css`
 `;
 
 const loadingDiv = css`
-  position: absolute;
-  top: 50%;
-  left: 46%;
-  transform: translate(-50%, -50%);
+  text-align: center;
+  margin-top: 70px;
+  margin-bottom: 70px;
 `;
 
 function Loading() {
@@ -19,7 +18,7 @@ function Loading() {
     <div css={loadingDiv}>
       <Row type="flex" justify="center">
         <Col xs={3}>
-          <Spin indicator={loadingIcon} />
+          <Spin indicator={loadingIcon} style={{ color: '#ed9364' }} />
         </Col>
       </Row>
     </div>
