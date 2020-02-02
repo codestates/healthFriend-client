@@ -8,6 +8,7 @@ import { jsx, css } from '@emotion/core';
 const startButton = css`
   background: #ed9364;
   border-color: #ed9364;
+  color: black;
   &:hover {
     background-color: #ffbe76;
     border-color: #ffbe76;

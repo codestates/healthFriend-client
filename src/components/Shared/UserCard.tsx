@@ -110,6 +110,16 @@ const tableStyle = css`
   padding: 2px;
 `;
 
+// font-color change가 안됨.  ant-actions로 change해야 하는지
+const negativeFooter = css`
+  font-size: 13px;
+`;
+
+const positiveFooter = css`
+  font-size: 14px;
+  font-weight: bold;
+`;
+
 type UserCardProps = {
   id: any; // string으로 하면 안 되는 이유는??
   nickname: string;
@@ -381,8 +391,9 @@ function UserCard({
             message.success('채팅창으로 이동합니다');
             func();
           }}
+          css={positiveFooter}
         >
-          <b>{buttonText}</b>
+          {buttonText}
         </span>,
       );
     }
@@ -391,8 +402,13 @@ function UserCard({
         onClick={() => {
           func({ variables: { userId: id } });
         }}
+        css={
+          ['친구 끊기', '요청 거절', '신청 취소'].indexOf(buttonText) !== -1
+            ? negativeFooter
+            : positiveFooter
+        }
       >
-        <b>{buttonText}</b>
+        {buttonText}
       </span>,
     );
   };

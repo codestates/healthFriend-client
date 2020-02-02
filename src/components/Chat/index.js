@@ -180,11 +180,7 @@ class ChatComponent extends Component {
               >
                 {currentRoom.id !== '92c49eb7-fe76-42bf-a85b-37e30a31cabb' ? (
                   <h3>{roomName}님과의 대화</h3>
-                ) : (
-                  <h3>
-                    이제 본격적으로 친구들과 대화하여 헬스 약속을 잡으세요
-                  </h3>
-                )}
+                ) : null}
               </header>
               {currentRoom.id !== '92c49eb7-fe76-42bf-a85b-37e30a31cabb' ? (
                 <>
