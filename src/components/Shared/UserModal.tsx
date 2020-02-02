@@ -79,7 +79,9 @@ const modalAnswer = css`
 `;
 
 const modalBodyCss = css`
-  padding: 0px;
+  .ant-modal-body {
+    padding: 0px;
+  }
 `;
 
 type UserModalProps = {
