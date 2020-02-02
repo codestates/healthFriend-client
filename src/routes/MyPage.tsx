@@ -24,11 +24,26 @@ const wrapper = css`
   margin: 20px;
 `;
 
+const buttonCss = css`
+  background: #ed9364;
+  border-color: #ed9364;
+  color: black;
+  &:hover {
+    background-color: #ffbe76;
+    border-color: #ffbe76;
+    color: black;
+  }
+  &:focus {
+    background-color: #ed9364;
+    border-color: #ed9364;
+    color: black;
+  }
+`;
+
 type MyPageProps = {
   history: any;
 };
 
-// 불필요하게 render가 여러번 되는 문제!!!
 function MyPage({ history }: MyPageProps) {
   const client = useApolloClient();
 
@@ -81,6 +96,7 @@ function MyPage({ history }: MyPageProps) {
                 extra={[
                   <Button
                     type="primary"
+                    css={buttonCss}
                     key="home"
                     onClick={() => {
                       history.push('/');
@@ -91,6 +107,7 @@ function MyPage({ history }: MyPageProps) {
                   </Button>,
                   <Button
                     key="find"
+                    css={buttonCss}
                     onClick={() => {
                       history.push('/find');
                       setComplete(false);
@@ -129,6 +146,7 @@ function MyPage({ history }: MyPageProps) {
                 >
                   <Button
                     type="primary"
+                    css={buttonCss}
                     onClick={() => getMe()}
                     disabled={isEditButtonDisable()}
                   >
@@ -137,6 +155,7 @@ function MyPage({ history }: MyPageProps) {
                 </Tooltip>{' '}
                 <Button
                   type="primary"
+                  css={buttonCss}
                   onClick={() => {
                     history.push('/');
                     window.scrollTo(0, 0);
