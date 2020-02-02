@@ -20,6 +20,8 @@ import useEditButton from '../hooks/Mypage/useEditButton';
 import redirectWhenError from '../utils/redirectWhenError';
 import Loading from '../components/Shared/Loading';
 
+import './MyPage.css';
+
 const wrapper = css`
   margin: 20px;
 `;

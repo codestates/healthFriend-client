@@ -277,7 +277,7 @@ function UserModal({
             </div>
             <div style={{ fontSize: '1rem', marginBottom: '10px' }}>
               <div>자기소개</div>
-              <div>{messageToFriend}</div>
+              <div css={modalAnswer}>{messageToFriend}</div>
             </div>
           </div>
         </React.Fragment>
