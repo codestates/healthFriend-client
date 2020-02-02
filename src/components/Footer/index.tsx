@@ -13,7 +13,10 @@ const copyright = css`
 
 const footerStyle = css`
   margin-top: 10px;
-  width: 100%;
+
+  @media (max-width: 600px) {
+    margin-top: 100;
+  }
 `;
 
 export default function Footer() {
