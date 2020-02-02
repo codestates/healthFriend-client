@@ -119,13 +119,13 @@ export default function Header() {
         <React.Fragment>
           <Menu mode="horizontal" css={navMenu}>
             <Menu.Item>
-              {/* {dataMe.me.motivations.length > 0 &&
+              {dataMe.me.motivations.length > 0 &&
               dataMe.me.weekdays.length > 0 &&
-              dataMe.me.ableDistricts.length > 0 ? null : ( */}
-              <NavLink to="/register" className="item" css={navLinkItem}>
-                내 정보등록
-              </NavLink>
-              {/* )} */}
+              dataMe.me.ableDistricts.length > 0 ? null : (
+                <NavLink to="/register" className="item" css={navLinkItem}>
+                  내 정보등록
+                </NavLink>
+              )}
             </Menu.Item>
             <Menu.Item>
               <NavLink to="/find" className="item" css={navLinkItem}>
@@ -139,7 +139,6 @@ export default function Header() {
                   overflowCount={999}
                   offset={[0, 12]}
                   style={{ backgroundColor: '#ED9364' }}
-                  // style={{ fontSize: '30px' }}
                 >
                   <NavLink
                     to="/cards/friends"

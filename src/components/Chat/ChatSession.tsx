@@ -17,7 +17,7 @@ const ChatSession = (props: ChatSessionProps) => {
 
   return messages.map((message) => {
     const isOwnMessage = message.senderId === me.nickname;
-    const today = moment(`${message.updatedAt}`).format('YYYY년 M월DD일 dddd');
+    const today = moment(`${message.updatedAt}`).format('YYYY년 M월D일 dddd');
 
     let daySeperator;
     if (prevDay === '') {

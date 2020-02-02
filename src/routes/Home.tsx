@@ -6,7 +6,7 @@ import { useQuery, useApolloClient } from '@apollo/react-hooks';
 import Chatkit from '@pusher/chatkit-client';
 import axios from 'axios';
 
-import renderImage from '../static/loginImage.png';
+import renderImage from '../static/h2.jpeg';
 import IfLoginUSeeFriend from '../components/Home/IfLoginUSeeFriend';
 import MainButton from '../components/Home/MainButton';
 import {
@@ -25,8 +25,8 @@ const { Title } = Typography;
 const renderingImage = css`
   width: 100%;
   object-fit: cover;
-  height: 82vh;
-  filter: grayscale(20%);
+  object-position: 50% 20%;
+  height: 85vh;
 `;
 
 const renderingMessage = css`
@@ -37,7 +37,7 @@ const renderingMessage = css`
   transform: translate(-50%, -50%);
 
   *.ant-typography {
-    color: #ed9364;
+    color: white;
   }
 `;
 

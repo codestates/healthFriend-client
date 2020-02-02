@@ -124,6 +124,7 @@ class ChatComponent extends Component {
 
     // console.log('data', this.props);
     // console.log('state를 보여줘', this.state);
+    console.log('currentRoom', currentRoom);
 
     const {
       me: { me },
@@ -149,7 +150,12 @@ class ChatComponent extends Component {
               >
                 <h3>채팅방</h3>
               </header>
-              {currentRoom && rooms.length > 1 ? (
+              {currentRoom &&
+              rooms
+                .filter((room) => room.isPrivate)
+                .filter(
+                  (room) => room.customData.userIds.indexOf(me.nickname) !== -1,
+                ).length > 0 ? (
                 <div className="UserList__container">
                   <ul className="UserList__container__list">
                     <RoomList
