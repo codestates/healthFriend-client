@@ -5,9 +5,9 @@
   font-size: inherit;
   line-height: normal;
   vertical-align: middle;
-  background-color: rgb(79, 118, 175);
+  background-color: #5075af;
   cursor: pointer;
-  border: 1px solid rgb(79, 118, 175);
+  border: 1px solid #5075af;
   width: 68.33px;
   height: 32px;
   text-align: center;
@@ -17,11 +17,13 @@
 }
 
 .filebox label:hover {
-  background-color: rgb(79, 118, 175);
+  background-color: #4e96d1;
+  border: #4e96d1;
 }
 
 .filebox label:active {
-  background-color: #1a73bd;
+  background-color: #4e96d1;
+  border: #4e96d1;
 }
 
 .filebox input[type='file'] {
@@ -38,6 +40,12 @@
 .button-fix {
   position: relative;
   top: 1.3px;
-  background: rgb(79, 118, 175);
-  border: 1px solid rgb(79, 118, 175);
+  background: #5075af;
+  border: 1px solid #5075af;
+  color: white;
+}
+
+.button-fix:hover {
+  background-color: #4e96d1;
+  color: white;
 }
