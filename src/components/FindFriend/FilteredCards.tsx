@@ -22,6 +22,9 @@ export default function FilteredCards({
   dataMe,
 }: FilteredCardsProps) {
   if (loadingFU) return <Loading />;
+
+  console.log('dataFU', dataFU);
+
   return (
     <Row gutter={24} css={marginFilterdCards}>
       {dataFU && dataFU.filterUsers && dataMe && dataMe.me

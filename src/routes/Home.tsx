@@ -6,7 +6,7 @@ import { useQuery, useApolloClient } from '@apollo/react-hooks';
 import Chatkit from '@pusher/chatkit-client';
 import axios from 'axios';
 
-import renderImage from '../static/renderImage.jpg';
+import renderImage from '../static/loginImage.png';
 import IfLoginUSeeFriend from '../components/Home/IfLoginUSeeFriend';
 import MainButton from '../components/Home/MainButton';
 import {
@@ -37,7 +37,7 @@ const renderingMessage = css`
   transform: translate(-50%, -50%);
 
   *.ant-typography {
-    color: #fff;
+    color: #ed9364;
   }
 `;
 

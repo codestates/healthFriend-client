@@ -36,7 +36,6 @@ function FindFriend({ history }: FindFriendProps) {
   });
   useSubscript(history);
 
-  console.log('errorMe', errorMe);
   // if (errorMe || error) redirectWhenError(history, client);
 
   // refetch 할때의 error는 아래의 error나 errorMe에 안 잡히는 듯.

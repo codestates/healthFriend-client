@@ -3,8 +3,6 @@ import React from 'react';
 import { Modal, Button, message, Avatar } from 'antd';
 import { jsx, css } from '@emotion/core';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faDumbbell } from '@fortawesome/free-solid-svg-icons';
 
 import {
   FOLLOW_USER,
@@ -17,20 +15,48 @@ import {
 } from '../../graphql/queries';
 import Loading from './Loading';
 import redirectWhenError from '../../utils/redirectWhenError';
-
-import './UserModal.css';
+import '../../css/Shared/UserModal.css';
 
 const modalHeaderMan = css`
   text-align: center;
-  background: linear-gradient(to bottom, rgb(70, 135, 216) 65%, white 35%)
-    no-repeat;
-  padding: 24px 0 0 0x;
+  background: linear-gradient(to bottom, #5075af 65%, white 35%) no-repeat;
+  padding: 24px 0 0 0;
 `;
 const modalHeaderWoman = css`
   text-align: center;
-  background: linear-gradient(to bottom, rgb(209, 88, 84) 65%, white 35%)
-    no-repeat;
+  background: linear-gradient(to bottom, #ff6b6b 65%, white 35%) no-repeat;
   padding: 24px 0 0 0;
+`;
+const modalButtonCss = css`
+  background: #ed9364;
+  border-color: #ed9364;
+  color: black;
+  &:hover {
+    background-color: #ffbe76;
+    border-color: #ffbe76;
+    color: black;
+  }
+  &:focus {
+    background-color: #ed9364;
+    border-color: #ed9364;
+    color: black;
+  }
+`;
+
+const negativeButtonCss = css`
+  background: #e9e2d0;
+  border-color: #e9e2d0;
+  color: #999;
+  &:hover {
+    background-color: #ccc;
+    border-color: #ccc;
+    color: #999;
+  }
+  &:focus {
+    background-color: #ccc;
+    border-color: #ccc;
+    color: #999;
+  }
 `;
 
 const modalImage = css`
@@ -51,6 +77,10 @@ const modalAnswer = css`
   border-radius: 5px;
   background-color: lightgray;
   display: inline-block;
+`;
+
+const modalBodyCss = css`
+  padding: 0px;
 `;
 
 type UserModalProps = {
@@ -181,7 +211,7 @@ function UserModal({
   );
 
   const modalFooter = [
-    <Button key="back" onClick={() => setVisible(false)}>
+    <Button key="back" css={modalButtonCss} onClick={() => setVisible(false)}>
       닫기
     </Button>,
   ];
@@ -189,7 +219,9 @@ function UserModal({
   const makeButton = (func, buttonText) => {
     if (buttonText === '채팅하기') {
       return modalFooter.push(
-        <span
+        <Button
+          key={id}
+          css={modalButtonCss}
           onClick={() => {
             setChatFriend({ variables: { id, nickname } });
             message.success('채팅창으로 이동합니다');
@@ -197,13 +229,20 @@ function UserModal({
           }}
         >
           <b>{buttonText}</b>
-        </span>,
+        </Button>,
       );
       // 채팅 연결 성공후 성공했다는 알림 및 채팅창 불 들어오는 noti 같은 것.
     }
     modalFooter.push(
       <Button
         key={buttonText}
+        css={
+          ['친구 끊기', '친구신청 거절', '친구신청 취소'].indexOf(
+            buttonText,
+          ) !== -1
+            ? negativeButtonCss
+            : modalButtonCss
+        }
         type="primary"
         onClick={() => func({ variables: { userId: id } })}
       >
@@ -214,7 +253,7 @@ function UserModal({
 
   if (type === 'friends') {
     makeButton(deleteFriend, '친구 끊기');
-    makeButton(() => history.push('/Chat'), '채팅하기');
+    makeButton(() => history.push('/chat'), '채팅하기');
   } else if (type === 'followers') {
     makeButton(deleteFollower, '친구신청 거절');
     makeButton(addFriend, '친구신청 수락');
@@ -228,7 +267,8 @@ function UserModal({
     <Modal
       visible={visible}
       footer={modalFooter}
-      className="ant-modal-body"
+      css={modalBodyCss}
+      // className="ant-modal-body"
       onCancel={() => setVisible(false)}
     >
       {loadingFU || loadingDFo || loadingDF || loadingAF || loadingCF ? (
