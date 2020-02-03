@@ -16,7 +16,7 @@ const startButton = css`
 
 export default function ButtonToSignup() {
   return (
-    <Button type="primary" size="large" css={startButton}>
+    <Button size="large" css={startButton}>
       <a
         href={
           process.env.NODE_ENV === 'development'

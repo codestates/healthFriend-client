@@ -27,14 +27,6 @@ const chatMainImgCss = css`
   height: 20%;
   width: 20%;
 `;
-
-// position: absolute;
-// margin: auto;
-// top: 0;
-// left: 0;
-// right: 0;
-// bottom: 0;
-
 const chatMainCss = css`
   background-color: #e9e2d0;
   height: 100%;
@@ -42,13 +34,11 @@ const chatMainCss = css`
   text-align: center;
   border-radius: 0px 0px 10px 0px;
 `;
-
 const chatDiv = css`
   .ant-row-flex-center .ant-row-flex-center {
     height: 80vh;
   }
 `;
-
 const noFriendMsg = css`
   margin-top: 20px;
   margin-left: 20px;
@@ -56,7 +46,6 @@ const noFriendMsg = css`
   font-size: 1rem;
   line-height: 2rem;
 `;
-
 const noSelectedRoomMsg = css`
   font-size: 1rem;
   line-height: 2rem;
@@ -124,7 +113,6 @@ class ChatComponent extends Component {
 
     // console.log('data', this.props);
     // console.log('state를 보여줘', this.state);
-    console.log('currentRoom', currentRoom);
 
     const {
       me: { me },

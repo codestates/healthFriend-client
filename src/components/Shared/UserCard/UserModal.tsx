@@ -12,9 +12,9 @@ import {
   DELETE_FOLLOWER,
   GET_USERINFO,
   GET_FRIENDS,
-} from '../../graphql/queries';
-import Loading from './Loading';
-import redirectWhenError from '../../utils/redirectWhenError';
+} from '../../../graphql/queries';
+import Loading from '../Loading';
+import redirectWhenError from '../../../utils/redirectWhenError';
 
 const modalHeaderMan = css`
   text-align: center;

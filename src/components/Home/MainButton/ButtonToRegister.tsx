@@ -23,7 +23,6 @@ type ButtonToRegisterProps = {
 export default function ButtonToRegister({ history }: ButtonToRegisterProps) {
   return (
     <Button
-      type="primary"
       size="large"
       css={startButton}
       onClick={() => history.push('/register')}

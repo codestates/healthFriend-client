@@ -1,5 +1,4 @@
 import React from 'react';
-
 import ButtonToFind from './ButtonToFind';
 import ButtonToSignup from './ButtonToSignup';
 import ButtonToRegister from './ButtonToRegister';

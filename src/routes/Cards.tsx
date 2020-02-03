@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { jsx, css } from '@emotion/core';
 import { Row, Col } from 'antd';
 import { useQuery, useApolloClient, useMutation } from '@apollo/react-hooks';
-
 import {
   IS_LOGGED_IN,
   GET_FRIENDS,
@@ -20,20 +19,18 @@ const wrapper = css`
   text-align: center;
   margin-top: 20px;
 `;
-
 const window = css`
   padding: 10px;
   width: 90vw;
   margin: 0 auto;
 `;
-
 const cardListCss = css`
   margin-top: 20px;
 `;
 
 type CardsProps = {
   history: any; // match, location을 같이 쓰니 안되고, 얘만 쓰니 되네... withRouter로 붙인 애들은 다 써줘야 하는 것 같고, 아닌 애들은 아닌 듯.
-  // 이것처럼 쓰는 것도 좀 아닌것 같고
+  // 아래처럼 쓰는 것도 좀 아닌것 같고
   match: { params: { state: string } };
 };
 

@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import { Checkbox } from 'antd';
 import { css, jsx } from '@emotion/core';
-
 import questionList from '../../config/questions';
 
 const checkboxDesign = css`
@@ -14,6 +13,11 @@ const checkboxDesign = css`
 
   &:last-child {
     border-bottom: 0;
+  }
+
+  .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: rgb(87, 118, 171);
+    border-color: rgb(87, 118, 171);
   }
 `;
 
@@ -44,18 +48,15 @@ const useInfoInput = ({
   useEffect(() => {
     if (isCheckbox && isMeMutateAvailable && oneCheckArr.length === 0) {
       setTotalCheckArr(
-        totalCheckArr.map((elm, idx) =>
-          // idx + 1 === order ? Array(answer.length).fill(false) : elm,
-          {
-            if (subject === 'openImageChoice' && idx + 1 === order) {
-              return [false, false, true];
-            }
-            if (idx + 1 === order) {
-              return Array(answer.length).fill(false);
-            }
-            return elm;
-          },
-        ),
+        totalCheckArr.map((elm, idx) => {
+          if (subject === 'openImageChoice' && idx + 1 === order) {
+            return [false, false, true];
+          }
+          if (idx + 1 === order) {
+            return Array(answer.length).fill(false);
+          }
+          return elm;
+        }),
       );
     }
     // eslint-disable-next-line

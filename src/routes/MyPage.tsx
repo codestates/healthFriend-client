@@ -3,29 +3,20 @@ import React, { useState } from 'react';
 import { Row, Col, Button, Result, Tooltip } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
-
-import InfoInput from '../components/Shared/InfoInput';
+import InfoInput from '../components/Shared/InfoInput/InfoInput';
 import questionList from '../config/questions';
 import useShowSelected from '../hooks/Mypage/useShowSelected';
 import useLazyMe from '../hooks/Shared/useLazyMe';
-import {
-  IS_LOGGED_IN,
-  // MUTATE_INFO,
-  // SET_ABLE_DISTRICT,
-  // SET_EXERCISE_ABLE_DAYS,
-  // SET_MOTIVATION,
-} from '../graphql/queries';
+import { IS_LOGGED_IN } from '../graphql/queries';
 import useSubscript from '../hooks/Shared/useSubscript';
 import useEditButton from '../hooks/Mypage/useEditButton';
 import redirectWhenError from '../utils/redirectWhenError';
 import Loading from '../components/Shared/Loading';
 
-import './MyPage.css';
-
 const wrapper = css`
   margin: 20px;
 `;
-
+// 버튼 설정 겹치는 부분들 emotion theme 같은 걸로 다 묶기 (register, mypage는 같음)
 const buttonCss = css`
   background: #ed9364;
   border-color: #ed9364;
@@ -48,7 +39,6 @@ type MyPageProps = {
 
 function MyPage({ history }: MyPageProps) {
   const client = useApolloClient();
-
   const [complete, setComplete] = useState<boolean>(false);
   const { data: loginData } = useQuery(IS_LOGGED_IN);
   const { dataMe, errorMe, getMe } = useLazyMe();
@@ -86,6 +76,7 @@ function MyPage({ history }: MyPageProps) {
 
   if (!loginData.isLoggedIn) redirectWhenError({ history, client });
 
+  // register와 mypage button 중복되는 부분을 없애볼까 했으나 그다지 효율적이지 않은 듯. css 겹치는것을 빼는건 좋아도.
   return (
     <div>
       <Row type="flex" justify="center">
@@ -97,7 +88,6 @@ function MyPage({ history }: MyPageProps) {
                 title="축하합니다. 정보 수정이 완료되었습니다."
                 extra={[
                   <Button
-                    type="primary"
                     css={buttonCss}
                     key="home"
                     onClick={() => {
@@ -147,7 +137,6 @@ function MyPage({ history }: MyPageProps) {
                   }
                 >
                   <Button
-                    type="primary"
                     css={buttonCss}
                     onClick={() => getMe()}
                     disabled={isEditButtonDisable()}
@@ -156,7 +145,6 @@ function MyPage({ history }: MyPageProps) {
                   </Button>
                 </Tooltip>{' '}
                 <Button
-                  type="primary"
                   css={buttonCss}
                   onClick={() => {
                     history.push('/');

@@ -1,18 +1,22 @@
+/** @jsx jsx */
 import React from 'react';
+import { css, jsx } from '@emotion/core';
 import { Col, Badge } from 'antd';
 import { useQuery } from '@apollo/react-hooks';
 import NavButton from './NavButton';
-
 import {
   GET_UNREAD_FOLLOWERS,
   GET_UNREAD_FRIENDS,
 } from '../../graphql/queries';
 
+const badgeCss = css`
+  background-color: #ed9364;
+`;
+
 type NavProps = {
   history: any;
   state: string;
 };
-
 type NavButtonMadeProps = {
   relation: string;
   subject: string;
@@ -32,14 +36,15 @@ export default function Nav({ history, state }: NavProps) {
     />
   );
 
+  // 뱃지 중복 제거 emotion 이용해서
   return (
-    <>
+    <React.Fragment>
       <Col xs={8} md={8}>
         {unreadFriends && unreadFriends.unreadFriends > 0 ? (
           <Badge
             count={unreadFriends.unreadFriends}
             overflowCount={999}
-            style={{ backgroundColor: '#ED9364' }}
+            css={badgeCss}
           >
             <NavButtonMade relation="friends" subject="헬스 친구" />
           </Badge>
@@ -55,7 +60,7 @@ export default function Nav({ history, state }: NavProps) {
           <Badge
             count={unreadFollowers.unreadFollowers}
             overflowCount={999}
-            style={{ backgroundColor: '#ED9364' }}
+            css={badgeCss}
           >
             <NavButtonMade relation="followers" subject="받은 요청" />
           </Badge>
@@ -63,6 +68,6 @@ export default function Nav({ history, state }: NavProps) {
           <NavButtonMade relation="followers" subject="받은 요청" />
         )}
       </Col>
-    </>
+    </React.Fragment>
   );
 }

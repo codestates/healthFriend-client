@@ -2,17 +2,15 @@
 import React, { useState } from 'react';
 import { Input, message } from 'antd';
 import { css, jsx } from '@emotion/core';
-
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import useInfoInput from '../../hooks/Register/useInfoInput';
+import useInfoInput from '../../../hooks/Register/useInfoInput';
 import SelectPlace from './SelectPlace';
 import ImageForm from './ImageForm';
-import { UPLOAD_FILE_STREAM, GET_USERINFO } from '../../graphql/queries';
+import { UPLOAD_FILE_STREAM, GET_USERINFO } from '../../../graphql/queries';
 
 const wrapper = css`
   margin-bottom: 20px;
 `;
-
 const checkboxDiv = css`
   width: 100%;
   border: 1px solid #ededed;
@@ -72,8 +70,6 @@ export default function InfoInput({
     },
     onError: (error) => console.log(error),
   });
-
-  console.log('visible', visible);
 
   return (
     <div css={wrapper}>
