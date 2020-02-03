@@ -1,8 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Col } from 'antd';
-
-import SelectPlace from '../Shared/SelectPlace';
+import SelectPlace from '../Shared/InfoInput/SelectPlace';
 import SelectDefault from './SelectDefault';
 import questionList from '../../config/questions';
 

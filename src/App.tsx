@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { Layout } from 'antd';
-
 import Home from './routes/Home';
 import Register from './routes/Register';
 import FindFriend from './routes/FindFriend';
@@ -20,20 +19,20 @@ function App() {
     <ApolloProvider client={client}>
       <BrowserRouter>
         <Layout style={{ background: '#fff' }}>
-          <Header/>
-          <div id='content'>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/register" component={Register} />
-            <Route path="/find" component={FindFriend} />
-            <Route path="/cards/:state" component={Cards} />
-            <Route path="/chat" component={Chat} />
-            <Route path="/login" component={Login} />
-            <Route path="/mypage" component={Mypage} />
-            <Route component={NotFound} />
-          </Switch>
+          <Header />
+          <div id="content">
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route path="/register" component={Register} />
+              <Route path="/find" component={FindFriend} />
+              <Route path="/cards/:state" component={Cards} />
+              <Route path="/chat" component={Chat} />
+              <Route path="/login" component={Login} />
+              <Route path="/mypage" component={Mypage} />
+              <Route component={NotFound} />
+            </Switch>
           </div>
-          <Footer/>
+          <Footer />
         </Layout>
       </BrowserRouter>
     </ApolloProvider>

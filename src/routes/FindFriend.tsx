@@ -32,12 +32,10 @@ function FindFriend({ history }: FindFriendProps) {
   const { data: loginData } = useQuery(IS_LOGGED_IN);
   const { data: dataMe, error: errorMe } = useQuery(GET_USERINFO, {
     fetchPolicy: 'network-only',
-    // errorPolicy: 'ignore', 어떤 효과 있는지 모르겠음. 확인.
   });
   useSubscript(history);
 
   // if (errorMe || error) redirectWhenError(history, client);
-
   // refetch 할때의 error는 아래의 error나 errorMe에 안 잡히는 듯.
 
   // alert창이 2번 불리는 것 때문에 useEffect 붙여버림.

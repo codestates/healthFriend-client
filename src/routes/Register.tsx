@@ -2,11 +2,10 @@
 import { Row, Col, Button, Result, Tooltip } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
-
 import ProgressBar from '../components/Register/ProgressBar';
 import RegisterImage from '../static/registerImage.jpg';
 import explanation from '../config/Message';
-import InfoInput from '../components/Shared/InfoInput';
+import InfoInput from '../components/Shared/InfoInput/InfoInput';
 import useProcessSelected from '../hooks/Register/useProcessSelected';
 import useLazyMe from '../hooks/Shared/useLazyMe';
 import {
@@ -28,16 +27,13 @@ const renderingImage = css`
   filter: grayscale(20%);
   object-fit: cover;
 `;
-
 const lowerContentWrapper = css`
   padding: 20px;
 `;
-
 const progressBar = css`
   padding: 10px;
   margin-bottom: 20px;
 `;
-
 const nextButtonCss = css`
   background: #ed9364;
   border-color: #ed9364;
@@ -53,12 +49,10 @@ const nextButtonCss = css`
     color: black;
   }
 `;
-
 const rtSideWrapper = css`
   margin-top: 60px;
   margin-left: 30px;
 `;
-
 const explanationWrapper = css`
   text-align: justify;
   word-break: keep-all;
@@ -134,7 +128,6 @@ function Register({ history }: RegisterProps) {
               title="축하합니다. 정보 입력이 완료되었습니다."
               extra={[
                 <Button
-                  // type="primary"
                   key="home"
                   onClick={() => history.push('/')}
                   css={nextButtonCss}

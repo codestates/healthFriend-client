@@ -5,7 +5,6 @@ import { Typography, Row, Col } from 'antd';
 const wrapper = css`
   width: 100%;
 `;
-
 const lineText = css`
   background: #e9e2d0;
   padding: 20px;
@@ -17,7 +16,6 @@ const lineText = css`
     text-align: center;
   }
 `;
-
 const subText = css`
   margin-top: 40px;
   margin-bottom: 60px;

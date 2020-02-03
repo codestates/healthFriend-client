@@ -1,10 +1,9 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Row } from 'antd';
-
 import Loading from '../Shared/Loading';
 import sortByDate from '../../utils/sortByDate';
-import MadeCard from '../Shared/MadeCard';
+import MadeCard from '../Shared/UserCard/MadeCard';
 
 const marginFilterdCards = css`
   margin-top: 40px;
@@ -22,8 +21,6 @@ export default function FilteredCards({
   dataMe,
 }: FilteredCardsProps) {
   if (loadingFU) return <Loading />;
-
-  console.log('dataFU', dataFU);
 
   return (
     <Row gutter={24} css={marginFilterdCards}>

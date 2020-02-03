@@ -1,24 +1,20 @@
 /** @jsx jsx */
 import { Button } from 'antd';
 import { css, jsx } from '@emotion/core';
-
 import google from '../../static/google.jpg';
 
 const loginDiv = css`
   height: 81vh;
   display: table;
 `;
-
 const loginButton = css`
   font-size: 30px;
   display: block;
   height: 60px;
 `;
-
 const googleImage = css`
   height: 30px;
 `;
-
 const atag = css`
   color: black;
   display: table-cell;

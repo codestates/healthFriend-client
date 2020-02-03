@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, message } from 'antd';
 import { useMutation } from '@apollo/react-hooks';
-import Loading from './Loading';
-import '../../css/imageInput.css';
-import { DELETE_PROFILE_IMAGE, GET_USERINFO } from '../../graphql/queries';
+import Loading from '../Loading';
+import '../../../css/imageInput.css';
+import { DELETE_PROFILE_IMAGE, GET_USERINFO } from '../../../graphql/queries';
 
 type ImageFormProps = {
   profileImageUpload: any;
@@ -62,7 +62,6 @@ export default function ImageForm({
   )
     url = dataI.me.profileImage[0].filename;
 
-  if (dataI && dataI.me) console.log(dataI.me.profileImage);
   return (
     <>
       {loadingImg && <Loading />}
@@ -114,7 +113,6 @@ export default function ImageForm({
             dataI.me.profileImage &&
             dataI.me.profileImage.length > 0) ? (
             <Button
-              // type="primary"
               className="button-fix"
               onClick={() => deleteProfileImg({ variables: { url } })}
             >

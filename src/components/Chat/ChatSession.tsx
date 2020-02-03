@@ -3,7 +3,6 @@ import { Divider } from 'antd';
 import moment from 'moment';
 import 'moment/locale/ko';
 import '../../css/Chat/chatSession.css';
-
 // moment.locale('ko');
 
 type ChatSessionProps = {
@@ -17,13 +16,12 @@ const ChatSession = (props: ChatSessionProps) => {
 
   return messages.map((message) => {
     const isOwnMessage = message.senderId === me.nickname;
-    const today = moment(`${message.updatedAt}`).format('YYYY년 M월D일 dddd');
 
+    const today = moment(`${message.updatedAt}`).format('YYYY년 M월D일 dddd');
     let daySeperator;
     if (prevDay === '') {
       prevDay = today;
     }
-
     if (prevDay !== '' && prevDay !== today) {
       daySeperator = <Divider>{today}</Divider>;
       prevDay = today;

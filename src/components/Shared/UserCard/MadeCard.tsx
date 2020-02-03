@@ -1,5 +1,5 @@
 import React from 'react';
-import UserCard from './UserCard';
+import UserCard from '.';
 
 // 여기 MadeCard 앞에 type 정의를 안해도 아무 문제 안 생기던데 원래 그런가? {} 형태로 props 형태로 안 넘기고, 그냥 함수 arg 형태로 넘겨서 그런듯.
 
