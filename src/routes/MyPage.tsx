@@ -10,7 +10,7 @@ import useLazyMe from '../hooks/Shared/useLazyMe';
 import { IS_LOGGED_IN } from '../graphql/queries';
 import useSubscript from '../hooks/Shared/useSubscript';
 import useEditButton from '../hooks/Mypage/useEditButton';
-import redirectWhenError from '../utils/redirectWhenError';
+import redirectWhenError from '../utils/Shared/redirectWhenError';
 import Loading from '../components/Shared/Loading';
 
 const wrapper = css`

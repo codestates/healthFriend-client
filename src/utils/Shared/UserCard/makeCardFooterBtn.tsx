@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core';
 import { message } from 'antd';
+import executeMakeButton from './executeMakeButton';
 
 // font-color change가 안됨.  ant-actions로 change해야 하는지
 const negativeFooter = css`
@@ -10,6 +11,8 @@ const positiveFooter = css`
   font-size: 14px;
   font-weight: bold;
 `;
+
+// makeModalFooterBtn과 상당히 비슷함. 중복을 더 제거할 수 있을까???
 
 const makeCardFooterBtn = ({
   type,
@@ -74,24 +77,16 @@ const makeCardFooterBtn = ({
     );
   };
 
-  switch (type) {
-    case 'friends':
-      makeButton(deleteFriend, '친구 끊기');
-      makeButton(() => history.push('/Chat'), '채팅하기');
-      break;
-    case 'followers':
-      makeButton(deleteFollower, '요청 거절');
-      makeButton(addFriend, '요청 수락');
-      break;
-    case 'unknown':
-      makeButton(followUser, '친구 신청');
-      break;
-    case 'following':
-      makeButton(cancelFollow, '신청 취소');
-      break;
-    default:
-      break;
-  }
+  executeMakeButton({
+    type,
+    history,
+    makeButton,
+    deleteFriend,
+    deleteFollower,
+    addFriend,
+    followUser,
+    cancelFollow,
+  });
 
   return cardActions;
 };

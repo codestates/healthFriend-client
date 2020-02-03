@@ -12,7 +12,7 @@ import {
   SUBSCRIBE_FOLLOWERS,
   SUBSCRIBE_FRIENDS,
 } from '../../graphql/queries';
-import getUnreadCount from '../../utils/getUnreadCount';
+import getUnreadCount from '../../utils/Shared/UserCard/getUnreadCount';
 
 const logo = css`
   width: 120px;

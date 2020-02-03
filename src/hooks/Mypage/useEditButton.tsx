@@ -1,13 +1,11 @@
 import { useEffect } from 'react';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
-
-import redirectWhenError from '../../utils/redirectWhenError';
+import redirectWhenError from '../../utils/Shared/redirectWhenError';
 import {
   SET_ABLE_DISTRICT,
   SET_MOTIVATION,
   SET_EXERCISE_ABLE_DAYS,
   MUTATE_INFO,
-  // GET_USERINFO,
 } from '../../graphql/queries';
 
 const useEditButton = ({

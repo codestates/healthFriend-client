@@ -5,6 +5,7 @@ import { TreeSelect } from 'antd';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_PLACES } from '../../../graphql/queries';
 import Loading from '../Loading';
+import '../../../css/selectPlace.css';
 
 const { SHOW_PARENT } = TreeSelect;
 

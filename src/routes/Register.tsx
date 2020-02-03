@@ -15,7 +15,7 @@ import {
   SET_EXERCISE_ABLE_DAYS,
   SET_ABLE_DISTRICT,
 } from '../graphql/queries';
-import redirectWhenError from '../utils/redirectWhenError';
+import redirectWhenError from '../utils/Shared/redirectWhenError';
 import useSubscript from '../hooks/Shared/useSubscript';
 import useSubmitButton from '../hooks/Register/useSubmitButton';
 import questionList from '../config/questions';
@@ -110,11 +110,6 @@ function Register({ history }: RegisterProps) {
   if ((errorMe && loginData.isLoggedIn) || !loginData.isLoggedIn)
     redirectWhenError({ history, client });
 
-  // data가 다 있으면 redirection (어차피 header에서 안 보일텐데 굳이 치고 들어오는 경우... 로그인에서 다 걸림. )
-  // if (data.me.levelOf3Dae && data.me.gender && data.me.ableDistricts) {
-  //   return <Redirect to="/" />;
-  // }
-
   return (
     <div style={{ height: '81vh' }}>
       <Row type="flex" justify="center">
@@ -163,7 +158,6 @@ function Register({ history }: RegisterProps) {
               <div>
                 {order === 1 ? null : (
                   <Button
-                    // type="primary"
                     onClick={() => {
                       setOrder(order - 1);
                     }}
@@ -181,7 +175,6 @@ function Register({ history }: RegisterProps) {
                   }
                 >
                   <Button
-                    // type="primary"
                     onClick={getMe as any}
                     // .then((data) => console.log('data is...', data)); then 붙이려니 typescript 문제 발생. mutation 함수는 promise return하는데 useLazyQuery랑 refetch는 promise return 아닌 듯.
                     // await 안 먹는 이유가 뭐지? promise return 하는 것 아니면 안 먹음.

@@ -1,6 +1,6 @@
 import Chatkit from '@pusher/chatkit-client';
 import axios from 'axios';
-import { CHATKIT_INSTANCE_LOCATOR } from '../config/chatkitConfig';
+import { CHATKIT_INSTANCE_LOCATOR } from '../../config/chatkitConfig';
 
 // typescript로 바꾸기
 
