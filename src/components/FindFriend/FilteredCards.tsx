@@ -2,7 +2,7 @@
 import { css, jsx } from '@emotion/core';
 import { Row } from 'antd';
 import Loading from '../Shared/Loading';
-import sortByDate from '../../utils/sortByDate';
+import sortByDate from '../../utils/Shared/UserCard/sortByDate';
 import MadeCard from '../Shared/UserCard/MadeCard';
 
 const marginFilterdCards = css`

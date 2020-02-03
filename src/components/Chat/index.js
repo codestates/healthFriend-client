@@ -11,7 +11,7 @@ import {
   sendMessage,
   sendDM,
   // grantPermission,
-} from '../../utils/chatMethods';
+} from '../../utils/Chat/chatMethods';
 import RoomList from './RoomList';
 import ChatSession from './ChatSession';
 import '../../css/Chat/chat.css';

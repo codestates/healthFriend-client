@@ -1,25 +1,5 @@
-/** @jsx jsx */
-import React, { useEffect } from 'react';
-import { Checkbox } from 'antd';
-import { css, jsx } from '@emotion/core';
+import { useEffect } from 'react';
 import questionList from '../../config/questions';
-
-const checkboxDesign = css`
-  border-bottom: 1px solid #ededed;
-  padding: 10px 20px;
-  display: block;
-  line-height: 30px;
-  margin: 0 !important;
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  .ant-checkbox-checked .ant-checkbox-inner {
-    background-color: rgb(87, 118, 171);
-    border-color: rgb(87, 118, 171);
-  }
-`;
 
 type useInfoInputProps = {
   order: number;
@@ -90,22 +70,7 @@ const useInfoInput = ({
     );
   };
 
-  const questionCheckboxes = answer.map((ele, idx) => {
-    return (
-      <React.Fragment key={ele}>
-        <Checkbox
-          value={ele}
-          css={checkboxDesign}
-          checked={oneCheckArr[idx]}
-          onChange={onCheck}
-        >
-          {ele}
-        </Checkbox>
-      </React.Fragment>
-    );
-  });
-
-  return { questionCheckboxes, question, answer, subject };
+  return { onCheck, question, answer, subject, oneCheckArr };
 };
 
 export default useInfoInput;

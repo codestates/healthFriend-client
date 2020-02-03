@@ -13,7 +13,7 @@ import {
 import useSubscript from '../hooks/Shared/useSubscript';
 import Nav from '../components/Cards/Nav';
 import CardList from '../components/Cards/CardList';
-import redirectWhenError from '../utils/redirectWhenError';
+import redirectWhenError from '../utils/Shared/redirectWhenError';
 
 const wrapper = css`
   text-align: center;
@@ -68,7 +68,6 @@ function Cards({ history, match }: CardsProps) {
 
   useSubscript(history);
 
-  // react가 SPA이기 때문에 주소창에 주소를 쳐서 들어오면 state가 무조건 initial로 돌아가면서 isLoggedIn = false로 되게 된다. 그래서 로긴 무조건 다시 하라고 뜨게 됨.
   if (!loginData.isLoggedIn) redirectWhenError({ history, client });
 
   return (

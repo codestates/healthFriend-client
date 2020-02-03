@@ -10,7 +10,7 @@ import {
   GET_USERINFO,
 } from '../graphql/queries';
 import useSubscript from '../hooks/Shared/useSubscript';
-import redirectWhenError from '../utils/redirectWhenError';
+import redirectWhenError from '../utils/Shared/redirectWhenError';
 
 type FindFriendProps = {
   history: any; // match, location을 같이 쓰니 안되고, 얘만 쓰니 되네... withRouter로 붙인 애들은 다 써줘야 하는 것 같고, 아닌 애들은 아닌 듯.

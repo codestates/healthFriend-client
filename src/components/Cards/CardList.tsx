@@ -1,9 +1,9 @@
 import React from 'react';
 import Loading from '../Shared/Loading';
-import redirectWhenError from '../../utils/redirectWhenError';
+import redirectWhenError from '../../utils/Shared/redirectWhenError';
 import message from '../../config/Message';
 import MadeCard from '../Shared/UserCard/MadeCard';
-import sortByDate from '../../utils/sortByDate';
+import sortByDate from '../../utils/Shared/UserCard/sortByDate';
 import EmptyComponent from './EmptyComponent';
 
 type CardListProps = {
@@ -40,37 +40,42 @@ export default function CardList({
       friendsEmpty2,
     } = message;
 
-    if (state === 'following') {
-      if (following.length > 0) {
-        return following
-          .sort(sortByDate)
-          .map((oneData) =>
-            makeCard(oneData.following, () => null, true, false),
-          );
-      }
-      return <EmptyComponent text1={followingEmpty1} text2={followingEmpty2} />;
-    }
-    if (state === 'followers') {
-      if (followers.length > 0) {
-        return followers
-          .sort(sortByDate)
-          .sort((a, b) => a.checked - b.checked)
-          .map((oneData) =>
-            makeCard(oneData.follower, () => null, oneData.checked, false),
-          );
-      }
-      return <EmptyComponent text1={followersEmpty1} text2={followersEmpty2} />;
-    }
-    if (state === 'friends') {
-      if (friends.length > 0) {
-        return friends
-          .sort(sortByDate)
-          .sort((a, b) => a.checked - b.checked)
-          .map((oneData) =>
-            makeCard(oneData.friend, setChatFriend, oneData.checked, true),
-          );
-      }
-      return <EmptyComponent text1={friendsEmpty1} text2={friendsEmpty2} />;
+    switch (state) {
+      case 'following':
+        if (following.length > 0) {
+          return following
+            .sort(sortByDate)
+            .map((oneData) =>
+              makeCard(oneData.following, () => null, true, false),
+            );
+        }
+        return (
+          <EmptyComponent text1={followingEmpty1} text2={followingEmpty2} />
+        );
+      case 'followers':
+        if (followers.length > 0) {
+          return followers
+            .sort(sortByDate)
+            .sort((a, b) => a.checked - b.checked)
+            .map((oneData) =>
+              makeCard(oneData.follower, () => null, oneData.checked, false),
+            );
+        }
+        return (
+          <EmptyComponent text1={followersEmpty1} text2={followersEmpty2} />
+        );
+      case 'friends':
+        if (friends.length > 0) {
+          return friends
+            .sort(sortByDate)
+            .sort((a, b) => a.checked - b.checked)
+            .map((oneData) =>
+              makeCard(oneData.friend, setChatFriend, oneData.checked, true),
+            );
+        }
+        return <EmptyComponent text1={friendsEmpty1} text2={friendsEmpty2} />;
+      default:
+        break;
     }
   }
 }

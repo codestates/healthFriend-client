@@ -1,31 +1,20 @@
 /** @jsx jsx */
 import { useState } from 'react';
-import { Col, Card, Avatar, message, Popover } from 'antd';
+import { Col, Card, Avatar, Popover } from 'antd';
 import { jsx, css } from '@emotion/core';
-import { useMutation, useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/react-hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChild } from '@fortawesome/free-solid-svg-icons';
 import { withRouter } from 'react-router-dom';
-import questionList from '../../../config/questions';
 import UserModal from './UserModal';
-import {
-  FOLLOW_USER,
-  CANCEL_FOLLOWING,
-  ADD_FRIEND,
-  DELETE_FRIEND,
-  DELETE_FOLLOWER,
-  GET_USERINFO,
-  GET_FRIENDS,
-  CHECK_FOLLOWERS,
-  CHECK_FRIENDS,
-} from '../../../graphql/queries';
 import Loading from '../Loading';
-import redirectWhenError from '../../../utils/redirectWhenError';
 import barbell from '../../../static/barbell.png';
-import getUnreadCount from '../../../utils/getUnreadCount';
 import DayTable from './DayTable';
-import modifyData from '../../../utils/modifyData';
-import makeCardFooterBtn from '../../../utils/makeCardFooterBtn';
+import modifyData from '../../../utils/Shared/UserCard/modifyData';
+import makeCardFooterBtn from '../../../utils/Shared/UserCard/makeCardFooterBtn';
+import handleCardModalBtn from '../../../utils/Shared/UserCard/handleCardModalBtn';
+import useMakeRelation from '../../../hooks/Shared/useMakeRelation';
+import useCheckUnread from '../../../hooks/Shared/useCheckUnread';
 
 const margin = css`
   padding: 10px;
@@ -132,96 +121,29 @@ function UserCard({
 }: UserCardProps) {
   const client = useApolloClient();
   const [visible, setVisible] = useState<boolean>(false);
-
-  // useEffect 쓰는 것보다 아래처럼 내장 callback 쓰는게 나음.
-  // 아래 중복 제거들 하기
-  const errorHandle = (error) => {
-    console.log(error);
-    redirectWhenError({ history, client });
-  };
-
-  const writeUnreadState = (followers, friends) => {
-    client.writeData({
-      data: {
-        unread: getUnreadCount(followers) + getUnreadCount(friends),
-        unreadFollowers: getUnreadCount(followers),
-        unreadFriends: getUnreadCount(friends),
-      },
-    });
-  };
-
-  const afterDoneFunc = (data, dataType, willNotify, willWriteUnread) => {
-    if (data) {
-      if (willNotify) message.success('처리되었습니다');
-      if (willWriteUnread && dataType) {
-        const { followers, friends } = data[dataType];
-        writeUnreadState(followers, friends);
-      }
-    }
-  };
-
-  const [followUser, { loading: loadingFU }] = useMutation(FOLLOW_USER, {
-    refetchQueries: [{ query: GET_USERINFO }],
-    onCompleted: (data) => afterDoneFunc(data, null, true, false),
-    onError: (error) => errorHandle(error),
-  });
-  const [cancelFollow, { loading: loadingCF }] = useMutation(CANCEL_FOLLOWING, {
-    refetchQueries: [{ query: GET_FRIENDS }],
-    onCompleted: (data) => afterDoneFunc(data, null, true, false),
-    onError: (error) => errorHandle(error),
-  });
-  const [addFriend, { loading: loadingAF }] = useMutation(ADD_FRIEND, {
-    refetchQueries: [{ query: GET_FRIENDS }],
-    onCompleted: (data) => afterDoneFunc(data, 'addFriend', true, true),
-    onError: (error) => errorHandle(error),
-  });
-  const [deleteFriend, { loading: loadingDF }] = useMutation(DELETE_FRIEND, {
-    refetchQueries: [{ query: GET_FRIENDS }],
-    onCompleted: (data) => afterDoneFunc(data, 'deleteFriend', true, true),
-    onError: (error) => errorHandle(error),
-  });
-  const [deleteFollower, { loading: loadingDFo }] = useMutation(
-    DELETE_FOLLOWER,
-    {
-      refetchQueries: [{ query: GET_FRIENDS }],
-      onCompleted: (data) => afterDoneFunc(data, 'deleteFollower', true, true),
-      onError: (error) => errorHandle(error),
-    },
-  );
-  const [checkFollowers] = useMutation(CHECK_FOLLOWERS, {
-    refetchQueries: [{ query: GET_FRIENDS }],
-    onCompleted: (data) => afterDoneFunc(data, 'checkFollowers', false, true),
-    onError: (error) => errorHandle(error),
+  const { errorHandle, afterDoneFunc } = handleCardModalBtn({
+    history,
+    client,
   });
 
-  const [checkFriends] = useMutation(CHECK_FRIENDS, {
-    refetchQueries: [{ query: GET_FRIENDS }],
-    onCompleted: (data) => afterDoneFunc(data, 'checkFriends', false, true),
-    onError: (error) => errorHandle(error),
+  const {
+    deleteFriend,
+    deleteFollower,
+    addFriend,
+    followUser,
+    cancelFollow,
+    loadingFU,
+    loadingDFo,
+    loadingDF,
+    loadingAF,
+    loadingCF,
+  } = useMakeRelation({ afterDoneFunc, errorHandle });
+  const { checkFollowers, checkFriends } = useCheckUnread({
+    afterDoneFunc,
+    errorHandle,
   });
 
   // 나중에 loading 같은 것 붙이기. 그리고 완료시 완료됐다는 문구. z-index같은 것 줘서 투명도 조절해서 친구 목록들 위에 띄워주면 좋을듯.
-
-  // 일단 이렇게 해놨는데 수정 필요할듯. 도장표시 같은 걸로.
-  const color = checked ? '#5075AF' : '#ED9364';
-
-  const changeToKorean = (data) => {
-    const questionIndex: number = questionList
-      .map((oneQ) => oneQ.subject)
-      .indexOf(Object.keys(data)[0]);
-    const optionIndex: number = questionList[questionIndex].value.indexOf(
-      Object.values(data)[0] as string,
-    ); // 이런식 typescript 문법도 공부
-    return questionList[questionIndex].answer[optionIndex];
-  };
-
-  const makeOrder = (data) => {
-    const targetQ = questionList.filter(
-      (elm) => elm.subject === Object.keys(data)[0],
-    )[0];
-    const getOrder = (one: string): number => targetQ.answer.indexOf(one);
-    return (one: string, two: string): number => getOrder(one) - getOrder(two);
-  };
 
   const cardActions = makeCardFooterBtn({
     type,
@@ -239,8 +161,7 @@ function UserCard({
     history,
   });
 
-  const { healthLevel, genderColor } = modifyData({
-    changeToKorean,
+  const { healthLevel, genderColor, changeToKorean, makeOrder } = modifyData({
     levelOf3Dae,
     gender,
   });
@@ -271,7 +192,7 @@ function UserCard({
           }}
         />
         <div css={cardWrapper}>
-          <div style={{ backgroundColor: color }}>
+          <div style={{ backgroundColor: checked ? '#5075AF' : '#ED9364' }}>
             <Card.Meta
               avatar={
                 profileImage &&
@@ -328,7 +249,7 @@ function UserCard({
                         {elm.district.nameOfDong}
                       </span>
                     ))
-                    .filter((el, idx) => idx < 3)}
+                    .filter((_, idx) => idx < 3)}
                   {ableDistricts.length > 3 ? '.......' : null}
                 </div>
               </div>
