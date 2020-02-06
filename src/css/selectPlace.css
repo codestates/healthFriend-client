@@ -1,0 +1,9 @@
+.ant-select-tree-checkbox-checked .ant-select-tree-checkbox-inner {
+  background-color: #5075af;
+  border-color: #5075af;
+}
+
+.ant-select-tree-checkbox-indeterminate .ant-select-tree-checkbox-inner::after {
+  background-color: #5075af;
+  border-color: #5075af;
+}

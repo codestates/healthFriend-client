@@ -2,17 +2,16 @@
 import React, { useState } from 'react';
 import { Input, message } from 'antd';
 import { css, jsx } from '@emotion/core';
-
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import useInfoInput from '../../hooks/Register/useInfoInput';
+import useInfoInput from '../../../hooks/Register/useInfoInput';
 import SelectPlace from './SelectPlace';
 import ImageForm from './ImageForm';
-import { UPLOAD_FILE_STREAM, GET_USERINFO } from '../../graphql/queries';
+import { UPLOAD_FILE_STREAM, GET_USERINFO } from '../../../graphql/queries';
+import QuestionCheckbox from './QuestionCheckbox';
 
 const wrapper = css`
   margin-bottom: 20px;
 `;
-
 const checkboxDiv = css`
   width: 100%;
   border: 1px solid #ededed;
@@ -40,7 +39,7 @@ export default function InfoInput({
   setPlaces,
   selectedPlaces,
 }: InfoInputProps) {
-  const { questionCheckboxes, question, subject } = useInfoInput({
+  const { onCheck, question, answer, subject, oneCheckArr } = useInfoInput({
     order,
     totalCheckArr,
     setTotalCheckArr,
@@ -73,7 +72,9 @@ export default function InfoInput({
     onError: (error) => console.log(error),
   });
 
-  console.log('visible', visible);
+  const questionCheckboxes = answer.map((ele, idx) =>
+    QuestionCheckbox(ele, idx, oneCheckArr, onCheck),
+  );
 
   return (
     <div css={wrapper}>
@@ -108,6 +109,7 @@ export default function InfoInput({
           ) : null}
         </div>
       ) : null}
+      {/* ['ableDistricts', 'messageToFriend', 'openImageChoice'] 아래 이 부분도 유지보수 좋게 filter로 불러오기  */}
       {['ableDistricts', 'messageToFriend', 'openImageChoice'].indexOf(
         subject,
       ) === -1 && <div css={checkboxDiv}>{questionCheckboxes}</div>}

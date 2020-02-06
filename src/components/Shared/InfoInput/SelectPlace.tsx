@@ -3,9 +3,9 @@ import { useState, useEffect } from 'react';
 import { jsx } from '@emotion/core';
 import { TreeSelect } from 'antd';
 import { useQuery } from '@apollo/react-hooks';
-
-import { GET_PLACES } from '../../graphql/queries';
-import Loading from './Loading';
+import { GET_PLACES } from '../../../graphql/queries';
+import Loading from '../Loading';
+import '../../../css/selectPlace.css';
 
 const { SHOW_PARENT } = TreeSelect;
 
@@ -24,10 +24,8 @@ function SelectPlace({
 }: SelectPlaceProps) {
   const guList: string[] = [];
   const placeForTree: any[] = [];
-
-  const [value, setValue] = useState<any[]>([]);
-
   const finalList: string[] = [];
+  const [value, setValue] = useState<any[]>([]);
 
   useEffect(() => {
     if (value.length > 0) {

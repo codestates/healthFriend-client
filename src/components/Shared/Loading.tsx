@@ -5,15 +5,25 @@ import { jsx, css } from '@emotion/core';
 const loading = css`
   font-size: 6rem;
 `;
+const loadingDiv = css`
+  text-align: center;
+  margin-top: 70px;
+  margin-bottom: 70px;
+`;
+const spinCss = css`
+  color: #ed9364;
+`;
 
 function Loading() {
   const loadingIcon = <Icon type="loading" css={loading} spin />;
   return (
-    <Row type="flex" justify="center">
-      <Col xs={3}>
-        <Spin indicator={loadingIcon} />
-      </Col>
-    </Row>
+    <div css={loadingDiv}>
+      <Row type="flex" justify="center">
+        <Col xs={3}>
+          <Spin indicator={loadingIcon} css={spinCss} />
+        </Col>
+      </Row>
+    </div>
   );
 }
 

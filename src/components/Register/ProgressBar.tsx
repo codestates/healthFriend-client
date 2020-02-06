@@ -1,6 +1,5 @@
 import React from 'react';
 import { Progress } from 'antd';
-
 import questionList from '../../config/questions';
 
 type ProgressBarProps = {
@@ -11,7 +10,11 @@ export default function ProgressBar({ order }: ProgressBarProps) {
   const percentPerQuestion = Math.round(100 / questionList.length);
   return (
     <div>
-      <Progress percent={order * percentPerQuestion} status="active" />
+      <Progress
+        percent={order * percentPerQuestion}
+        status="active"
+        strokeColor="#5075AF"
+      />
     </div>
   );
 }

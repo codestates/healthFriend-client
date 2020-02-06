@@ -1,8 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Col } from 'antd';
-
-import SelectPlace from '../Shared/SelectPlace';
+import SelectPlace from '../Shared/InfoInput/SelectPlace';
 import SelectDefault from './SelectDefault';
 import questionList from '../../config/questions';
 
@@ -36,11 +35,11 @@ export default function FilterLists({
   };
 
   return filterList.map((filterQ) => {
-    const [{ subject, question, answer }] = questionList.filter(
+    const [{ subject, forFind, answer }] = questionList.filter(
       (elm) => elm.subject === filterQ,
     );
     return subject === 'ableDistricts' ? (
-      <Col md={16} key={question} css={questionsCSS}>
+      <Col md={16} key={forFind} css={questionsCSS}>
         <SelectPlace
           setPlaces={setPlaces}
           selectedPlaces={[]}
@@ -49,11 +48,11 @@ export default function FilterLists({
         />
       </Col>
     ) : (
-      <Col md={8} key={question} css={questionsCSS}>
+      <Col md={8} key={forFind} css={questionsCSS}>
         <SelectDefault
           subject={subject}
           options={answer}
-          placeholder={question}
+          placeholder={forFind as string}
           filter={filter}
           setFilter={setFilter}
           search={search}

@@ -3,35 +3,42 @@ import React, { useState } from 'react';
 import { Row, Col, Button, Result, Tooltip } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
-
-import InfoInput from '../components/Shared/InfoInput';
+import InfoInput from '../components/Shared/InfoInput/InfoInput';
 import questionList from '../config/questions';
 import useShowSelected from '../hooks/Mypage/useShowSelected';
 import useLazyMe from '../hooks/Shared/useLazyMe';
-import {
-  IS_LOGGED_IN,
-  // MUTATE_INFO,
-  // SET_ABLE_DISTRICT,
-  // SET_EXERCISE_ABLE_DAYS,
-  // SET_MOTIVATION,
-} from '../graphql/queries';
+import { IS_LOGGED_IN } from '../graphql/queries';
 import useSubscript from '../hooks/Shared/useSubscript';
 import useEditButton from '../hooks/Mypage/useEditButton';
-import redirectWhenError from '../utils/redirectWhenError';
+import redirectWhenError from '../utils/Shared/redirectWhenError';
 import Loading from '../components/Shared/Loading';
 
 const wrapper = css`
   margin: 20px;
+`;
+// 버튼 설정 겹치는 부분들 emotion theme 같은 걸로 다 묶기 (register, mypage는 같음)
+const buttonCss = css`
+  background: #ed9364;
+  border-color: #ed9364;
+  color: black;
+  &:hover {
+    background-color: #ffbe76;
+    border-color: #ffbe76;
+    color: black;
+  }
+  &:focus {
+    background-color: #ed9364;
+    border-color: #ed9364;
+    color: black;
+  }
 `;
 
 type MyPageProps = {
   history: any;
 };
 
-// 불필요하게 render가 여러번 되는 문제!!!
 function MyPage({ history }: MyPageProps) {
   const client = useApolloClient();
-
   const [complete, setComplete] = useState<boolean>(false);
   const { data: loginData } = useQuery(IS_LOGGED_IN);
   const { dataMe, errorMe, getMe } = useLazyMe();
@@ -69,21 +76,9 @@ function MyPage({ history }: MyPageProps) {
 
   if (!loginData.isLoggedIn) redirectWhenError({ history, client });
 
+  // register와 mypage button 중복되는 부분을 없애볼까 했으나 그다지 효율적이지 않은 듯. css 겹치는것을 빼는건 좋아도.
   return (
     <div>
-      <Button type="primary">
-        <a
-          href={
-            process.env.NODE_ENV === 'development'
-              ? 'http://localhost:4000/graphql'
-              : 'https://api.healthfriend.club/graphql'
-          }
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          graphql playground로 ㄱ
-        </a>
-      </Button>
       <Row type="flex" justify="center">
         <Col xs={12}>
           <div css={wrapper}>
@@ -93,7 +88,7 @@ function MyPage({ history }: MyPageProps) {
                 title="축하합니다. 정보 수정이 완료되었습니다."
                 extra={[
                   <Button
-                    type="primary"
+                    css={buttonCss}
                     key="home"
                     onClick={() => {
                       history.push('/');
@@ -104,6 +99,7 @@ function MyPage({ history }: MyPageProps) {
                   </Button>,
                   <Button
                     key="find"
+                    css={buttonCss}
                     onClick={() => {
                       history.push('/find');
                       setComplete(false);
@@ -141,7 +137,7 @@ function MyPage({ history }: MyPageProps) {
                   }
                 >
                   <Button
-                    type="primary"
+                    css={buttonCss}
                     onClick={() => getMe()}
                     disabled={isEditButtonDisable()}
                   >
@@ -149,7 +145,7 @@ function MyPage({ history }: MyPageProps) {
                   </Button>
                 </Tooltip>{' '}
                 <Button
-                  type="primary"
+                  css={buttonCss}
                   onClick={() => {
                     history.push('/');
                     window.scrollTo(0, 0);

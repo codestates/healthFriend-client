@@ -10,7 +10,7 @@ import {
   GET_USERINFO,
 } from '../graphql/queries';
 import useSubscript from '../hooks/Shared/useSubscript';
-import redirectWhenError from '../utils/redirectWhenError';
+import redirectWhenError from '../utils/Shared/redirectWhenError';
 
 type FindFriendProps = {
   history: any; // match, location을 같이 쓰니 안되고, 얘만 쓰니 되네... withRouter로 붙인 애들은 다 써줘야 하는 것 같고, 아닌 애들은 아닌 듯.
@@ -19,7 +19,7 @@ type FindFriendProps = {
 function FindFriend({ history }: FindFriendProps) {
   const client = useApolloClient();
   const [filter, setFilter] = useState<any>({
-    openImageChoice: [],
+    gender: [],
     levelOf3Dae: [],
     motivations: [],
     weekdays: [],
@@ -32,13 +32,10 @@ function FindFriend({ history }: FindFriendProps) {
   const { data: loginData } = useQuery(IS_LOGGED_IN);
   const { data: dataMe, error: errorMe } = useQuery(GET_USERINFO, {
     fetchPolicy: 'network-only',
-    // errorPolicy: 'ignore', 어떤 효과 있는지 모르겠음. 확인.
   });
   useSubscript(history);
 
-  console.log('errorMe', errorMe);
   // if (errorMe || error) redirectWhenError(history, client);
-
   // refetch 할때의 error는 아래의 error나 errorMe에 안 잡히는 듯.
 
   // alert창이 2번 불리는 것 때문에 useEffect 붙여버림.
@@ -51,7 +48,7 @@ function FindFriend({ history }: FindFriendProps) {
   if (!loginData.isLoggedIn) redirectWhenError({ history, client });
 
   return (
-    <Layout style={{ background: '#fff', height: '100vh' }}>
+    <Layout style={{ background: '#fff' }}>
       <Layout.Content>
         <Row
           type="flex"
@@ -62,7 +59,7 @@ function FindFriend({ history }: FindFriendProps) {
             <Divider>친구 필터</Divider>
             <Row gutter={24} justify="center">
               <FilterLists
-                {...{ getFilteredUsers, filter, places, setPlaces, setFilter }}
+                {...{ getFilteredUsers, filter, setFilter, places, setPlaces }}
               />
               <Col xs={24} md={{ span: 4, offset: 20 }} />
             </Row>

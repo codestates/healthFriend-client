@@ -4,7 +4,6 @@ import { NavLink } from 'react-router-dom';
 import { Layout, Menu, Badge } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
-
 import MypageDropdown from './MypageDropdown';
 import {
   GET_USERINFO,
@@ -13,12 +12,12 @@ import {
   SUBSCRIBE_FOLLOWERS,
   SUBSCRIBE_FRIENDS,
 } from '../../graphql/queries';
+import getUnreadCount from '../../utils/Shared/UserCard/getUnreadCount';
 
 const logo = css`
   width: 120px;
   float: left;
 `;
-
 const navMenu = css`
   float: right;
   background: transparent;
@@ -40,11 +39,9 @@ const navMenu = css`
     }
   }
 `;
-
 const navHeader = css`
-  background: #1e272e;
+  background: #5075af;
 `;
-
 const navLinkItem = css`
   color: #fff !important;
   font-size: 1rem;
@@ -89,14 +86,12 @@ export default function Header() {
   // home에서 불리는 순서랑 얘가 cache data 낚아오는 순서랑... 로직을 생각해봐야 할듯. 얘도 데이터 들어옴에 따라 re-render되나? 값 바뀌면 redux처럼 re-render되는 듯 함.
 
   if (dataMe && dataMe.me /* && !unread */) {
+    const { followers, friends } = dataMe.me;
     client.writeData({
       data: {
-        unread:
-          dataMe.me.followers.filter((elm) => !elm.checked).length +
-          dataMe.me.friends.filter((elm) => !elm.checked).length,
-        unreadFollowers: dataMe.me.followers.filter((elm) => !elm.checked)
-          .length,
-        unreadFriends: dataMe.me.friends.filter((elm) => !elm.checked).length,
+        unread: getUnreadCount(followers) + getUnreadCount(friends),
+        unreadFollowers: getUnreadCount(followers),
+        unreadFriends: getUnreadCount(friends),
       },
     });
   }
@@ -119,13 +114,13 @@ export default function Header() {
         <React.Fragment>
           <Menu mode="horizontal" css={navMenu}>
             <Menu.Item>
-              {/* {data.me.levelOf3Dae &&
-              data.me.gender &&
-              data.me.openImageChoice ? null : ( */}
-              <NavLink to="/register" className="item" css={navLinkItem}>
-                등록
-              </NavLink>
-              {/* )} */}
+              {dataMe.me.motivations.length > 0 &&
+              dataMe.me.weekdays.length > 0 &&
+              dataMe.me.ableDistricts.length > 0 ? null : (
+                <NavLink to="/register" className="item" css={navLinkItem}>
+                  내 정보등록
+                </NavLink>
+              )}
             </Menu.Item>
             <Menu.Item>
               <NavLink to="/find" className="item" css={navLinkItem}>
@@ -138,7 +133,7 @@ export default function Header() {
                   count={unread.unread}
                   overflowCount={999}
                   offset={[0, 12]}
-                  // style={{ fontSize: '30px' }}
+                  style={{ backgroundColor: '#ED9364' }}
                 >
                   <NavLink
                     to="/cards/friends"
@@ -157,7 +152,7 @@ export default function Header() {
               </Menu.Item>
             )}
             <Menu.Item>
-              <NavLink to="/Chat" className="item" css={navLinkItem}>
+              <NavLink to="/chat" className="item" css={navLinkItem}>
                 채팅
               </NavLink>
             </Menu.Item>

@@ -1,21 +1,5 @@
-/** @jsx jsx */
-import React, { useEffect } from 'react';
-import { Checkbox } from 'antd';
-import { css, jsx } from '@emotion/core';
-
+import { useEffect } from 'react';
 import questionList from '../../config/questions';
-
-const checkboxDesign = css`
-  border-bottom: 1px solid #ededed;
-  padding: 10px 20px;
-  display: block;
-  line-height: 30px;
-  margin: 0 !important;
-
-  &:last-child {
-    border-bottom: 0;
-  }
-`;
 
 type useInfoInputProps = {
   order: number;
@@ -44,18 +28,15 @@ const useInfoInput = ({
   useEffect(() => {
     if (isCheckbox && isMeMutateAvailable && oneCheckArr.length === 0) {
       setTotalCheckArr(
-        totalCheckArr.map((elm, idx) =>
-          // idx + 1 === order ? Array(answer.length).fill(false) : elm,
-          {
-            if (subject === 'openImageChoice' && idx + 1 === order) {
-              return [false, false, true];
-            }
-            if (idx + 1 === order) {
-              return Array(answer.length).fill(false);
-            }
-            return elm;
-          },
-        ),
+        totalCheckArr.map((elm, idx) => {
+          if (subject === 'openImageChoice' && idx + 1 === order) {
+            return [false, false, true];
+          }
+          if (idx + 1 === order) {
+            return Array(answer.length).fill(false);
+          }
+          return elm;
+        }),
       );
     }
     // eslint-disable-next-line
@@ -89,22 +70,7 @@ const useInfoInput = ({
     );
   };
 
-  const questionCheckboxes = answer.map((ele, idx) => {
-    return (
-      <React.Fragment key={ele}>
-        <Checkbox
-          value={ele}
-          css={checkboxDesign}
-          checked={oneCheckArr[idx]}
-          onChange={onCheck}
-        >
-          {ele}
-        </Checkbox>
-      </React.Fragment>
-    );
-  });
-
-  return { questionCheckboxes, question, answer, subject };
+  return { onCheck, question, answer, subject, oneCheckArr };
 };
 
 export default useInfoInput;
