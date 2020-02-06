@@ -13,10 +13,12 @@ import {
   GET_USER_COUNT,
 } from '../graphql/queries';
 import useSubscript from '../hooks/Shared/useSubscript';
+
 import redirectWhenError from '../utils/Shared/redirectWhenError';
 import MadeCard from '../components/Shared/UserCard/MadeCard';
 import useChatkitRegister from '../hooks/Home/useChatkitRegister';
 
+import Chatbot from '../components/Chatbot/Chatbot';
 const { Title } = Typography;
 
 const renderingImage = css`
@@ -111,6 +113,7 @@ function Home({ history }: HomeProps) {
               <MainButton {...{ dataMe, history, loginData }} />
             </div>
           </Row>
+          <Chatbot />
         </Col>
       )}
     </Row>
