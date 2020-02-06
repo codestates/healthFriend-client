@@ -6,7 +6,7 @@ import FilterLists from '../components/FindFriend/FilterLists';
 import FilteredCards from '../components/FindFriend/FilteredCards';
 import {
   GET_FILTERED_USERS,
-  IS_LOGGED_IN,
+  // IS_LOGGED_IN,
   GET_USERINFO,
 } from '../graphql/queries';
 import useSubscript from '../hooks/Shared/useSubscript';
@@ -29,7 +29,7 @@ function FindFriend({ history }: FindFriendProps) {
     getFilteredUsers,
     { loading: loadingFU, data: dataFU, error: errorFU },
   ] = useLazyQuery(GET_FILTERED_USERS);
-  const { data: loginData } = useQuery(IS_LOGGED_IN);
+  // const { data: loginData } = useQuery(IS_LOGGED_IN);
   const { data: dataMe, error: errorMe } = useQuery(GET_USERINFO, {
     fetchPolicy: 'network-only',
   });
@@ -45,7 +45,8 @@ function FindFriend({ history }: FindFriendProps) {
   }, [errorMe, errorFU]);
   // 여기도 서버에서 나오는 에러 종류에 따라서 꼭 로그인 만료 문제가 아닐 수 있으므로 Login 먼저 하세요를 보여줄지, 혹은 다른 에러 메세지를 보여줄지
 
-  if (!loginData.isLoggedIn) redirectWhenError({ history, client });
+  // if (!loginData.isLoggedIn) redirectWhenError({ history, client });
+  // 우연히 위 구문이 없으니 한번만 불리고, 바로 끝나네.... 그리고, 저 error 관련 useEffect를 없애도 2개 다 없어지는게 아니라 1번은 로그인 만료로 실패라는게 불리네...... error 부분을 안 써줘서 아예 에러 관련이 씹히나??? 아예 에러 관련이 씹히고, 채팅하기 버튼은 setChatFriend로 채팅하기대로 에러가 거기서 따로 불리는 듯.
 
   return (
     <Layout style={{ background: '#fff' }}>

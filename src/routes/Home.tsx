@@ -65,14 +65,18 @@ function Home({ history }: HomeProps) {
   useChatkitRegister({ dataMe, client });
   useSubscript(history);
 
-  // errorMe!.graphQLErrors[0]!.extensions!.code ----> errorMe에 값들이 잘 들어오므로 분기처리 하기.
+  if (errorMe && errorMe!.graphQLErrors[0]!.extensions!.code) {
+    console.log('errorMe', errorMe.graphQLErrors[0]!.extensions);
+  }
 
-  // 일부러 로그아웃을 하지는 않았는데 token이 만료됐을 때
   if (
     loginData.isLoggedIn &&
     errorMe
     //  &&  errorMe.extensions.code === 'NO_TOKEN'
   ) {
+    // errorMe!.graphQLErrors[0]!.extensions!.code ----> errorMe에 값들이 잘 들어오므로 분기처리 하기.
+
+    // 일부러 로그아웃을 하지는 않았는데 token이 만료됐을 때
     client.writeData({ data: { isLoggedIn: false } });
     redirectWhenError({ history, client });
   }
