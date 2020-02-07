@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Chat,
   Channel,
-  ChannelHeader,
+  // ChannelHeader,
   Thread,
   Window,
   MessageList,
@@ -75,7 +75,6 @@ export const Chatbot = ({ loginData, dataMe }: ChatbotProps) => {
                 }}
               >
                 <Window>
-                  <ChannelHeader />
                   <MessageList />
                   <MessageInput />
                 </Window>

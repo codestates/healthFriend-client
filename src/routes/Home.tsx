@@ -110,7 +110,7 @@ function Home({ history }: HomeProps) {
               <MainButton {...{ dataMe, history, loginData }} />
             </div>
           </Row>
-          <Chatbot {...{ dataMe, loginData }} />
+          {/* <Chatbot {...{ dataMe, loginData }} /> */}
         </Col>
       )}
     </Row>
