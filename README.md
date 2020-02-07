@@ -43,6 +43,7 @@ yarn start
 
 ## 디렉토리 구조
 
+```
 -- src/
 | |-- components/
 | | |-------- Cards/ - Cards page 구성 component
@@ -95,6 +96,7 @@ yarn start
 | |--- App.tsx - 메인 타입스크립트
 | |--- index.tsx - 어플리케이션 엔트리 포인트
 |
+```
 
 ## tech stack
 
