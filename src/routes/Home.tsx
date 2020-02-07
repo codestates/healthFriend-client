@@ -19,6 +19,7 @@ import MadeCard from '../components/Shared/UserCard/MadeCard';
 import useChatkitRegister from '../hooks/Home/useChatkitRegister';
 
 import Chatbot from '../components/Chatbot/Chatbot';
+
 const { Title } = Typography;
 
 const renderingImage = css`
@@ -67,10 +68,6 @@ function Home({ history }: HomeProps) {
   useChatkitRegister({ dataMe, client });
   useSubscript(history);
 
-  if (errorMe && errorMe!.graphQLErrors[0]!.extensions!.code) {
-    console.log('errorMe', errorMe.graphQLErrors[0]!.extensions);
-  }
-
   if (
     loginData.isLoggedIn &&
     errorMe
@@ -113,7 +110,7 @@ function Home({ history }: HomeProps) {
               <MainButton {...{ dataMe, history, loginData }} />
             </div>
           </Row>
-          <Chatbot />
+          <Chatbot {...{ dataMe, loginData }} />
         </Col>
       )}
     </Row>
